@@ -1,0 +1,131 @@
+{
+  "colorMode": "DARK",
+  "font": "HANKEN_GROTESK",
+  "roundness": "ROUND_EIGHT",
+  "customColor": "#14b8a6",
+  "headlineFont": "HANKEN_GROTESK",
+  "bodyFont": "INTER",
+  "labelFont": "INTER",
+  "namedColors": {
+    "background": "#0b1326",
+    "error": "#ffb4ab",
+    "error_container": "#93000a",
+    "inverse_on_surface": "#283044",
+    "inverse_primary": "#006b5f",
+    "inverse_surface": "#dae2fd",
+    "on_background": "#dae2fd",
+    "on_error": "#690005",
+    "on_error_container": "#ffdad6",
+    "on_primary": "#003731",
+    "on_primary_container": "#00423b",
+    "on_primary_fixed": "#00201c",
+    "on_primary_fixed_variant": "#005048",
+    "on_secondary": "#1000a9",
+    "on_secondary_container": "#b0b2ff",
+    "on_secondary_fixed": "#07006c",
+    "on_secondary_fixed_variant": "#2f2ebe",
+    "on_surface": "#dae2fd",
+    "on_surface_variant": "#bbcac6",
+    "on_tertiary": "#3f2160",
+    "on_tertiary_container": "#492b6b",
+    "on_tertiary_fixed": "#29074a",
+    "on_tertiary_fixed_variant": "#573878",
+    "outline": "#859490",
+    "outline_variant": "#3c4947",
+    "primary": "#4fdbc8",
+    "primary_container": "#14b8a6",
+    "primary_fixed": "#71f8e4",
+    "primary_fixed_dim": "#4fdbc8",
+    "secondary": "#c0c1ff",
+    "secondary_container": "#3131c0",
+    "secondary_fixed": "#e1e0ff",
+    "secondary_fixed_dim": "#c0c1ff",
+    "surface": "#0b1326",
+    "surface_bright": "#31394d",
+    "surface_container": "#171f33",
+    "surface_container_high": "#222a3d",
+    "surface_container_highest": "#2d3449",
+    "surface_container_low": "#131b2e",
+    "surface_container_lowest": "#060e20",
+    "surface_dim": "#0b1326",
+    "surface_tint": "#4fdbc8",
+    "surface_variant": "#2d3449",
+    "tertiary": "#dbb8ff",
+    "tertiary_container": "#b896dd",
+    "tertiary_fixed": "#efdbff",
+    "tertiary_fixed_dim": "#dbb8ff"
+  },
+  "designMd": "---\nname: Aetheric Intelligence\ncolors:\n  surface: '#0b1326'\n  surface-dim: '#0b1326'\n  surface-bright: '#31394d'\n  surface-container-lowest: '#060e20'\n  surface-container-low: '#131b2e'\n  surface-container: '#171f33'\n  surface-container-high: '#222a3d'\n  surface-container-highest: '#2d3449'\n  on-surface: '#dae2fd'\n  on-surface-variant: '#bbcac6'\n  inverse-surface: '#dae2fd'\n  inverse-on-surface: '#283044'\n  outline: '#859490'\n  outline-variant: '#3c4947'\n  surface-tint: '#4fdbc8'\n  primary: '#4fdbc8'\n  on-primary: '#003731'\n  primary-container: '#14b8a6'\n  on-primary-container: '#00423b'\n  inverse-primary: '#006b5f'\n  secondary: '#c0c1ff'\n  on-secondary: '#1000a9'\n  secondary-container: '#3131c0'\n  on-secondary-container: '#b0b2ff'\n  tertiary: '#dbb8ff'\n  on-tertiary: '#3f2160'\n  tertiary-container: '#b896dd'\n  on-tertiary-container: '#492b6b'\n  error: '#ffb4ab'\n  on-error: '#690005'\n  error-container: '#93000a'\n  on-error-container: '#ffdad6'\n  primary-fixed: '#71f8e4'\n  primary-fixed-dim: '#4fdbc8'\n  on-primary-fixed: '#00201c'\n  on-primary-fixed-variant: '#005048'\n  secondary-fixed: '#e1e0ff'\n  secondary-fixed-dim: '#c0c1ff'\n  on-secondary-fixed: '#07006c'\n  on-secondary-fixed-variant: '#2f2ebe'\n  tertiary-fixed: '#efdbff'\n  tertiary-fixed-dim: '#dbb8ff'\n  on-tertiary-fixed: '#29074a'\n  on-tertiary-fixed-variant: '#573878'\n  background: '#0b1326'\n  on-background: '#dae2fd'\n  surface-variant: '#2d3449'\ntypography:\n  display-xl:\n    fontFamily: Hanken Grotesk\n    fontSize: 64px\n    fontWeight: '700'\n    lineHeight: 72px\n    letterSpacing: -0.02em\n  headline-lg:\n    fontFamily: Hanken Grotesk\n    fontSize: 40px\n    fontWeight: '600'\n    lineHeight: 48px\n    letterSpacing: -0.01em\n  headline-lg-mobile:\n    fontFamily: Hanken Grotesk\n    fontSize: 32px\n    fontWeight: '600'\n    lineHeight: 40px\n  headline-md:\n    fontFamily: Hanken Grotesk\n    fontSize: 24px\n    fontWeight: '500'\n    lineHeight: 32px\n  body-lg:\n    fontFamily: Inter\n    fontSize: 18px\n    fontWeight: '400'\n    lineHeight: 28px\n  body-md:\n    fontFamily: Inter\n    fontSize: 16px\n    fontWeight: '400'\n    lineHeight: 24px\n  label-md:\n    fontFamily: Inter\n    fontSize: 14px\n    fontWeight: '600'\n    lineHeight: 20px\n    letterSpacing: 0.05em\n  caption:\n    fontFamily: Inter\n    fontSize: 12px\n    fontWeight: '400'\n    lineHeight: 16px\nrounded:\n  sm: 0.25rem\n  DEFAULT: 0.5rem\n  md: 0.75rem\n  lg: 1rem\n  xl: 1.5rem\n  full: 9999px\nspacing:\n  unit: 4px\n  gutter: 24px\n  margin-mobile: 16px\n  margin-desktop: 48px\n  max-width: 1440px\n  stack-sm: 8px\n  stack-md: 16px\n  stack-lg: 32px\n---\n\n## Brand & Style\n\nThis design system targets ambitious professionals and high-growth enterprises, delivering a \"co-pilot\" experience that feels both technically advanced and reassuringly premium. The brand personality is **visionary, sophisticated, and kinetic**, evoking the feeling of a high-performance command center.\n\nThe aesthetic is a fusion of **Glassmorphism** and **Corporate Modernism**, heavily influenced by the provided logo’s teal and navy foundations. To achieve the \"Futuristic Dark Mode\" requested, the UI utilizes translucent surfaces, subtle grain textures, and high-precision borders. The emotional response should be one of \"empowered focus\"—minimizing distractions through deep contrast while highlighting AI intelligence with soft, localized glows and 3D depth.\n\n## Colors\n\nThe palette is anchored by a **Deep Midnight (#020617)** canvas, providing a high-contrast base for the logo-derived **Teal (#14B8A6)** primary color. The secondary **Electric Purple (#6366F1)** and **Cyan (#22D3EE)** are used sparingly to signify AI activity, data insights, and interactive states.\n\nGradients are central to the visual language:\n- **Primary Linear**: Teal to Cyan for actionable items.\n- **AI Kinetic**: Indigo to Purple for background blurs and \"thinking\" states.\n- **Surface Stroke**: A subtle top-to-bottom light-to-transparent gradient on borders to simulate a light source from above.\n\n## Typography\n\nThe typography system uses **Hanken Grotesk** for headlines to provide a sharp, contemporary \"tech-forward\" feel that echoes the geometric precision of the logo. **Inter** is utilized for body and UI labels to ensure maximum legibility and a neutral, systematic tone during high-stress interview prep.\n\nLarge display headings should utilize tight tracking and \"text-wrap: balance\" for a premium editorial look. Labels and captions should be clear, often using medium or semi-bold weights at smaller sizes to remain legible against the dark, textured backgrounds.\n\n## Layout & Spacing\n\nThe design system employs a **12-column fluid grid** for desktop and a **4-column grid** for mobile. We lean into \"Airy Density\"—using generous margins (48px+) and gutters (24px) to allow the 3D floating elements and glass layers room to \"breathe\" without feeling cluttered.\n\nSpacing follows an 8px base unit system, with 4px used for fine-tuned UI components. Layouts are largely centered and symmetrical for landing pages, while dashboards utilize a sidebar-heavy, fixed-width navigation (280px) and a fluid content area.\n\n## Elevation & Depth\n\nVisual hierarchy is established through a multi-layered **Glassmorphism** strategy:\n- **Level 0 (Canvas):** Pure midnight background with subtle noise texture.\n- **Level 1 (Sections):** Semi-transparent cards with a 40px backdrop blur and a 1px inner stroke (low-opacity white).\n- **Level 2 (Active Elements):** High-depth floating elements utilizing dual shadows—a dark deep shadow (0px 20px 50px rgba(0,0,0,0.5)) and a soft color-tinted glow (0px 0px 20px rgba(20, 184, 166, 0.15)) that matches the component's primary color.\n\n3D depth is further reinforced by \"floating\" primary CTA buttons and status indicators that appear to sit 8px above the glass surface.\n\n## Shapes\n\nThe shape language is **Refined and Intentional**. A medium roundedness (8px) is the standard for most containers to maintain a professional, balanced look.\n\n- **Standard Radius:** 8px (`rounded-md`) for buttons and small cards.\n- **Large Radius:** 16px (`rounded-lg`) for main dashboard containers and modal windows.\n- **Feature Radius:** 24px (`rounded-xl`) for hero-section imagery and primary marketing cards.\n- **Interactive:** Use full pill shapes (999px) strictly for tags, chips, and toggles to differentiate them from functional buttons.\n\n## Components\n\n### Buttons\n- **Primary:** Gradient fill (Teal to Cyan) with white text. High-depth shadow on hover.\n- **Secondary (Glass):** Transparent background with 1px border glow. Subtle backdrop blur.\n- **Ghost:** No border or background; text turns Cyan on hover with a soft under-glow.\n\n### Input Fields\nDark indigo backgrounds with a 1px border. On focus, the border glows Cyan and the backdrop blur increases slightly. Labels sit above the input in `label-md` style.\n\n### Cards & Containers\nEvery card must have a `backdrop-filter: blur(20px)` and a thin, semi-transparent border to define its edges against the dark background. Header cards may include a \"top-light\" effect (a 1px linear gradient border).\n\n### AI Indicators\nUse \"pulsing\" rings and blurred gradient orbs (Cyan/Purple) to represent AI activity. These should appear behind text or icons to give a \"holographic\" depth effect.\n\n### Chips & Badges\nSmall, pill-shaped elements with high-contrast fills or low-opacity backgrounds (e.g., 10% Teal fill with 100% Teal text).",
+  "colorVariant": "FIDELITY",
+  "overridePrimaryColor": "#14b8a6",
+  "overrideSecondaryColor": "#6366f1",
+  "overrideTertiaryColor": "#d8b4fe",
+  "overrideNeutralColor": "#0f172a",
+  "spacingScale": 2,
+  "typography": {
+    "body-lg": {
+      "fontFamily": "Inter",
+      "fontSize": "18px",
+      "fontWeight": "400",
+      "lineHeight": "28px"
+    },
+    "body-md": {
+      "fontFamily": "Inter",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "lineHeight": "24px"
+    },
+    "caption": {
+      "fontFamily": "Inter",
+      "fontSize": "12px",
+      "fontWeight": "400",
+      "lineHeight": "16px"
+    },
+    "display-xl": {
+      "fontFamily": "Hanken Grotesk",
+      "fontSize": "64px",
+      "fontWeight": "700",
+      "lineHeight": "72px",
+      "letterSpacing": "-0.02em"
+    },
+    "headline-lg": {
+      "fontFamily": "Hanken Grotesk",
+      "fontSize": "40px",
+      "fontWeight": "600",
+      "lineHeight": "48px",
+      "letterSpacing": "-0.01em"
+    },
+    "headline-lg-mobile": {
+      "fontFamily": "Hanken Grotesk",
+      "fontSize": "32px",
+      "fontWeight": "600",
+      "lineHeight": "40px"
+    },
+    "headline-md": {
+      "fontFamily": "Hanken Grotesk",
+      "fontSize": "24px",
+      "fontWeight": "500",
+      "lineHeight": "32px"
+    },
+    "label-md": {
+      "fontFamily": "Inter",
+      "fontSize": "14px",
+      "fontWeight": "600",
+      "lineHeight": "20px",
+      "letterSpacing": "0.05em"
+    }
+  },
+  "spacing": {
+    "gutter": "24px",
+    "margin-desktop": "48px",
+    "margin-mobile": "16px",
+    "max-width": "1440px",
+    "stack-lg": "32px",
+    "stack-md": "16px",
+    "stack-sm": "8px",
+    "unit": "4px"
+  },
+  "headlineFontFamily": "Hanken Grotesk",
+  "bodyFontFamily": "Inter",
+  "labelFontFamily": "Inter"
+}
