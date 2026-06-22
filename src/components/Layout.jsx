@@ -1,17 +1,24 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useBilling } from '../context/BillingContext';
 
 export default function Layout({ children }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
   const { user, logout } = useAuth();
+  const { credits, maxCredits } = useBilling();
+  
+  const [showNotifications, setShowNotifications] = useState(false);
+
+  const usedPercentage = maxCredits > 0 ? ((maxCredits - credits) / maxCredits) * 100 : 0;
 
   const navLinks = [
     { name: 'Dashboard', icon: 'dashboard', path: '/' },
-    { name: 'Settings', icon: 'settings', path: '/settings' },
     { name: 'Live Interview', icon: 'video_chat', path: '/live-interview' },
-    { name: 'Interview Report', icon: 'analytics', path: '/interview-report' },
+    { name: 'Interview Reports', icon: 'analytics', path: '/interview-report' },
+    { name: 'Billing & Usage', icon: 'account_balance_wallet', path: '/billing' },
+    { name: 'Settings', icon: 'settings', path: '/settings' },
   ];
 
   return (
@@ -100,16 +107,64 @@ export default function Layout({ children }) {
             <span className="material-symbols-outlined">bolt</span>
             Quick Interview
           </button>
-          <div className="flex items-center gap-2 text-on-surface-variant">
-            <button className="p-2 hover:text-primary transition-colors hover:bg-white/5 rounded-full relative">
-              <span className="material-symbols-outlined">notifications</span>
-              <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full animate-pulse"></span>
-            </button>
+            <div className="relative">
+              <button 
+                onClick={() => setShowNotifications(!showNotifications)}
+                className={`p-2 transition-colors rounded-full relative ${showNotifications ? 'text-primary bg-primary/10' : 'hover:text-primary hover:bg-white/5 text-on-surface-variant'}`}
+              >
+                <span className="material-symbols-outlined">notifications</span>
+                <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full animate-pulse shadow-[0_0_8px_var(--color-primary)]"></span>
+              </button>
+              
+              {/* Notification Modal */}
+              {showNotifications && (
+                <div className="absolute top-full mt-4 right-0 w-80 bg-surface-container-high border border-white/10 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden z-50 animate-in fade-in slide-in-from-top-4 duration-200">
+                  <div className="flex justify-between items-center p-4 border-b border-white/5 bg-surface-container">
+                    <h3 className="font-bold text-on-surface flex items-center gap-2">
+                      <span className="material-symbols-outlined text-primary text-[20px]">notifications_active</span>
+                      Notifications
+                    </h3>
+                    <button onClick={() => setShowNotifications(false)} className="text-on-surface-variant hover:text-on-surface transition-colors">
+                      <span className="material-symbols-outlined text-[18px]">close</span>
+                    </button>
+                  </div>
+                  <div className="p-2 max-h-80 overflow-y-auto">
+                    <div className="p-3 hover:bg-white/5 rounded-xl transition-colors cursor-pointer flex gap-3 group">
+                      <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center shrink-0 text-primary group-hover:scale-110 transition-transform">
+                        <span className="material-symbols-outlined text-[20px]">workspace_premium</span>
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-on-surface">Welcome to VivaSaarthi!</p>
+                        <p className="text-xs text-on-surface-variant mt-0.5">Start your first mock interview today.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-3 border-t border-white/5 text-center bg-surface-container hover:bg-white/5 transition-colors cursor-pointer text-xs font-bold text-primary">
+                    Mark all as read
+                  </div>
+                </div>
+              )}
+            </div>
             
             {user && (
-              <span className="text-xs font-bold text-on-surface-variant hidden md:inline ml-2 border border-white/10 bg-white/5 px-3 py-1.5 rounded-lg select-none">
-                {user.name}
-              </span>
+              <div className="flex items-center gap-3 ml-2 border border-white/10 bg-white/5 pl-2 pr-4 py-1.5 rounded-full select-none hover:bg-white/10 transition-colors">
+                <div 
+                  className="w-8 h-8 rounded-full flex items-center justify-center relative shadow-[0_0_10px_rgba(20,184,166,0.3)]"
+                  style={{
+                    background: `conic-gradient(#14b8a6 ${usedPercentage}%, rgba(255,255,255,0.1) 0)`
+                  }}
+                >
+                  <img 
+                    src={user.profile_image || "https://lh3.googleusercontent.com/aida-public/AB6AXuB6CeEgpTbQhXw1wzWZzdqcoX_VzG1Le3MeOCkL_3qPn5SqHRwJxNkd1Gqh1dULdr6_BBAOofhbUejdD3cyv349BppI6VaxJr9FLQoFNMwWe3Vz3wMd_C3i01jFHkYBxrUy1_ai1FPCbOOe-FgxezwcSBNeuGrIj3NHmCrRv42qD503JWhNBecVo2jl97qswCzQbjbfVfYouvC6wpTaUZBqitr2AzM8lSU0DEKC777fJXM0MLBURNaYjo0qTWD831Z9wnQj-3ks8z0"} 
+                    alt="Avatar"
+                    className="w-[28px] h-[28px] rounded-full object-cover bg-surface-container border border-background absolute"
+                  />
+                </div>
+                <div className="flex flex-col hidden md:flex">
+                  <span className="text-xs font-bold text-on-surface leading-none">{user.name}</span>
+                  <span className="text-[10px] text-on-surface-variant font-medium mt-1 uppercase tracking-wider">{credits} credits left</span>
+                </div>
+              </div>
             )}
             
             <button
@@ -120,7 +175,6 @@ export default function Layout({ children }) {
               <span className="material-symbols-outlined text-[20px]">logout</span>
             </button>
           </div>
-        </div>
       </header>
 
       {/* Main Content */}

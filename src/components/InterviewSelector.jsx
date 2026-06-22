@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import CvUpload from './CvUpload';
+import { useBilling } from '../context/BillingContext';
+import UpgradeModal from './UpgradeModal';
 
 export default function InterviewSelector({ onSelect }) {
   const [categories, setCategories] = useState([]);
@@ -11,6 +13,9 @@ export default function InterviewSelector({ onSelect }) {
   const [step, setStep] = useState('category');
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
+  
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const { credits } = useBilling();
 
   // Fetch categories and templates
   useEffect(() => {
@@ -54,6 +59,11 @@ export default function InterviewSelector({ onSelect }) {
   };
 
   const handleStartInterview = async (template, cvText = null) => {
+    if (credits <= 0) {
+      setShowUpgradeModal(true);
+      return;
+    }
+
     try {
       setLoading(true);
       setError(null);
@@ -70,6 +80,7 @@ export default function InterviewSelector({ onSelect }) {
       }
 
       const data = await response.json();
+      
       onSelect(template, data.session, cvText);
     } catch (err) {
       console.error('Session starter error:', err);
@@ -117,7 +128,11 @@ export default function InterviewSelector({ onSelect }) {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="max-w-4xl mx-auto px-4 py-8 relative">
+      <UpgradeModal 
+        isOpen={showUpgradeModal} 
+        onClose={() => setShowUpgradeModal(false)} 
+      />
       {error && (
         <div className="mb-6 p-4 bg-error-container/20 border border-error/30 text-error rounded-xl text-sm flex items-center gap-2">
           <span className="material-symbols-outlined">error</span>

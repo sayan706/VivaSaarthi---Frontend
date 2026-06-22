@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useBilling } from '../context/BillingContext';
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { credits, maxCredits, renewalDate } = useBilling();
+  const creditPercentage = maxCredits > 0 ? (credits / maxCredits) * 100 : 0;
   
   const [stats, setStats] = useState({
     total_interviews: 0,
@@ -15,14 +18,16 @@ export default function Dashboard() {
   });
   
   const [recentSessions, setRecentSessions] = useState([]);
+  const [templatesMap, setTemplatesMap] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const [overviewRes, sessionsRes] = await Promise.all([
+        const [overviewRes, sessionsRes, templatesRes] = await Promise.all([
           fetch('/api/dashboard/overview'),
-          fetch('/api/dashboard/recent-interviews')
+          fetch('/api/dashboard/recent-interviews'),
+          fetch('/api/interview/templates')
         ]);
         
         if (overviewRes.ok) {
@@ -33,6 +38,15 @@ export default function Dashboard() {
         if (sessionsRes.ok) {
           const sessionsData = await sessionsRes.json();
           setRecentSessions(sessionsData.recent_interviews || []);
+        }
+
+        if (templatesRes.ok) {
+          const templatesData = await templatesRes.json();
+          const tMap = {};
+          (templatesData.templates || []).forEach(t => {
+            tMap[t.id] = t.name;
+          });
+          setTemplatesMap(tMap);
         }
       } catch (error) {
         console.error("Failed to fetch dashboard data:", error);
@@ -122,6 +136,46 @@ export default function Dashboard() {
         <p className="text-sm font-bold text-on-surface-variant uppercase tracking-wider mt-1">Confidence</p>
       </div>
 
+      {/* Credit Usage Section */}
+      <section className="col-span-4 md:col-span-12 glass-card rounded-2xl p-6 border-t border-t-white/10 mt-4 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden group">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] pointer-events-none transition-all group-hover:bg-primary/10"></div>
+        <div className="flex-1 w-full relative z-10">
+          <div className="flex justify-between items-end mb-2">
+            <h3 className="font-bold text-xl text-on-surface flex items-center gap-2">
+              <span className="material-symbols-outlined text-primary">account_balance_wallet</span>
+              Credits Remaining
+            </h3>
+            <span className="text-sm font-bold text-on-surface-variant">
+              <span className="text-primary text-xl mr-1">{credits}</span> / {maxCredits}
+            </span>
+          </div>
+          <div className="w-full h-3 bg-surface-container-highest rounded-full overflow-hidden shadow-inner mb-2">
+            <div 
+              className={`h-full rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(20,184,166,0.5)] ${
+                creditPercentage > 20 
+                  ? 'bg-gradient-to-r from-primary-container to-primary' 
+                  : 'bg-gradient-to-r from-error-container to-error shadow-[0_0_10px_rgba(255,180,171,0.5)]'
+              }`}
+              style={{ width: `${creditPercentage}%` }}
+            ></div>
+          </div>
+          <p className="text-xs text-on-surface-variant flex items-center gap-1">
+            <span className="material-symbols-outlined text-[14px]">event</span>
+            Renews on: <span className="font-bold text-on-surface ml-1">{new Date(renewalDate).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+          </p>
+        </div>
+        
+        <div className="relative z-10 shrink-0">
+          <button 
+            onClick={() => navigate('/billing')}
+            className="bg-surface-variant/50 hover:bg-surface-variant text-primary font-bold px-6 py-3 rounded-xl border border-primary/20 hover:border-primary/50 transition-all duration-300 flex items-center gap-2 shadow-[0_5px_15px_rgba(0,0,0,0.2)] hover:shadow-[0_8px_20px_rgba(20,184,166,0.2)]"
+          >
+            <span className="material-symbols-outlined">rocket_launch</span>
+            Upgrade Plan
+          </button>
+        </div>
+      </section>
+
       {/* Recent Activity */}
       <section className="col-span-4 md:col-span-12 glass-card rounded-2xl p-6 border-t border-t-white/10 mt-4">
         <div className="flex justify-between items-center mb-6">
@@ -147,7 +201,7 @@ export default function Dashboard() {
                   </div>
                   <div>
                     <h4 className="font-bold text-base text-on-surface">
-                      {session.template_id ? session.template_id.replace(/_/g, ' ').toUpperCase() : 'Interview Session'}
+                      {session.template_id ? (templatesMap[session.template_id] || String(session.template_id).replace(/_/g, ' ').toUpperCase()) : 'Interview Session'}
                     </h4>
                     <p className="text-xs text-on-surface-variant mt-1">
                       {formatDate(session.created_at)} • Status: {session.interview_status}

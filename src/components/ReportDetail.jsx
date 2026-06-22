@@ -5,18 +5,32 @@ export default function ReportDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [report, setReport] = useState(null);
+  const [templatesMap, setTemplatesMap] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchReport = async () => {
       try {
-        const response = await fetch(`/api/reports/${id}`);
-        if (response.ok) {
-          const data = await response.json();
+        const [reportRes, templatesRes] = await Promise.all([
+          fetch(`/api/reports/${id}`),
+          fetch('/api/interview/templates')
+        ]);
+        
+        if (reportRes.ok) {
+          const data = await reportRes.json();
           setReport(data.report);
         } else {
           // Navigate back if not found
           navigate('/interview-report');
+        }
+
+        if (templatesRes.ok) {
+          const templatesData = await templatesRes.json();
+          const tMap = {};
+          (templatesData.templates || []).forEach(t => {
+            tMap[t.id] = t.name;
+          });
+          setTemplatesMap(tMap);
         }
       } catch (error) {
         console.error("Failed to fetch report:", error);
@@ -85,7 +99,7 @@ export default function ReportDetail() {
             Session Completed
           </p>
           <h2 className="text-3xl md:text-4xl font-bold text-on-surface">
-            {report.template_id ? report.template_id.replace(/_/g, ' ').toUpperCase() : 'Interview Session'}
+            {report.template_id ? (templatesMap[report.template_id] || String(report.template_id).replace(/_/g, ' ').toUpperCase()) : 'Interview Session'}
           </h2>
           <p className="text-base text-on-surface-variant mt-1">
             Mock Interview • {formatDate(report.created_at)} • {report.duration_minutes || 0} Mins

@@ -4,15 +4,29 @@ import { useNavigate } from 'react-router-dom';
 export default function InterviewReports() {
   const navigate = useNavigate();
   const [sessions, setSessions] = useState([]);
+  const [templatesMap, setTemplatesMap] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const response = await fetch('/api/reports/');
-        if (response.ok) {
-          const data = await response.json();
+        const [reportsRes, templatesRes] = await Promise.all([
+          fetch('/api/reports/'),
+          fetch('/api/interview/templates')
+        ]);
+        
+        if (reportsRes.ok) {
+          const data = await reportsRes.json();
           setSessions(data.reports || []);
+        }
+        
+        if (templatesRes.ok) {
+          const templatesData = await templatesRes.json();
+          const tMap = {};
+          (templatesData.templates || []).forEach(t => {
+            tMap[t.id] = t.name;
+          });
+          setTemplatesMap(tMap);
         }
       } catch (error) {
         console.error("Failed to fetch reports:", error);
@@ -69,11 +83,11 @@ export default function InterviewReports() {
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg bg-surface-variant flex items-center justify-center text-on-surface group-hover:text-primary transition-colors">
                           <span className="material-symbols-outlined text-[20px]">
-                            {session.template_id?.includes('frontend') ? 'code' : 'work'}
+                            {String(session.template_id)?.includes('frontend') ? 'code' : 'work'}
                           </span>
                         </div>
                         <span className="font-bold text-on-surface">
-                          {session.template_id ? session.template_id.replace(/_/g, ' ').toUpperCase() : 'General Session'}
+                          {session.template_id ? (templatesMap[session.template_id] || String(session.template_id).replace(/_/g, ' ').toUpperCase()) : 'General Session'}
                         </span>
                       </div>
                     </td>

@@ -11,6 +11,8 @@ import InterviewReports from './components/InterviewReports';
 import ReportDetail from './components/ReportDetail';
 import Settings from './components/Settings';
 import { NotificationProvider } from './context/NotificationContext';
+import { BillingProvider } from './context/BillingContext';
+import Billing from './components/Billing';
 import './index.css';
 
 function ProtectedRoute({ children }) {
@@ -111,15 +113,18 @@ export default function App() {
               path="/*"
               element={
                 <ProtectedRoute>
-                  <Layout>
-                    <Routes>
-                      <Route path="/live-interview" element={<LiveInterviewRoute />} />
-                      <Route path="/" element={<Dashboard />} />
-                      <Route path="/settings" element={<Settings />} />
-                      <Route path="/interview-report" element={<InterviewReports />} />
-                      <Route path="/interview-report/:id" element={<ReportDetail />} />
-                    </Routes>
-                  </Layout>
+                  <BillingProvider>
+                    <Layout>
+                      <Routes>
+                        <Route path="/live-interview" element={<LiveInterviewRoute />} />
+                        <Route path="/" element={<Dashboard />} />
+                        <Route path="/billing" element={<Billing />} />
+                        <Route path="/settings" element={<Settings />} />
+                        <Route path="/interview-report" element={<InterviewReports />} />
+                        <Route path="/interview-report/:id" element={<ReportDetail />} />
+                      </Routes>
+                    </Layout>
+                  </BillingProvider>
                 </ProtectedRoute>
               }
             />
