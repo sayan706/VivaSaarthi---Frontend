@@ -16,6 +16,12 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [reportData, setReportData] = useState(null);
   
+  const [metrics, setMetrics] = useState({
+    tab_switch_count: 0,
+    fullscreen_exit_count: 0,
+    face_missing_count: 0
+  });
+  
   const recognitionRef = useRef(null);
   const chatEndRef = useRef(null);
   const textareaRef = useRef(null);
@@ -28,6 +34,22 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
   useEffect(() => {
     transcriptRef.current = transcript;
   }, [transcript]);
+
+  // Request fullscreen and hide sidebar on mount
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('toggle-sidebar', { detail: false }));
+    
+    const el = document.documentElement;
+    if (el.requestFullscreen) {
+      el.requestFullscreen().catch(err => {
+        console.warn("Browser blocked auto-fullscreen:", err.message);
+      });
+    }
+    
+    return () => {
+      window.dispatchEvent(new CustomEvent('toggle-sidebar', { detail: true }));
+    };
+  }, []);
 
   // Auto-scroll chat window
   useEffect(() => {
@@ -166,9 +188,13 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
 
   // Socket Connection and Events Handling
   useEffect(() => {
-    // Connect directly to Flask backend server
-    const newSocket = io('http://127.0.0.1:5000', {
-      transports: ['websocket', 'polling']
+    // Determine backend URL - empty string uses current domain (and vite proxy locally)
+    const backendUrl = import.meta.env.DEV ? '' : 'https://vivasaarthi-backend.onrender.com';
+    
+    // Connect directly to backend server
+    const newSocket = io(backendUrl, {
+      transports: ['websocket'], // MANDATORY FOR RENDER (skips long-polling)
+      upgrade: false
     });
 
     newSocket.on('connect', () => {
@@ -234,7 +260,12 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ session_id: session.id })
+        body: JSON.stringify({ 
+          session_id: session.id,
+          tab_switch_count: metrics.tab_switch_count,
+          fullscreen_exit_count: metrics.fullscreen_exit_count,
+          face_missing_count: metrics.face_missing_count
+        })
       });
       if (res.ok) {
         addNotification('Credits updated after session', 'success');
@@ -296,6 +327,13 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
       {/* Active Proctoring Guard */}
       <ProctorGuard 
         isActive={!reportData} 
+        onViolation={(type) => {
+          if (type === 'tab_switch' || type === 'window_blur') {
+            setMetrics(prev => ({ ...prev, tab_switch_count: prev.tab_switch_count + 1 }));
+          } else if (type === 'fullscreen_exit') {
+            setMetrics(prev => ({ ...prev, fullscreen_exit_count: prev.fullscreen_exit_count + 1 }));
+          }
+        }}
         onAutoTerminate={(reason) => {
           alert(reason);
           handleEndInterviewClick();

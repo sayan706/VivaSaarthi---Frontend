@@ -8,7 +8,7 @@ export function NotificationProvider({ children }) {
   const [notifications, setNotifications] = useState([]);
 
   const addNotification = useCallback((message, type = 'info') => {
-    const id = Date.now().toString();
+    const id = Date.now().toString() + '-' + Math.random().toString(36).substr(2, 9);
     setNotifications((prev) => [...prev, { id, message, type }]);
     
     // Auto-remove after 3 seconds

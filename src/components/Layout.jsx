@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useBilling } from '../context/BillingContext';
@@ -10,6 +10,13 @@ export default function Layout({ children }) {
   const { credits, maxCredits } = useBilling();
   
   const [showNotifications, setShowNotifications] = useState(false);
+  const [sidebarVisible, setSidebarVisible] = useState(true);
+
+  useEffect(() => {
+    const handleToggle = (e) => setSidebarVisible(e.detail);
+    window.addEventListener('toggle-sidebar', handleToggle);
+    return () => window.removeEventListener('toggle-sidebar', handleToggle);
+  }, []);
 
   const usedPercentage = maxCredits > 0 ? ((maxCredits - credits) / maxCredits) * 100 : 0;
 
@@ -25,6 +32,7 @@ export default function Layout({ children }) {
     <div className="bg-background text-on-surface font-body-md min-h-screen overflow-x-hidden antialiased selection:bg-primary/30 selection:text-primary">
       
       {/* Mobile Header */}
+      {sidebarVisible && (
       <div className="md:hidden flex items-center justify-between p-4 bg-surface-container border-b border-white/5 fixed w-full top-0 z-50 backdrop-blur-md">
         <div className="flex items-center gap-2">
           <img src="/logo.png" alt="Logo" className="w-8 h-8 object-contain" />
@@ -34,8 +42,10 @@ export default function Layout({ children }) {
           <span className="material-symbols-outlined">{mobileMenuOpen ? 'close' : 'menu'}</span>
         </button>
       </div>
+      )}
 
       {/* SideNavBar */}
+      {sidebarVisible && (
       <nav className={`${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 transition-transform duration-300 bg-surface-container/40 backdrop-blur-3xl w-72 h-screen fixed left-0 top-0 border-r border-white/10 shadow-[0px_20px_50px_rgba(0,0,0,0.5)] flex flex-col gap-4 py-8 z-40`}>
         {/* Header */}
         <div className="px-6 mb-8 mt-12 md:mt-0">
@@ -93,8 +103,10 @@ export default function Layout({ children }) {
           </button>
         </div>
       </nav>
+      )}
 
       {/* TopNavBar */}
+      {sidebarVisible && (
       <header className="fixed top-0 right-0 w-[calc(100%-288px)] z-30 bg-background/80 backdrop-blur-md border-b border-white/5 shadow-sm hidden md:flex justify-between items-center px-6 h-20">
         <div className="flex-1 max-w-md">
           <div className="relative focus-within:ring-1 focus-within:ring-primary/50 rounded-lg">
@@ -176,9 +188,10 @@ export default function Layout({ children }) {
             </button>
           </div>
       </header>
+      )}
 
       {/* Main Content */}
-      <main className="md:pl-72 pt-20 md:pt-20 min-h-screen">
+      <main className={`${sidebarVisible ? 'md:pl-72 pt-20 md:pt-20' : 'p-4'} min-h-screen`}>
         {children}
       </main>
     </div>

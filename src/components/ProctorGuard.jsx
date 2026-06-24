@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 
-export default function ProctorGuard({ isActive, onAutoTerminate }) {
+export default function ProctorGuard({ isActive, onAutoTerminate, onViolation }) {
   const [warnings, setWarnings] = useState([]);
   const [warningCount, setWarningCount] = useState(0);
   const [showFinalWarning, setShowFinalWarning] = useState(false);
+  const [isFullscreenOff, setIsFullscreenOff] = useState(false);
   const warningCountRef = useRef(0);
   const lastBlurTime = useRef(0);
 
@@ -36,11 +37,14 @@ export default function ProctorGuard({ isActive, onAutoTerminate }) {
       setTimeout(() => setShowFinalWarning(false), 6000);
     }
 
+    // Report violation up to parent
+    if (onViolation) onViolation(type);
+
     // Auto-terminate at maximum warnings
     if (newCount >= MAX_WARNINGS) {
       onAutoTerminate?.('Maximum violations reached. Interview terminated due to malpractice.');
     }
-  }, [onAutoTerminate]);
+  }, [onAutoTerminate, onViolation]);
 
   useEffect(() => {
     if (!isActive) return;
@@ -116,6 +120,16 @@ export default function ProctorGuard({ isActive, onAutoTerminate }) {
     document.addEventListener('contextmenu', handleContextMenu);
     document.addEventListener('keydown', handleKeyDown);
 
+    const handleFullscreenChange = () => {
+      if (!document.fullscreenElement) {
+        setIsFullscreenOff(true);
+        addWarning('fullscreen_exit', 'Fullscreen exited! Please return to fullscreen to continue.');
+      } else {
+        setIsFullscreenOff(false);
+      }
+    };
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+
     const aiCheckInterval = setInterval(detectAITools, 10000);
     detectAITools(); // Run initial check
 
@@ -125,6 +139,7 @@ export default function ProctorGuard({ isActive, onAutoTerminate }) {
       document.removeEventListener('paste', handlePaste);
       document.removeEventListener('contextmenu', handleContextMenu);
       document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
       clearInterval(aiCheckInterval);
     };
   }, [isActive, addWarning]);
@@ -137,6 +152,7 @@ export default function ProctorGuard({ isActive, onAutoTerminate }) {
       case 'window_blur': return 'visibility_off';
       case 'clipboard': return 'content_paste';
       case 'ai_tool': return 'security';
+      case 'fullscreen_exit': return 'fullscreen_exit';
       default: return 'warning';
     }
   };
@@ -203,6 +219,25 @@ export default function ProctorGuard({ isActive, onAutoTerminate }) {
               Dismissing automatically...
             </p>
           </div>
+        </div>
+      )}
+      {/* Fullscreen Enforcer Overlay */}
+      {isFullscreenOff && (
+        <div className="fixed inset-0 z-[200] bg-black/80 backdrop-blur-md flex flex-col items-center justify-center p-6 select-none">
+          <span className="material-symbols-outlined text-error text-[64px] mb-4 animate-bounce">fullscreen</span>
+          <h2 className="text-white text-2xl font-bold mb-2 text-center">Fullscreen Required</h2>
+          <p className="text-on-surface-variant text-sm text-center max-w-md mb-8">
+            You have exited fullscreen mode. This is recorded as a malpractice warning. You cannot continue the interview or chat until you return to fullscreen.
+          </p>
+          <button 
+            onClick={() => {
+              document.documentElement.requestFullscreen().catch(e => console.error(e));
+            }}
+            className="px-6 py-3 bg-primary text-on-primary-fixed font-bold rounded-xl hover:scale-105 transition-all shadow-[0_4px_20px_rgba(20,184,166,0.3)] flex items-center gap-2"
+          >
+            <span className="material-symbols-outlined text-[20px]">fullscreen</span>
+            Return to Fullscreen
+          </button>
         </div>
       )}
     </>

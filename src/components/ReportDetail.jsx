@@ -1,19 +1,62 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { toPng } from 'html-to-image';
+import { jsPDF } from 'jspdf';
 
 export default function ReportDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [report, setReport] = useState(null);
   const [templatesMap, setTemplatesMap] = useState({});
+  const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [exporting, setExporting] = useState(false);
+
+  const handleExportPDF = async () => {
+    const input = document.getElementById('pdf-content');
+    if (!input) return;
+
+    try {
+      setExporting(true);
+      
+      const bgColor = getComputedStyle(document.body).getPropertyValue('--color-background').trim() || '#0b1326';
+      
+      const dataUrl = await toPng(input, {
+        backgroundColor: bgColor,
+        pixelRatio: 2,
+        filter: (node) => {
+          if (node.getAttribute && node.getAttribute('data-html2canvas-ignore') === 'true') return false;
+          return true;
+        }
+      });
+
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      
+      const imgProps = pdf.getImageProperties(dataUrl);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      
+      pdf.addImage(dataUrl, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      
+      const filename = `Interview_Report_${report?.template_id ? (templatesMap[report.template_id] || report.template_id) : 'Session'}.pdf`;
+      pdf.save(filename.replace(/\s+/g, '_'));
+      
+    } catch (error) {
+      console.error('Error exporting PDF:', error);
+      alert('Failed to export PDF: ' + (error.message || 'Unknown error'));
+    } finally {
+      setExporting(false);
+    }
+  };
 
   useEffect(() => {
     const fetchReport = async () => {
       try {
-        const [reportRes, templatesRes] = await Promise.all([
-          fetch(`/api/reports/${id}`),
-          fetch('/api/interview/templates')
+        const token = localStorage.getItem('token');
+        const [reportRes, templatesRes, messagesRes] = await Promise.all([
+          fetch(`/api/reports/${id}`, { headers: token ? { 'Authorization': `Bearer ${token}` } : {} }),
+          fetch('/api/interview/templates', { headers: token ? { 'Authorization': `Bearer ${token}` } : {} }),
+          fetch(`/api/interview/messages/${id}`, { headers: token ? { 'Authorization': `Bearer ${token}` } : {} })
         ]);
         
         if (reportRes.ok) {
@@ -31,6 +74,11 @@ export default function ReportDetail() {
             tMap[t.id] = t.name;
           });
           setTemplatesMap(tMap);
+        }
+
+        if (messagesRes.ok) {
+          const msgsData = await messagesRes.json();
+          setMessages(msgsData.messages || []);
         }
       } catch (error) {
         console.error("Failed to fetch report:", error);
@@ -82,8 +130,9 @@ export default function ReportDetail() {
   const sysScore = report.security_score ? parseFloat(report.security_score) : 0; // mapping security to system for mock
 
   return (
-    <div className="p-4 md:p-8 max-w-7xl mx-auto w-full">
+    <div className="p-4 md:p-8 max-w-7xl mx-auto w-full" id="pdf-content">
       <button 
+        data-html2canvas-ignore="true"
         onClick={() => navigate('/interview-report')}
         className="mb-6 text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2"
       >
@@ -105,10 +154,18 @@ export default function ReportDetail() {
             Mock Interview • {formatDate(report.created_at)} • {report.duration_minutes || 0} Mins
           </p>
         </div>
-        <div className="flex gap-3">
-          <button className="px-4 py-2 rounded-lg bg-surface-container border border-outline-variant/30 text-on-surface font-bold text-sm hover:bg-white/5 transition-all flex items-center gap-2">
-            <span className="material-symbols-outlined text-[18px]">download</span>
-            Export PDF
+        <div className="flex gap-3" data-html2canvas-ignore="true">
+          <button 
+            onClick={handleExportPDF}
+            disabled={exporting}
+            className={`px-4 py-2 rounded-lg border border-outline-variant/30 text-on-surface font-bold text-sm hover:bg-white/5 transition-all flex items-center gap-2 ${exporting ? 'bg-surface-variant cursor-wait' : 'bg-surface-container'}`}
+          >
+            {exporting ? (
+              <span className="animate-spin material-symbols-outlined text-[18px]">progress_activity</span>
+            ) : (
+              <span className="material-symbols-outlined text-[18px]">download</span>
+            )}
+            {exporting ? 'Exporting...' : 'Export PDF'}
           </button>
           <button className="px-4 py-2 rounded-lg bg-primary/10 border border-primary/30 text-primary font-bold text-sm hover:bg-primary/20 transition-all shadow-[0_0_15px_rgba(20,184,166,0.1)] flex items-center gap-2">
             <span className="material-symbols-outlined text-[18px]">share</span>
@@ -276,7 +333,72 @@ export default function ReportDetail() {
             </div>
           </div>
         </div>
+
+        {/* Proctoring Integrity (Full Width Bottom) */}
+        <div className="col-span-12 bg-surface-container/40 backdrop-blur-2xl border border-white/5 rounded-xl p-8 shadow-[0px_20px_50px_rgba(0,0,0,0.3)]">
+          <h3 className="font-bold text-2xl text-on-surface mb-6 flex items-center gap-2 border-b border-white/10 pb-4">
+            <span className="material-symbols-outlined text-error">security</span>
+            Proctoring & Integrity Metrics
+          </h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="bg-white/5 border border-white/10 p-4 rounded-xl flex flex-col items-center justify-center">
+              <span className="material-symbols-outlined text-[32px] text-primary mb-2">video_camera_front</span>
+              <span className="text-2xl font-bold text-on-surface">{report.frames_analyzed || 0}</span>
+              <span className="text-[10px] uppercase tracking-wider text-on-surface-variant font-bold mt-1 text-center">Frames Analyzed</span>
+            </div>
+            <div className={`border p-4 rounded-xl flex flex-col items-center justify-center ${report.tab_switch_count > 0 ? 'bg-error/10 border-error/30' : 'bg-white/5 border-white/10'}`}>
+              <span className={`material-symbols-outlined text-[32px] mb-2 ${report.tab_switch_count > 0 ? 'text-error' : 'text-primary'}`}>desktop_windows</span>
+              <span className="text-2xl font-bold text-on-surface">{report.tab_switch_count || 0}</span>
+              <span className="text-[10px] uppercase tracking-wider text-on-surface-variant font-bold mt-1 text-center">Tab Switches</span>
+            </div>
+            <div className={`border p-4 rounded-xl flex flex-col items-center justify-center ${report.fullscreen_exit_count > 0 ? 'bg-error/10 border-error/30' : 'bg-white/5 border-white/10'}`}>
+              <span className={`material-symbols-outlined text-[32px] mb-2 ${report.fullscreen_exit_count > 0 ? 'text-error' : 'text-primary'}`}>fullscreen_exit</span>
+              <span className="text-2xl font-bold text-on-surface">{report.fullscreen_exit_count || 0}</span>
+              <span className="text-[10px] uppercase tracking-wider text-on-surface-variant font-bold mt-1 text-center">Fullscreen Exits</span>
+            </div>
+            <div className={`border p-4 rounded-xl flex flex-col items-center justify-center ${report.face_missing_count > 0 ? 'bg-error/10 border-error/30' : 'bg-white/5 border-white/10'}`}>
+              <span className={`material-symbols-outlined text-[32px] mb-2 ${report.face_missing_count > 0 ? 'text-error' : 'text-primary'}`}>person_off</span>
+              <span className="text-2xl font-bold text-on-surface">{report.face_missing_count || 0}</span>
+              <span className="text-[10px] uppercase tracking-wider text-on-surface-variant font-bold mt-1 text-center">Face Missing</span>
+            </div>
+          </div>
+        </div>
       </div>
+
+      {/* Chat History Section */}
+      {messages && messages.length > 0 && (
+        <div className="mt-8 bg-surface-container/40 backdrop-blur-2xl border border-white/5 rounded-xl p-8 shadow-[0px_20px_50px_rgba(0,0,0,0.3)]">
+          <h3 className="font-bold text-2xl text-on-surface mb-6 flex items-center gap-2 border-b border-white/10 pb-4">
+            <span className="material-symbols-outlined text-primary">forum</span>
+            Interview Transcript
+          </h3>
+          <div className="space-y-6">
+            {messages.map((msg, idx) => (
+              <div key={idx} className={`flex flex-col max-w-[85%] ${msg.is_human ? 'self-end ml-auto items-end' : 'self-start mr-auto items-start'}`}>
+                <div className={`p-4 rounded-2xl leading-relaxed text-sm shadow-md ${
+                  msg.is_human 
+                    ? 'bg-primary/10 border border-primary/20 text-on-surface rounded-br-none' 
+                    : 'bg-white/5 border border-white/5 text-on-surface rounded-bl-none'
+                }`}>
+                  {msg.message === "[REPORT_GENERATION]" ? <em className="text-on-surface-variant opacity-70">Report Generated</em> : msg.message}
+                </div>
+                {!msg.is_human && msg.credits_used > 0 && (
+                  <div className="mt-1.5 flex items-center gap-2 text-[10px] text-on-surface-variant/60 font-medium">
+                    <span className="material-symbols-outlined text-[12px]">database</span>
+                    Tokens: {msg.total_tokens} • Credits: {parseFloat(msg.credits_used).toFixed(4)} • {msg.model_name || 'deepseek-chat'}
+                  </div>
+                )}
+                {msg.is_human && (
+                  <div className="mt-1.5 flex items-center gap-1 text-[10px] text-on-surface-variant/60 font-medium">
+                    <span className="material-symbols-outlined text-[12px]">person</span> You
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
