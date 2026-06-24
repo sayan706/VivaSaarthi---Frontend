@@ -1,0 +1,3 @@
+/api/*  https://vivasaarthi-backend.onrender.com/:splat  200
+/socket.io/*  https://vivasaarthi-backend.onrender.com/socket.io/:splat  200
+/*  /index.html  200
