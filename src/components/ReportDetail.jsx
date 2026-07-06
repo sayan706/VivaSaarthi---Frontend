@@ -136,7 +136,7 @@ export default function ReportDetail() {
         onClick={() => navigate('/interview-report')}
         className="mb-6 text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2"
       >
-        <span className="material-symbols-outlined text-[18px]">arrow_back</span>
+        <i className="ph ph-arrow-left text-[18px]"></i>
         Back to Reports
       </button>
 
@@ -144,7 +144,7 @@ export default function ReportDetail() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
         <div>
           <p className="font-bold text-sm text-primary mb-2 flex items-center gap-2 uppercase tracking-widest">
-            <span className="material-symbols-outlined text-[16px]">verified</span>
+            <i className="ph ph-seal-check text-[16px]"></i>
             Session Completed
           </p>
           <h2 className="text-3xl md:text-4xl font-bold text-on-surface">
@@ -158,17 +158,17 @@ export default function ReportDetail() {
           <button 
             onClick={handleExportPDF}
             disabled={exporting}
-            className={`px-4 py-2 rounded-lg border border-outline-variant/30 text-on-surface font-bold text-sm hover:bg-white/5 transition-all flex items-center gap-2 ${exporting ? 'bg-surface-variant cursor-wait' : 'bg-surface-container'}`}
+            className={`px-4 py-2 rounded-lg border border-outline-variant/30 text-on-surface font-bold text-sm hover:bg-white/5 transition-all flex items-center gap-2 ${exporting ? 'bg-gray-100 cursor-wait' : 'bg-surface-container'}`}
           >
             {exporting ? (
-              <span className="animate-spin material-symbols-outlined text-[18px]">progress_activity</span>
+              <i className="ph ph-spinner animate-spin text-[18px]"></i>
             ) : (
-              <span className="material-symbols-outlined text-[18px]">download</span>
+              <i className="ph ph-download-simple text-[18px]"></i>
             )}
             {exporting ? 'Exporting...' : 'Export PDF'}
           </button>
           <button className="px-4 py-2 rounded-lg bg-primary/10 border border-primary/30 text-primary font-bold text-sm hover:bg-primary/20 transition-all shadow-[0_0_15px_rgba(20,184,166,0.1)] flex items-center gap-2">
-            <span className="material-symbols-outlined text-[18px]">share</span>
+            <i className="ph ph-share-network text-[18px]"></i>
             Share Result
           </button>
         </div>
@@ -234,7 +234,7 @@ export default function ReportDetail() {
                   <span className="font-bold text-sm text-on-surface">Technical Accuracy</span>
                   <span className="text-sm font-bold text-primary">{techScore}%</span>
                 </div>
-                <div className="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden">
+                <div className="w-full h-2 bg-gray-50est rounded-full overflow-hidden">
                   <div className="h-full bg-gradient-to-r from-primary-container to-primary rounded-full shadow-[0_0_10px_rgba(20,184,166,0.5)]" style={{ width: `${techScore}%` }}></div>
                 </div>
               </div>
@@ -244,7 +244,7 @@ export default function ReportDetail() {
                   <span className="font-bold text-sm text-on-surface">Communication Clarity</span>
                   <span className="text-sm font-bold text-tertiary">{commScore}%</span>
                 </div>
-                <div className="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden">
+                <div className="w-full h-2 bg-gray-50est rounded-full overflow-hidden">
                   <div className="h-full bg-gradient-to-r from-tertiary-container to-tertiary rounded-full shadow-[0_0_10px_rgba(219,184,255,0.5)]" style={{ width: `${commScore}%` }}></div>
                 </div>
               </div>
@@ -254,7 +254,7 @@ export default function ReportDetail() {
                   <span className="font-bold text-sm text-on-surface">Problem Solving Logic</span>
                   <span className="text-sm font-bold text-primary">{probScore}%</span>
                 </div>
-                <div className="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden">
+                <div className="w-full h-2 bg-gray-50est rounded-full overflow-hidden">
                   <div className="h-full bg-gradient-to-r from-primary-container to-primary rounded-full shadow-[0_0_10px_rgba(20,184,166,0.5)]" style={{ width: `${probScore}%` }}></div>
                 </div>
               </div>
@@ -264,7 +264,7 @@ export default function ReportDetail() {
                   <span className="font-bold text-sm text-on-surface">System Design</span>
                   <span className="text-sm font-bold text-error">{sysScore}%</span>
                 </div>
-                <div className="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden">
+                <div className="w-full h-2 bg-gray-50est rounded-full overflow-hidden">
                   <div className="h-full bg-gradient-to-r from-error-container to-error rounded-full shadow-[0_0_10px_rgba(255,180,171,0.5)]" style={{ width: `${sysScore}%` }}></div>
                 </div>
               </div>
@@ -276,13 +276,13 @@ export default function ReportDetail() {
         <div className="col-span-12 lg:col-span-6 bg-surface-container/40 backdrop-blur-2xl border border-white/5 rounded-xl p-8 shadow-[0px_20px_50px_rgba(0,0,0,0.3)]">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 h-full">
             <div>
-              <h4 className="font-bold text-sm text-on-surface mb-4 flex items-center gap-2 border-b border-white/10 pb-2">
-                <span className="material-symbols-outlined text-primary">psychiatry</span>
+              <h4 className="font-bold text-sm text-on-surface mb-4 flex items-center gap-2 border-b border-gray-200 pb-2">
+                <i className="ph ph-brain text-teal-600"></i>
                 Key Strengths
               </h4>
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
-                  <span className="material-symbols-outlined text-primary text-[20px] mt-0.5">check_circle</span>
+                  <i className="ph ph-check-circle text-teal-600 text-[20px] mt-0.5"></i>
                   <p className="text-sm text-on-surface-variant">
                     {report.strengths || "Excellent handling of complex scenarios without prompting."}
                   </p>
@@ -290,13 +290,13 @@ export default function ReportDetail() {
               </ul>
             </div>
             <div>
-              <h4 className="font-bold text-sm text-on-surface mb-4 flex items-center gap-2 border-b border-white/10 pb-2">
-                <span className="material-symbols-outlined text-error">trending_down</span>
+              <h4 className="font-bold text-sm text-on-surface mb-4 flex items-center gap-2 border-b border-gray-200 pb-2">
+                <i className="ph ph-trend-down text-red-500"></i>
                 Areas to Improve
               </h4>
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
-                  <span className="material-symbols-outlined text-error text-[20px] mt-0.5">warning</span>
+                  <i className="ph ph-warning text-red-500 text-[20px] mt-0.5"></i>
                   <p className="text-sm text-on-surface-variant">
                     {report.weaknesses || "Pacing was slightly rushed during the system design overview."}
                   </p>
@@ -310,12 +310,12 @@ export default function ReportDetail() {
         <div className="col-span-12 lg:col-span-6 bg-surface-container/40 backdrop-blur-2xl border border-white/5 rounded-xl p-8 shadow-[0px_20px_50px_rgba(0,0,0,0.3)] relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-tertiary/50 to-transparent"></div>
           <h3 className="font-bold text-2xl text-on-surface mb-2 flex items-center gap-2">
-            <span className="material-symbols-outlined text-tertiary">auto_awesome</span>
+            <i className="ph ph-sparkle text-indigo-600"></i>
             Personalized AI Roadmap
           </h3>
           <p className="text-sm text-on-surface-variant mb-6">Based on this session, focus on these actionable steps before your real interview.</p>
           
-          <div className="relative border-l border-white/10 ml-3 space-y-6 pb-4">
+          <div className="relative border-l border-gray-200 ml-3 space-y-6 pb-4">
             <div className="relative pl-6">
               <span className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-background border-2 border-primary flex items-center justify-center">
                 <span className="w-1.5 h-1.5 bg-primary rounded-full"></span>
@@ -328,7 +328,7 @@ export default function ReportDetail() {
                 onClick={() => navigate('/live-interview')}
                 className="mt-2 text-primary text-xs font-bold hover:underline flex items-center gap-1"
               >
-                Start Practice <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                Start Practice <i className="ph ph-arrow-right text-[14px]"></i>
               </button>
             </div>
           </div>
@@ -336,27 +336,27 @@ export default function ReportDetail() {
 
         {/* Proctoring Integrity (Full Width Bottom) */}
         <div className="col-span-12 bg-surface-container/40 backdrop-blur-2xl border border-white/5 rounded-xl p-8 shadow-[0px_20px_50px_rgba(0,0,0,0.3)]">
-          <h3 className="font-bold text-2xl text-on-surface mb-6 flex items-center gap-2 border-b border-white/10 pb-4">
-            <span className="material-symbols-outlined text-error">security</span>
+          <h3 className="font-bold text-2xl text-on-surface mb-6 flex items-center gap-2 border-b border-gray-200 pb-4">
+            <i className="ph ph-shield-check text-red-500"></i>
             Proctoring & Integrity Metrics
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="bg-white/5 border border-white/10 p-4 rounded-xl flex flex-col items-center justify-center">
-              <span className="material-symbols-outlined text-[32px] text-primary mb-2">video_camera_front</span>
+            <div className="bg-white/5 border border-gray-200 p-4 rounded-xl flex flex-col items-center justify-center">
+              <i className="ph ph-video-camera text-[32px] text-teal-600 mb-2"></i>
               <span className="text-2xl font-bold text-on-surface">{report.frames_analyzed || 0}</span>
               <span className="text-[10px] uppercase tracking-wider text-on-surface-variant font-bold mt-1 text-center">Frames Analyzed</span>
             </div>
-            <div className={`border p-4 rounded-xl flex flex-col items-center justify-center ${report.tab_switch_count > 0 ? 'bg-error/10 border-error/30' : 'bg-white/5 border-white/10'}`}>
+            <div className={`border p-4 rounded-xl flex flex-col items-center justify-center ${report.tab_switch_count > 0 ? 'bg-error/10 border-error/30' : 'bg-white/5 border-gray-200'}`}>
               <span className={`material-symbols-outlined text-[32px] mb-2 ${report.tab_switch_count > 0 ? 'text-error' : 'text-primary'}`}>desktop_windows</span>
               <span className="text-2xl font-bold text-on-surface">{report.tab_switch_count || 0}</span>
               <span className="text-[10px] uppercase tracking-wider text-on-surface-variant font-bold mt-1 text-center">Tab Switches</span>
             </div>
-            <div className={`border p-4 rounded-xl flex flex-col items-center justify-center ${report.fullscreen_exit_count > 0 ? 'bg-error/10 border-error/30' : 'bg-white/5 border-white/10'}`}>
+            <div className={`border p-4 rounded-xl flex flex-col items-center justify-center ${report.fullscreen_exit_count > 0 ? 'bg-error/10 border-error/30' : 'bg-white/5 border-gray-200'}`}>
               <span className={`material-symbols-outlined text-[32px] mb-2 ${report.fullscreen_exit_count > 0 ? 'text-error' : 'text-primary'}`}>fullscreen_exit</span>
               <span className="text-2xl font-bold text-on-surface">{report.fullscreen_exit_count || 0}</span>
               <span className="text-[10px] uppercase tracking-wider text-on-surface-variant font-bold mt-1 text-center">Fullscreen Exits</span>
             </div>
-            <div className={`border p-4 rounded-xl flex flex-col items-center justify-center ${report.face_missing_count > 0 ? 'bg-error/10 border-error/30' : 'bg-white/5 border-white/10'}`}>
+            <div className={`border p-4 rounded-xl flex flex-col items-center justify-center ${report.face_missing_count > 0 ? 'bg-error/10 border-error/30' : 'bg-white/5 border-gray-200'}`}>
               <span className={`material-symbols-outlined text-[32px] mb-2 ${report.face_missing_count > 0 ? 'text-error' : 'text-primary'}`}>person_off</span>
               <span className="text-2xl font-bold text-on-surface">{report.face_missing_count || 0}</span>
               <span className="text-[10px] uppercase tracking-wider text-on-surface-variant font-bold mt-1 text-center">Face Missing</span>
@@ -368,8 +368,8 @@ export default function ReportDetail() {
       {/* Chat History Section */}
       {messages && messages.length > 0 && (
         <div className="mt-8 bg-surface-container/40 backdrop-blur-2xl border border-white/5 rounded-xl p-8 shadow-[0px_20px_50px_rgba(0,0,0,0.3)]">
-          <h3 className="font-bold text-2xl text-on-surface mb-6 flex items-center gap-2 border-b border-white/10 pb-4">
-            <span className="material-symbols-outlined text-primary">forum</span>
+          <h3 className="font-bold text-2xl text-on-surface mb-6 flex items-center gap-2 border-b border-gray-200 pb-4">
+            <i className="ph ph-chats-circle text-teal-600"></i>
             Interview Transcript
           </h3>
           <div className="space-y-6">
@@ -384,13 +384,13 @@ export default function ReportDetail() {
                 </div>
                 {!msg.is_human && msg.credits_used > 0 && (
                   <div className="mt-1.5 flex items-center gap-2 text-[10px] text-on-surface-variant/60 font-medium">
-                    <span className="material-symbols-outlined text-[12px]">database</span>
+                    <i className="ph ph-database text-[12px]"></i>
                     Tokens: {msg.total_tokens} • Credits: {parseFloat(msg.credits_used).toFixed(4)} • {msg.model_name || 'deepseek-chat'}
                   </div>
                 )}
                 {msg.is_human && (
                   <div className="mt-1.5 flex items-center gap-1 text-[10px] text-on-surface-variant/60 font-medium">
-                    <span className="material-symbols-outlined text-[12px]">person</span> You
+                    <i className="ph ph-user text-[12px]"></i> You
                   </div>
                 )}
               </div>

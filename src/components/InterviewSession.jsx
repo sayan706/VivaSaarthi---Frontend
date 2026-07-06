@@ -48,6 +48,9 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
     
     return () => {
       window.dispatchEvent(new CustomEvent('toggle-sidebar', { detail: true }));
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(err => console.warn(err));
+      }
     };
   }, []);
 
@@ -307,17 +310,17 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
   const renderReportMarkdown = (md) => {
     if (!md) return null;
     let html = md
-      .replace(/^## (.*$)/gim, '<h3 class="text-lg font-bold text-primary mt-6 mb-2 pb-1 border-b border-white/5">$1</h3>')
-      .replace(/^# (.*$)/gim, '<h2 class="text-xl font-bold text-primary mt-8 mb-3">$1</h2>')
-      .replace(/^\* (.*$)/gim, '<li class="ml-4 list-disc text-sm text-on-surface-variant my-1">$1</li>')
-      .replace(/^- (.*$)/gim, '<li class="ml-4 list-disc text-sm text-on-surface-variant my-1">$1</li>')
-      .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-bold">$1</strong>')
+      .replace(/^## (.*$)/gim, '<h3 class="text-lg font-bold text-[#0E3386] mt-6 mb-2 pb-1 border-b border-gray-200">$1</h3>')
+      .replace(/^# (.*$)/gim, '<h2 class="text-xl font-bold text-[#0E3386] mt-8 mb-3">$1</h2>')
+      .replace(/^\* (.*$)/gim, '<li class="ml-4 list-disc text-sm text-gray-700 my-1">$1</li>')
+      .replace(/^- (.*$)/gim, '<li class="ml-4 list-disc text-sm text-gray-700 my-1">$1</li>')
+      .replace(/\*\*(.*?)\*\*/g, '<strong class="text-gray-900 font-bold">$1</strong>')
       .replace(/\n/g, '<br />');
 
     return (
       <div 
         dangerouslySetInnerHTML={{ __html: html }} 
-        className="leading-relaxed text-left text-sm text-on-surface-variant space-y-1.5"
+        className="leading-relaxed text-left text-sm text-gray-700 space-y-1.5"
       />
     );
   };
@@ -355,16 +358,16 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
 
       {/* Final Summary Report Overlay */}
       {reportData && (
-        <div className="fixed inset-0 z-[60] bg-black/85 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-[#171f33] border border-primary/30 rounded-3xl max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden shadow-2xl animate-[scaleUp_0.3s_ease-out]">
+        <div className="fixed inset-0 z-[60] bg-gray-900/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white border border-gray-100 rounded-3xl max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden shadow-2xl animate-[scaleUp_0.3s_ease-out]">
             {/* Report Header */}
-            <div className="p-6 bg-primary/10 border-b border-white/5 flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+            <div className="p-6 bg-gray-50 border-b border-gray-100 flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-[#0E3386]/10 flex items-center justify-center text-[#0E3386]">
                 <span className="material-symbols-outlined text-[28px]">emoji_events</span>
               </div>
               <div className="text-left">
-                <h3 className="text-xl font-bold">Interview Completed!</h3>
-                <p className="text-xs text-on-surface-variant mt-0.5">Here is your tailored evaluation report.</p>
+                <h3 className="text-xl font-bold text-gray-900">Interview Completed!</h3>
+                <p className="text-xs text-gray-500 mt-0.5">Here is your tailored evaluation report.</p>
               </div>
             </div>
 
@@ -372,18 +375,18 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
             <div className="p-6 overflow-y-auto space-y-6">
               {/* Score breakdown metrics */}
               {reportData.scores && (
-                <div className="grid grid-cols-3 gap-4 border-b border-white/5 pb-6">
-                  <div className="bg-white/5 p-4 rounded-xl text-center border border-white/5">
-                    <span className="text-[10px] text-on-surface-variant font-bold uppercase tracking-wider block">Overall Score</span>
-                    <span className="text-2xl font-bold text-primary block mt-1">{reportData.scores.overall || 0}/100</span>
+                <div className="grid grid-cols-3 gap-4 border-b border-gray-100 pb-6">
+                  <div className="bg-gray-50 p-4 rounded-xl text-center border border-gray-100 shadow-sm">
+                    <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block">Overall Score</span>
+                    <span className="text-2xl font-bold text-[#0E3386] block mt-1">{reportData.scores.overall || 0}/100</span>
                   </div>
-                  <div className="bg-white/5 p-4 rounded-xl text-center border border-white/5">
-                    <span className="text-[10px] text-on-surface-variant font-bold uppercase tracking-wider block">Technical</span>
-                    <span className="text-2xl font-bold text-secondary block mt-1">{reportData.scores.technical || 0}/100</span>
+                  <div className="bg-gray-50 p-4 rounded-xl text-center border border-gray-100 shadow-sm">
+                    <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block">Technical</span>
+                    <span className="text-2xl font-bold text-[#0E3386] block mt-1">{reportData.scores.technical || 0}/100</span>
                   </div>
-                  <div className="bg-white/5 p-4 rounded-xl text-center border border-white/5">
-                    <span className="text-[10px] text-on-surface-variant font-bold uppercase tracking-wider block">Communication</span>
-                    <span className="text-2xl font-bold text-tertiary block mt-1">{reportData.scores.communication || 0}/100</span>
+                  <div className="bg-gray-50 p-4 rounded-xl text-center border border-gray-100 shadow-sm">
+                    <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block">Communication</span>
+                    <span className="text-2xl font-bold text-[#0E3386] block mt-1">{reportData.scores.communication || 0}/100</span>
                   </div>
                 </div>
               )}
@@ -395,10 +398,10 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
             </div>
 
             {/* Close action */}
-            <div className="p-4 bg-black/20 border-t border-white/5 flex justify-end">
+            <div className="p-4 bg-gray-50 border-t border-gray-100 flex justify-end">
               <button 
                 onClick={handleEndInterviewClick}
-                className="bg-primary hover:bg-primary-container text-on-primary-fixed font-bold text-sm py-3 px-8 rounded-xl transition-all duration-300 cursor-pointer flex items-center gap-2 shadow-[0_4px_12px_rgba(20,184,166,0.2)]"
+                className="bg-[#0E3386] hover:bg-[#0E3386]/90 text-white font-bold text-sm py-3 px-8 rounded-xl transition-all duration-300 cursor-pointer flex items-center gap-2 shadow-[0_4px_12px_rgba(14,51,134,0.2)]"
               >
                 <span>Return to Dashboard</span>
                 <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
@@ -409,31 +412,63 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
       )}
 
       {/* Main Arena Box */}
-      <div className="w-full flex flex-col h-[75vh] glass-card border border-white/10 rounded-2xl overflow-hidden shadow-2xl relative">
+      <div className="w-full flex flex-col h-[75vh] bg-gradient-to-br from-[#f8ebfb] via-[#e8f1ff] to-[#f4ebf8] border border-white/60 rounded-[32px] overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.08)] relative">
+        {/* Decorative background glows */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+          <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-[#fce0ff] mix-blend-multiply filter blur-[80px] opacity-60"></div>
+          <div className="absolute top-[20%] -right-[10%] w-[50%] h-[50%] rounded-full bg-[#d0e1ff] mix-blend-multiply filter blur-[80px] opacity-60"></div>
+        </div>
+
         {/* Arena Header */}
-        <div className="p-4 border-b border-white/5 flex justify-between items-center bg-[#171f33]/80 backdrop-blur-md">
+        <div className="px-6 py-4 flex justify-between items-center z-10 border-b border-white/30 bg-white/30 backdrop-blur-md">
           <div className="flex items-center gap-3">
-            <span className="w-2.5 h-2.5 bg-primary rounded-full animate-ping" />
-            <h2 className="font-bold text-base">{interview.name}</h2>
+            <span className="w-2.5 h-2.5 bg-[#8b5cf6] rounded-full animate-ping" />
+            <h2 className="font-bold text-base text-gray-800 tracking-wide">{interview.name}</h2>
           </div>
           <button 
             onClick={handleEndInterviewClick}
-            className="flex items-center gap-1.5 px-4 py-2 bg-error/15 border border-error/20 hover:border-error/50 text-error rounded-xl font-bold text-xs transition-all cursor-pointer"
+            className="flex items-center gap-1.5 px-4 py-2 bg-white/60 hover:bg-white text-gray-700 rounded-full font-bold text-xs transition-all cursor-pointer shadow-sm border border-white/50 hover:shadow-md"
           >
-            <span className="material-symbols-outlined text-[16px]">cancel</span>
+            <span className="material-symbols-outlined text-[16px] text-red-500">cancel</span>
             <span>Abort Session</span>
           </button>
         </div>
 
         {/* Chat Feed */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6 flex flex-col">
+        <div className="flex-1 overflow-y-auto p-6 space-y-6 flex flex-col z-10 relative scrollbar-hide">
+          {/* Empty State / Welcome Screen */}
+          {messages.length === 0 && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center animate-[fadeIn_0.8s_ease-out] z-0">
+              <div className="text-center mb-6">
+                <h2 className="text-3xl font-extrabold text-gray-800 tracking-tight">
+                  Meet your AI Coach <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8b5cf6] to-[#6366f1]">VivaSaarthi</span>
+                </h2>
+              </div>
+              
+              <div className="relative group">
+                {/* Thought bubble */}
+                <div className="absolute -top-12 -right-8 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-2xl rounded-bl-none shadow-xl border border-white/50 text-sm font-bold text-gray-700 animate-bounce z-10">
+                  Need Any Help?
+                  <div className="absolute -bottom-2 left-2 w-3 h-3 bg-white/90 transform rotate-45 border-b border-r border-transparent"></div>
+                </div>
+                
+                {/* Robot Image */}
+                <img 
+                  src="/robot.png" 
+                  alt="AI Robot" 
+                  className="w-56 h-56 object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.15)] transition-transform duration-500 group-hover:scale-105 relative z-0"
+                />
+              </div>
+            </div>
+          )}
+
           {messages.map((msg, index) => (
             <div 
               key={index}
-              className={`max-w-[75%] p-4 rounded-2xl leading-relaxed text-left text-sm ${
+              className={`max-w-[75%] p-4 rounded-3xl leading-relaxed text-left text-sm shadow-md border ${
                 msg.role === 'user' 
-                  ? 'self-end bg-primary/10 border border-primary/20 text-on-surface' 
-                  : 'self-start bg-white/5 border border-white/5 text-on-surface'
+                  ? 'self-end bg-gradient-to-r from-[#8b5cf6] to-[#6366f1] border-transparent text-white rounded-br-sm' 
+                  : 'self-start bg-white/80 backdrop-blur-md border-white/50 text-gray-800 rounded-bl-sm'
               }`}
             >
               {msg.text}
@@ -441,35 +476,35 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
           ))}
 
           {isProcessing && (
-            <div className="self-start flex items-center gap-3 bg-white/5 border border-white/5 p-4 rounded-2xl">
-              <span className="text-xs text-on-surface-variant animate-pulse">Assistant is formulating response...</span>
+            <div className="self-start flex items-center gap-3 bg-white/80 backdrop-blur-md border border-white/50 p-4 rounded-3xl rounded-bl-sm shadow-md">
+              <span className="text-xs text-gray-500 font-medium">VivaSaarthi is typing...</span>
               <div className="flex gap-1">
-                <span className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0s' }} />
-                <span className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.15s' }} />
-                <span className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.3s' }} />
+                <span className="w-1.5 h-1.5 bg-[#8b5cf6] rounded-full animate-bounce" style={{ animationDelay: '0s' }} />
+                <span className="w-1.5 h-1.5 bg-[#8b5cf6] rounded-full animate-bounce" style={{ animationDelay: '0.15s' }} />
+                <span className="w-1.5 h-1.5 bg-[#8b5cf6] rounded-full animate-bounce" style={{ animationDelay: '0.3s' }} />
               </div>
             </div>
           )}
-          <div ref={chatEndRef} />
+          <div ref={chatEndRef} className="h-4" />
         </div>
 
-        {/* Dynamic AI pulse ring (visual avatar) */}
-        {isSpeaking && (
-          <div className="absolute right-4 top-16 w-12 h-12 rounded-full border border-primary/30 bg-primary/5 flex items-center justify-center animate-pulse z-10 shadow-[0_0_20px_rgba(79,219,200,0.15)]">
-            <span className="material-symbols-outlined text-primary text-[20px]">smart_toy</span>
+        {/* Dynamic AI pulse ring (visual avatar in corner when chatting) */}
+        {(messages.length > 0 || isSpeaking) && (
+          <div className={`absolute right-6 top-24 w-16 h-16 rounded-full bg-white/40 backdrop-blur-xl border border-white/60 flex items-center justify-center z-20 shadow-xl transition-all duration-500 ${isSpeaking ? 'animate-pulse ring-4 ring-[#8b5cf6]/40' : ''}`}>
+             <img src="/robot.png" alt="AI Avatar" className="w-12 h-12 object-contain" />
           </div>
         )}
 
         {/* Input Control Console */}
-        <div className="p-4 border-t border-white/5 bg-[#171f33]/80 backdrop-blur-md flex flex-col gap-3">
-          <div className="flex gap-4 items-end">
+        <div className="p-6 z-20 w-full flex justify-center bg-gradient-to-t from-white/40 to-transparent">
+          <div className="w-full max-w-3xl flex items-end gap-3 bg-white/70 backdrop-blur-2xl border border-white/60 p-2 rounded-[32px] shadow-[0_8px_32px_rgba(0,0,0,0.06)] transition-all hover:bg-white/80">
             <button 
               onClick={toggleListen}
               disabled={isProcessing}
-              className={`w-12 h-12 rounded-full flex items-center justify-center border transition-all duration-300 flex-shrink-0 cursor-pointer ${
+              className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 flex-shrink-0 cursor-pointer ${
                 isListening 
-                  ? 'bg-error border-error shadow-[0_0_15px_rgba(239,68,68,0.5)] text-white' 
-                  : 'bg-white/5 border-white/10 hover:border-primary/45 text-on-surface-variant hover:text-primary'
+                  ? 'bg-red-500 shadow-[0_0_15px_rgba(239,68,68,0.4)] text-white scale-105' 
+                  : 'bg-white hover:bg-gray-50 text-gray-400 hover:text-[#8b5cf6] shadow-sm'
               }`}
               title={isListening ? "Mute Microphone" : "Unmute Microphone"}
             >
@@ -486,21 +521,21 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
                 baseTranscriptRef.current = e.target.value;
               }}
               onKeyDown={handleKeyDown}
-              placeholder={isListening ? "Transcribing voice... speak clearly." : "Type your answer here or click mic to dictate..."}
+              placeholder={isListening ? "Listening..." : "Type your answer..."}
               disabled={isProcessing}
-              className="flex-1 bg-black/30 border border-white/10 hover:border-white/20 focus:border-primary/50 rounded-xl py-3 px-4 text-sm text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none transition-colors duration-200 resize-none h-[50px] overflow-y-auto leading-relaxed"
+              className="flex-1 bg-transparent py-3 px-4 text-sm text-gray-800 placeholder:text-gray-500 focus:outline-none resize-none h-[48px] overflow-y-auto font-medium"
             />
 
             <button 
               onClick={handleSendAnswer}
               disabled={!transcript.trim() || isProcessing}
-              className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 flex-shrink-0 cursor-pointer ${
+              className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 flex-shrink-0 ${
                 (!transcript.trim() || isProcessing) 
-                  ? 'bg-white/5 border border-white/5 text-on-surface-variant/30 cursor-not-allowed' 
-                  : 'bg-primary border border-primary text-on-primary-fixed hover:scale-105 shadow-[0_4px_12px_rgba(20,184,166,0.15)]'
+                  ? 'bg-gray-100 text-gray-300 cursor-not-allowed' 
+                  : 'bg-gradient-to-r from-[#8b5cf6] to-[#6366f1] text-white hover:scale-105 shadow-[0_4px_15px_rgba(139,92,246,0.3)] cursor-pointer'
               }`}
             >
-              <span className="material-symbols-outlined text-[20px] font-bold">send</span>
+              <span className="material-symbols-outlined text-[20px] font-bold transform -rotate-45 ml-1">send</span>
             </button>
           </div>
         </div>

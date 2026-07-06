@@ -1,72 +1,6 @@
 @import "tailwindcss";
-@source "./screens.json";
 
 @theme {
-  --color-background: #0b1326;
-  --color-error: #ffb4ab;
-  --color-error-container: #93000a;
-  --color-inverse-on-surface: #283044;
-  --color-inverse-primary: #006b5f;
-  --color-inverse-surface: #dae2fd;
-  --color-on-background: #dae2fd;
-  --color-on-error: #690005;
-  --color-on-error-container: #ffdad6;
-  --color-on-primary: #003731;
-  --color-on-primary-container: #00423b;
-  --color-on-primary-fixed: #00201c;
-  --color-on-primary-fixed-variant: #005048;
-  --color-on-secondary: #1000a9;
-  --color-on-secondary-container: #b0b2ff;
-  --color-on-secondary-fixed: #07006c;
-  --color-on-secondary-fixed-variant: #2f2ebe;
-  --color-on-surface: #dae2fd;
-  --color-on-surface-variant: #bbcac6;
-  --color-on-tertiary: #3f2160;
-  --color-on-tertiary-container: #492b6b;
-  --color-on-tertiary-fixed: #29074a;
-  --color-on-tertiary-fixed-variant: #573878;
-  --color-outline: #859490;
-  --color-outline-variant: #3c4947;
-  --color-primary: #4fdbc8;
-  --color-primary-container: #14b8a6;
-  --color-primary-fixed: #71f8e4;
-  --color-primary-fixed-dim: #4fdbc8;
-  --color-secondary: #c0c1ff;
-  --color-secondary-container: #3131c0;
-  --color-secondary-fixed: #e1e0ff;
-  --color-secondary-fixed-dim: #c0c1ff;
-  --color-surface: #0b1326;
-  --color-surface-bright: #31394d;
-  --color-surface-container: #171f33;
-  --color-surface-container-high: #222a3d;
-  --color-surface-container-highest: #2d3449;
-  --color-surface-container-low: #131b2e;
-  --color-surface-container-lowest: #060e20;
-  --color-surface-dim: #0b1326;
-  --color-surface-tint: #4fdbc8;
-  --color-surface-variant: #2d3449;
-  --color-tertiary: #dbb8ff;
-  --color-tertiary-container: #b896dd;
-  --color-tertiary-fixed: #efdbff;
-  --color-tertiary-fixed-dim: #dbb8ff;
-  --spacing-gutter: 24px;
-  --spacing-margin-desktop: 48px;
-  --spacing-margin-mobile: 16px;
-  --spacing-max-width: 1440px;
-  --spacing-stack-lg: 32px;
-  --spacing-stack-md: 16px;
-  --spacing-stack-sm: 8px;
-  --spacing-unit: 4px;
-}
-
-body {
-  background-color: var(--color-background);
-  color: var(--color-on-surface);
-  font-family: 'Inter', sans-serif;
-  background-image: radial-gradient(circle at 50% 0%, rgba(20, 184, 166, 0.05) 0%, transparent 50%), url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZUZpbHRlciI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2VGaWx0ZXIpIiBvcGFjaXR5PSIwLjA1Ii8+PC9zdmc+');
-}
-
-html.light {
   --color-background: #fdfdfd;
   --color-error: #ba1a1a;
   --color-error-container: #ffdad6;
@@ -116,17 +50,37 @@ html.light {
   --color-tertiary-fixed-dim: #edb4f8;
 }
 
-html.light body {
+:root {
+  --layout-gutter: 24px;
+  --layout-margin-desktop: 48px;
+  --layout-margin-mobile: 16px;
+  --layout-max-width: 1440px;
+  --layout-stack-lg: 32px;
+  --layout-stack-md: 16px;
+  --layout-stack-sm: 8px;
+  --layout-unit: 4px;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+  font-family: 'Inter', sans-serif;
+  background-image: radial-gradient(circle at 50% 0%, rgba(20, 184, 166, 0.05) 0%, transparent 50%), url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZUZpbHRlciI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2VGaWx0ZXIpIiBvcGFjaXR5PSIwLjA1Ii8+PC9zdmc+');
+}
+
+
+
+body {
   background-image: none; /* remove noise texture in light mode for cleaner look */
 }
 
-html.light .glass-card {
+.glass-card {
   background: rgba(255, 255, 255, 0.7);
   border: 1px solid rgba(0, 0, 0, 0.05);
   box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.05);
 }
 
-html.light .text-glow {
+.text-glow {
   text-shadow: none;
 }
 

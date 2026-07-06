@@ -14,8 +14,6 @@ export default function Settings() {
   
   const isPro = subscription && String(subscription.plan_id) !== '1';
   
-  // Initialize dark theme state based on current document class
-  const [isDarkTheme, setIsDarkTheme] = useState(() => !document.documentElement.classList.contains('light'));
   const [isRenewing, setIsRenewing] = useState(false);
 
   useEffect(() => {
@@ -72,17 +70,6 @@ export default function Settings() {
     }
   };
 
-  const handleSaveConfiguration = () => {
-    if (isDarkTheme) {
-      document.documentElement.classList.remove('light');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.add('light');
-      localStorage.setItem('theme', 'light');
-    }
-    addNotification('Configuration saved successfully!', 'success');
-  };
-
   const handleImageClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
@@ -126,34 +113,26 @@ export default function Settings() {
   };
 
   return (
-    <div className="max-w-max-width mx-auto px-margin-mobile md:px-margin-desktop pb-margin-desktop">
+    <div className="w-full max-w-7xl mx-auto px-4 md:px-12 pb-12">
       {/* Page Header */}
-      <div className="mb-stack-lg flex flex-col md:flex-row md:items-end justify-between gap-4 mt-8 md:mt-0">
+      <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 mt-8 md:mt-0">
         <div>
           <h2 className="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-semibold tracking-tight">Configuration Center</h2>
           <p className="font-body-lg text-body-lg text-on-surface-variant mt-2">Manage your profile, AI mentor preferences, and system settings.</p>
         </div>
-        <div className="flex gap-3">
-          <button className="px-4 py-2 rounded-md font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors">Discard Changes</button>
-          <button 
-            onClick={handleSaveConfiguration}
-            className="px-6 py-2 rounded-md font-label-md text-label-md bg-primary text-on-primary-fixed shadow-[0_0_15px_rgba(79,219,200,0.2)] hover:shadow-[0_0_25px_rgba(79,219,200,0.4)] transition-all"
-          >
-            Save Configuration
-          </button>
-        </div>
+
       </div>
 
       {/* Bento Grid Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Column 1: Profile & Subscription */}
-        <div className="lg:col-span-1 space-y-gutter">
+        <div className="lg:col-span-1 space-y-6">
           {/* Profile Card */}
-          <section className="glass-card rounded-xl p-6 relative overflow-hidden">
+          <section className="bg-white shadow-sm border border-gray-100 rounded-xl p-6 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
             <h3 className="font-headline-md text-headline-md text-on-surface mb-6 flex items-center gap-2">
-              <span className="material-symbols-outlined text-primary">person</span>
+              <i className="ph ph-user text-teal-600"></i>
               Personal Details
             </h3>
             
@@ -165,17 +144,17 @@ export default function Settings() {
                   </div>
                 )}
                 <img 
-                  className="w-16 h-16 rounded-full object-cover border border-white/10" 
+                  className="w-16 h-16 rounded-full object-cover border border-gray-200" 
                   alt="Profile Avatar" 
                   src={user?.profile_image || "https://lh3.googleusercontent.com/aida-public/AB6AXuB6CeEgpTbQhXw1wzWZzdqcoX_VzG1Le3MeOCkL_3qPn5SqHRwJxNkd1Gqh1dULdr6_BBAOofhbUejdD3cyv349BppI6VaxJr9FLQoFNMwWe3Vz3wMd_C3i01jFHkYBxrUy1_ai1FPCbOOe-FgxezwcSBNeuGrIj3NHmCrRv42qD503JWhNBecVo2jl97qswCzQbjbfVfYouvC6wpTaUZBqitr2AzM8lSU0DEKC777fJXM0MLBURNaYjo0qTWD831Z9wnQj-3ks8z0"}
                 />
                 <button 
                   onClick={handleImageClick}
                   disabled={isUploading}
-                  className="absolute -bottom-1 -right-1 bg-surface-variant rounded-full p-1 border border-white/10 hover:text-primary transition-colors cursor-pointer z-20"
+                  className="absolute -bottom-1 -right-1 bg-gray-50 rounded-full p-1 border border-gray-200 hover:text-primary transition-colors cursor-pointer z-20"
                   title="Change Profile Picture"
                 >
-                  <span className="material-symbols-outlined text-[16px]">edit</span>
+                  <i className="ph ph-pencil-simple text-[16px]"></i>
                 </button>
                 <input 
                   type="file" 
@@ -195,7 +174,7 @@ export default function Settings() {
               <div>
                 <label className="font-label-md text-label-md text-on-surface-variant mb-1 block">Full Name</label>
                 <input 
-                  className="w-full bg-surface-variant rounded-md px-3 py-2 font-body-md text-body-md text-on-surface border border-white/5" 
+                  className="w-full bg-gray-50 rounded-md px-3 py-2 font-body-md text-body-md text-on-surface border border-white/5" 
                   type="text" 
                   defaultValue={user?.name || ""} 
                   readOnly 
@@ -204,7 +183,7 @@ export default function Settings() {
               <div>
                 <label className="font-label-md text-label-md text-on-surface-variant mb-1 block">Email Address</label>
                 <input 
-                  className="w-full bg-surface-variant rounded-md px-3 py-2 font-body-md text-body-md text-on-surface border border-white/5" 
+                  className="w-full bg-gray-50 rounded-md px-3 py-2 font-body-md text-body-md text-on-surface border border-white/5" 
                   type="email" 
                   defaultValue={user?.email || ""} 
                   readOnly 
@@ -213,86 +192,68 @@ export default function Settings() {
             </div>
           </section>
 
-          {/* Subscription Card */}
-          <section className={`rounded-xl p-6 relative overflow-hidden group transition-all duration-300 ${isPro ? 'bg-surface-variant border border-tertiary/30 shadow-[0_0_20px_rgba(20,184,166,0.1)]' : 'glass-card'}`}>
-            {isPro ? (
-              <div className="absolute -right-20 -top-20 w-40 h-40 bg-tertiary-container/20 rounded-full blur-[50px] group-hover:bg-tertiary-container/30 transition-all duration-500"></div>
-            ) : (
-              <div className="absolute -right-20 -top-20 w-40 h-40 bg-white/5 rounded-full blur-[50px] transition-all duration-500"></div>
-            )}
-            <h3 className="font-headline-md text-headline-md text-on-surface mb-4 flex items-center gap-2 relative z-10">
-              <span className={`material-symbols-outlined ${isPro ? 'text-tertiary' : 'text-on-surface-variant'}`}>workspace_premium</span>
-              Subscription
-            </h3>
-            
-            <div className="relative z-10">
-              {loadingSub ? (
-                <div className="animate-pulse flex space-x-4">
-                  <div className="h-4 bg-white/10 rounded w-3/4"></div>
-                </div>
-              ) : subscription ? (
-                <>
-                  <div className={`inline-block px-3 py-1 rounded-full border font-label-md text-caption mb-3 capitalize ${isPro ? 'bg-tertiary/10 border-tertiary/20 text-tertiary' : 'bg-surface-variant border-white/20 text-on-surface'}`}>
-                    {subscription.status}
-                  </div>
-                  <div className="flex justify-between items-baseline mb-1">
-                    <span className="font-display-xl text-display-xl text-on-surface">{isPro ? 'Pro' : 'Free'}</span>
-                    <span className="font-body-md text-body-md text-on-surface-variant">Active</span>
-                  </div>
-                  <p className="font-caption text-caption text-on-surface-variant mb-6">
-                    Valid until: {new Date(subscription.end_date).toLocaleDateString()}
-                  </p>
-                </>
-              ) : (
-                <>
-                  <div className="inline-block px-3 py-1 rounded-full bg-surface-variant border border-white/20 text-on-surface font-label-md text-caption mb-3">
-                    No Active Plan
-                  </div>
-                  <div className="flex justify-between items-baseline mb-1">
-                    <span className="font-display-xl text-display-xl text-on-surface">Free Tier</span>
-                  </div>
-                  <p className="font-caption text-caption text-on-surface-variant mb-6">Upgrade to unlock more AI credits.</p>
-                </>
-              )}
+        </div>
 
+        {/* Column 2 & 3: Subscription & Billing */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* Subscription Card Moved Here For Cooler Layout */}
+          <section className={`rounded-xl p-8 relative overflow-hidden group transition-all duration-300 flex flex-col md:flex-row items-center justify-between gap-6 ${isPro ? 'bg-gray-50 border border-tertiary/30 shadow-[0_0_20px_rgba(20,184,166,0.1)]' : 'bg-white shadow-sm border border-gray-100'}`}>
+            {isPro ? (
+              <div className="absolute -right-20 -top-20 w-64 h-64 bg-tertiary-container/20 rounded-full blur-[60px] group-hover:bg-tertiary-container/30 transition-all duration-500"></div>
+            ) : (
+              <div className="absolute -right-20 -top-20 w-64 h-64 bg-primary/5 rounded-full blur-[60px] transition-all duration-500"></div>
+            )}
+            
+            <div className="relative z-10 flex-1 w-full">
+              <h3 className="font-headline-md text-headline-md text-on-surface mb-2 flex items-center gap-2">
+                <span className={`material-symbols-outlined ${isPro ? 'text-tertiary' : 'text-on-surface-variant'}`}>workspace_premium</span>
+                Subscription & Billing
+              </h3>
+              <p className="text-on-surface-variant font-body-md text-body-md mb-6">Manage your plan, check your credit usage, and renew your subscription.</p>
+              
+              <div className="flex items-center gap-4 mb-2">
+                 {loadingSub ? (
+                  <div className="animate-pulse flex space-x-4">
+                    <div className="h-4 bg-gray-200 rounded w-24"></div>
+                  </div>
+                ) : subscription ? (
+                  <>
+                    <span className="font-display-xl text-display-xl text-on-surface">{isPro ? 'Pro Plan' : 'Free Plan'}</span>
+                    <div className={`px-3 py-1 rounded-full border font-label-md text-caption capitalize ${isPro ? 'bg-tertiary/10 border-tertiary/20 text-tertiary' : 'bg-gray-50 border-gray-200 text-on-surface'}`}>
+                      {subscription.status}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <span className="font-display-xl text-display-xl text-on-surface">Free Tier</span>
+                    <div className="px-3 py-1 rounded-full bg-gray-50 border border-gray-200 text-on-surface font-label-md text-caption">
+                      No Active Plan
+                    </div>
+                  </>
+                )}
+              </div>
+              
+              {subscription ? (
+                <p className="font-caption text-caption text-on-surface-variant">
+                  Valid until: {new Date(subscription.end_date).toLocaleDateString()}
+                </p>
+              ) : (
+                <p className="font-caption text-caption text-on-surface-variant">Upgrade to unlock more AI credits.</p>
+              )}
+            </div>
+
+            <div className="relative z-10 w-full md:w-auto">
               <button 
                 onClick={handleRenew}
                 disabled={isRenewing}
-                className={`w-full font-label-md text-label-md py-2 rounded-lg transition-all flex justify-center items-center gap-2 ${isPro ? 'bg-tertiary/20 text-tertiary border border-tertiary/30 hover:bg-tertiary/30' : 'bg-surface-variant border border-white/10 hover:border-white/30 text-on-surface'}`}
+                className={`w-full md:w-auto px-8 py-4 font-label-md text-label-md rounded-lg transition-all flex justify-center items-center gap-2 shadow-sm hover:shadow-md ${isPro ? 'bg-tertiary text-white hover:bg-tertiary/90' : 'bg-primary text-on-primary-fixed hover:bg-primary/90'}`}
               >
-                {isRenewing ? 'Processing...' : 'Manage Billing & Renew Credits'}
+                {isRenewing ? (
+                  <><i className="ph ph-spinner animate-spin"></i> Processing...</>
+                ) : (
+                  <><i className="ph ph-lightning"></i> Manage & Renew Credits</>
+                )}
               </button>
-            </div>
-          </section>
-        </div>
-
-        {/* Column 2 & 3: AI Co-pilot & System */}
-        <div className="lg:col-span-2 space-y-gutter">
-
-          {/* System Preferences */}
-          <section className="glass-card rounded-xl p-6 relative overflow-hidden">
-            <h3 className="font-headline-md text-headline-md text-on-surface mb-6 flex items-center gap-2">
-              <span className="material-symbols-outlined text-secondary-container">tune</span>
-              App Preferences
-            </h3>
-            
-            <div className="space-y-6">
-              {/* Theme Toggle */}
-              <div className="flex items-center justify-between py-2">
-                <div>
-                  <div className="font-body-md text-body-md text-on-surface font-medium">Dark Theme</div>
-                  <div className="font-caption text-caption text-on-surface-variant">Recommended for focus and depth</div>
-                </div>
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input 
-                    type="checkbox" 
-                    className="sr-only peer" 
-                    checked={isDarkTheme}
-                    onChange={(e) => setIsDarkTheme(e.target.checked)}
-                  />
-                  <div className="w-11 h-6 bg-surface-bright peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-                </label>
-              </div>
             </div>
           </section>
         </div>

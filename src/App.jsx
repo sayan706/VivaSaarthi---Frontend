@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, useParams, Navigate, useNavigate } from 'react-router-dom';
 import Layout from './components/Layout';
-import Login from './components/Login';
-import Signup from './components/Signup';
+import AuthPage from './components/AuthPage';
 import InterviewSelector from './components/InterviewSelector';
 import InterviewSession from './components/InterviewSession';
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -13,23 +12,15 @@ import Settings from './components/Settings';
 import { NotificationProvider } from './context/NotificationContext';
 import { BillingProvider } from './context/BillingContext';
 import Billing from './components/Billing';
+import Loader from './components/Loader';
 import './index.css';
+import './assets/styles/login.css'; // New Login UI styles
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
   
   if (loading) {
-    return (
-      <div className="min-h-screen w-full flex items-center justify-center bg-[#0b1326] text-primary">
-        <div className="flex flex-col items-center gap-4">
-          <svg className="animate-spin h-10 w-10 text-primary" viewBox="0 0 24 24" fill="none">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-          </svg>
-          <span className="text-sm font-semibold tracking-wider">Syncing workspace...</span>
-        </div>
-      </div>
-    );
+    return <Loader text="Syncing workspace..." />;
   }
   
   if (!user) {
@@ -43,17 +34,7 @@ function PublicRoute({ children }) {
   const { user, loading } = useAuth();
   
   if (loading) {
-    return (
-      <div className="min-h-screen w-full flex items-center justify-center bg-[#0b1326] text-primary">
-        <div className="flex flex-col items-center gap-4">
-          <svg className="animate-spin h-10 w-10 text-primary" viewBox="0 0 24 24" fill="none">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-          </svg>
-          <span className="text-sm font-semibold tracking-wider">Syncing workspace...</span>
-        </div>
-      </div>
-    );
+    return <Loader text="Syncing workspace..." />;
   }
   
   if (user) {
@@ -71,6 +52,7 @@ function LiveInterviewRoute() {
   const [activeInterview, setActiveInterview] = useState(null);
   const [activeSession, setActiveSession] = useState(null);
   const [cvText, setCvText] = useState(null);
+  const navigate = useNavigate();
 
   const handleSelect = (template, session, extractedCvText) => {
     setActiveInterview(template);
@@ -82,6 +64,7 @@ function LiveInterviewRoute() {
     setActiveInterview(null);
     setActiveSession(null);
     setCvText(null);
+    navigate('/', { replace: true });
   };
 
   if (!activeSession) {
@@ -105,8 +88,8 @@ export default function App() {
         <NotificationProvider>
           <Routes>
             {/* Public Auth Routes */}
-            <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
-            <Route path="/signup" element={<PublicRoute><Signup /></PublicRoute>} />
+            <Route path="/login" element={<PublicRoute><AuthPage /></PublicRoute>} />
+            <Route path="/signup" element={<PublicRoute><AuthPage /></PublicRoute>} />
 
             {/* Protected Main Application Routes inside Layout */}
             <Route

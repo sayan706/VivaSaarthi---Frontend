@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import CvUpload from './CvUpload';
 import { useBilling } from '../context/BillingContext';
 import UpgradeModal from './UpgradeModal';
+import Loader from './Loader';
 
 export default function InterviewSelector({ onSelect }) {
   const [categories, setCategories] = useState([]);
@@ -92,14 +93,14 @@ export default function InterviewSelector({ onSelect }) {
   const filteredTemplates = templates.filter(t => t.category === selectedCategory);
 
   const getCategoryIcon = (catName) => {
-    if (!catName) return 'menu_book';
+    if (!catName) return 'ph-book';
     const name = catName.toLowerCase();
-    if (name.includes('computer') || name.includes('cse')) return 'code';
-    if (name.includes('civil')) return 'engineering';
-    if (name.includes('mba') || name.includes('pgdm')) return 'trending_up';
-    if (name.includes('gov') || name.includes('public')) return 'account_balance';
-    if (name.includes('art')) return 'palette';
-    return 'menu_book';
+    if (name.includes('computer') || name.includes('cse')) return 'ph-code';
+    if (name.includes('civil')) return 'ph-hard-hat';
+    if (name.includes('mba') || name.includes('pgdm')) return 'ph-trend-up';
+    if (name.includes('gov') || name.includes('public')) return 'ph-bank';
+    if (name.includes('art')) return 'ph-palette';
+    return 'ph-book';
   };
 
   const getCategoryDesc = (catName) => {
@@ -114,17 +115,7 @@ export default function InterviewSelector({ onSelect }) {
   };
 
   if (loading && step === 'category') {
-    return (
-      <div className="w-full flex items-center justify-center p-20 text-primary">
-        <div className="flex flex-col items-center gap-4">
-          <svg className="animate-spin h-10 w-10 text-primary" viewBox="0 0 24 24" fill="none">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-          </svg>
-          <span className="text-sm font-semibold tracking-wider">Loading templates...</span>
-        </div>
-      </div>
-    );
+    return <Loader text="Loading templates..." fullScreen={false} />;
   }
 
   return (
@@ -134,8 +125,8 @@ export default function InterviewSelector({ onSelect }) {
         onClose={() => setShowUpgradeModal(false)} 
       />
       {error && (
-        <div className="mb-6 p-4 bg-error-container/20 border border-error/30 text-error rounded-xl text-sm flex items-center gap-2">
-          <span className="material-symbols-outlined">error</span>
+        <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-600 rounded-xl text-sm flex items-center gap-2">
+          <i className="ph ph-warning-circle text-xl"></i>
           <span>{error}</span>
         </div>
       )}
@@ -144,10 +135,10 @@ export default function InterviewSelector({ onSelect }) {
       {step === 'category' && (
         <div className="space-y-6">
           <div className="text-center space-y-2">
-            <h2 className="text-3xl font-bold tracking-tight text-glow text-primary">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900">
               Choose Interview Domain
             </h2>
-            <p className="text-on-surface-variant max-w-md mx-auto text-sm">
+            <p className="text-gray-500 max-w-md mx-auto text-sm">
               Select your career domain to view tailored adaptive assessments templates.
             </p>
           </div>
@@ -157,16 +148,16 @@ export default function InterviewSelector({ onSelect }) {
               <button
                 key={cat.id}
                 onClick={() => handleCategorySelect(cat.category_name)}
-                className="glass-card p-6 rounded-2xl border border-white/5 hover:border-primary/20 flex items-start gap-4 hover:shadow-[0_10px_30px_rgba(79,219,200,0.1)] hover:-translate-y-1 transition-all duration-300 text-left cursor-pointer group"
+                className="bg-white p-6 rounded-2xl border border-gray-100 hover:border-teal-200 flex items-start gap-4 shadow-sm hover:shadow-md transition-all duration-300 text-left cursor-pointer group"
               >
-                <div className="p-3.5 bg-primary/10 rounded-xl text-primary group-hover:bg-primary/20 transition-all">
-                  <span className="material-symbols-outlined text-[28px]">{getCategoryIcon(cat.category_name)}</span>
+                <div className="p-3.5 bg-teal-50 rounded-xl text-teal-600 group-hover:bg-teal-100 transition-all">
+                  <i className={`ph ${getCategoryIcon(cat.category_name)} text-[28px]`}></i>
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg text-on-surface group-hover:text-primary transition-colors">
+                  <h3 className="font-bold text-lg text-gray-900 group-hover:text-teal-600 transition-colors">
                     {cat.category_name}
                   </h3>
-                  <p className="text-xs text-on-surface-variant leading-relaxed mt-1">
+                  <p className="text-xs text-gray-500 font-medium leading-relaxed mt-1">
                     {getCategoryDesc(cat.category_name)}
                   </p>
                 </div>
@@ -182,65 +173,65 @@ export default function InterviewSelector({ onSelect }) {
           <div className="flex items-center justify-between mb-4">
             <button
               onClick={() => setStep('category')}
-              className="flex items-center gap-1.5 text-sm text-on-surface-variant hover:text-primary transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 text-sm font-semibold text-gray-500 hover:text-teal-600 transition-colors cursor-pointer"
             >
-              <span className="material-symbols-outlined text-[18px]">arrow_back</span>
+              <i className="ph ph-arrow-left text-[18px]"></i>
               Back to Domains
             </button>
-            <span className="text-xs font-bold bg-white/5 border border-white/10 px-3 py-1 rounded-full text-on-surface-variant">
+            <span className="text-xs font-bold bg-gray-50 border border-gray-200 px-3 py-1 rounded-full text-gray-600">
               Domain: {selectedCategory}
             </span>
           </div>
 
           <div className="text-center space-y-2">
-            <h2 className="text-3xl font-bold tracking-tight text-glow text-primary">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900">
               Select Target Role
             </h2>
-            <p className="text-on-surface-variant max-w-md mx-auto text-sm">
+            <p className="text-gray-500 max-w-md mx-auto text-sm">
               Each template contains specific guidelines and focuses on key skills.
             </p>
           </div>
 
           <div className="grid grid-cols-1 gap-4 mt-8">
             {filteredTemplates.length === 0 ? (
-              <div className="text-center p-12 glass-card rounded-2xl border border-white/5 text-on-surface-variant">
-                <span className="material-symbols-outlined text-[48px] text-white/20 mb-2">find_in_page</span>
-                <p>No active interview templates found in this category.</p>
+              <div className="text-center p-12 bg-white rounded-2xl border border-gray-100 text-gray-400">
+                <i className="ph ph-file-search text-[48px] text-gray-300 mb-2"></i>
+                <p className="font-medium">No active interview templates found in this category.</p>
               </div>
             ) : (
               filteredTemplates.map((temp) => (
                 <div
                   key={temp.id}
-                  className="glass-card p-6 rounded-2xl border border-white/5 hover:border-primary/20 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:shadow-[0_8px_25px_rgba(79,219,200,0.08)] transition-all duration-300"
+                  className="bg-white p-6 rounded-2xl border border-gray-100 hover:border-teal-200 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm hover:shadow-md transition-all duration-300"
                 >
                   <div className="space-y-2 max-w-xl text-left">
                     <div className="flex flex-wrap items-center gap-2">
-                      <h3 className="font-bold text-lg text-on-surface">{temp.name}</h3>
+                      <h3 className="font-bold text-lg text-gray-900">{temp.name}</h3>
                       {temp.company_name && (
-                        <span className="text-[10px] font-bold bg-[#14b8a6]/20 text-primary border border-primary/20 px-2 py-0.5 rounded">
+                        <span className="text-[10px] font-bold bg-teal-50 text-teal-700 border border-teal-200 px-2 py-0.5 rounded">
                           {temp.company_name}
                         </span>
                       )}
                       <span className={`text-[10px] font-bold px-2 py-0.5 rounded border capitalize ${
                         temp.difficulty_level === 'hard' 
-                          ? 'bg-error-container/20 text-error border-error/20' 
+                          ? 'bg-red-50 text-red-600 border-red-200' 
                           : temp.difficulty_level === 'medium'
-                          ? 'bg-[#f59e0b]/20 text-[#f59e0b] border-[#f59e0b]/20'
-                          : 'bg-[#10b981]/20 text-[#10b981] border-[#10b981]/20'
+                          ? 'bg-orange-50 text-orange-600 border-orange-200'
+                          : 'bg-green-50 text-green-600 border-green-200'
                       }`}>
                         {temp.difficulty_level}
                       </span>
                     </div>
-                    <p className="text-xs text-on-surface-variant leading-relaxed">
+                    <p className="text-xs font-medium text-gray-500 leading-relaxed">
                       {temp.description || 'Practice adaptively with interactive AI assessors.'}
                     </p>
                   </div>
                   <button
                     onClick={() => handleTemplateSelect(temp)}
-                    className="bg-primary hover:bg-primary-container text-on-primary-fixed font-bold text-xs py-3 px-5 rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center gap-1.5 shrink-0"
+                    className="bg-[#0E3386] text-white font-bold text-sm py-3 px-5 rounded-xl transition-all duration-300 hover:-translate-y-0.5 shadow-[0_0_15px_rgba(14,51,134,0.2)] hover:shadow-[0_0_25px_rgba(14,51,134,0.4)] flex items-center justify-center gap-2 shrink-0"
                   >
                     <span>{temp.requires_cv ? 'Upload CV & Start' : 'Start Session'}</span>
-                    <span className="material-symbols-outlined text-[16px]">play_circle</span>
+                    <i className="ph ph-play-circle text-[18px]"></i>
                   </button>
                 </div>
               ))
@@ -255,17 +246,18 @@ export default function InterviewSelector({ onSelect }) {
           <div className="flex items-center justify-between mb-4">
             <button
               onClick={() => setStep('template')}
-              className="flex items-center gap-1.5 text-sm text-on-surface-variant hover:text-primary transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 text-sm font-semibold text-gray-500 hover:text-teal-600 transition-colors cursor-pointer"
             >
-              <span className="material-symbols-outlined text-[18px]">arrow_back</span>
+              <i className="ph ph-arrow-left text-[18px]"></i>
               Back to Roles
             </button>
-            <span className="text-xs font-bold bg-white/5 border border-white/10 px-3 py-1 rounded-full text-on-surface-variant">
+            <span className="text-xs font-bold bg-primary/10 border border-primary/20 px-3 py-1 rounded-full text-primary">
               Role: {selectedTemplate?.name}
             </span>
           </div>
 
-          <div className="w-full max-w-md mx-auto bg-[#131b2e]/60 border border-white/10 p-8 rounded-3xl shadow-xl">
+          <div className="w-full max-w-md mx-auto bg-white border border-gray-100 p-8 rounded-3xl shadow-lg relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-primary via-primary-container to-primary"></div>
             <CvUpload
               onUploadSuccess={(cvText) => handleStartInterview(selectedTemplate, cvText)}
               onSkip={() => handleStartInterview(selectedTemplate, null)}

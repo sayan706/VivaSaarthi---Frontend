@@ -114,10 +114,10 @@ export default function CvUpload({ onUploadSuccess, onSkip, canSkip = false }) {
   };
 
   return (
-    <div className="w-full flex flex-col gap-4 text-on-surface">
+    <div className="w-full flex flex-col gap-4 text-gray-900">
       <div className="text-center space-y-1">
         <h3 className="text-lg font-bold">Upload Your CV</h3>
-        <p className="text-sm text-on-surface-variant">
+        <p className="text-sm text-gray-500">
           We'll analyze your resume to ask personalized questions during the interview.
         </p>
       </div>
@@ -130,7 +130,7 @@ export default function CvUpload({ onUploadSuccess, onSkip, canSkip = false }) {
             onDrop={handleDrop}
             onClick={() => !isUploading && fileInputRef.current?.click()}
             className={`border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center gap-4 cursor-pointer transition-all duration-300 ${
-              isDragging ? 'border-primary bg-primary/5 shadow-[0_0_15px_rgba(79,219,200,0.1)]' : 'border-white/10 bg-white/5 hover:bg-white/10'
+              isDragging ? 'border-[#0E3386] bg-[#0E3386]/5 shadow-[0_0_15px_rgba(14,51,134,0.1)]' : 'border-gray-200 bg-gray-50 hover:bg-gray-100'
             } ${isUploading ? 'pointer-events-none opacity-50' : ''}`}
           >
             <input
@@ -144,24 +144,24 @@ export default function CvUpload({ onUploadSuccess, onSkip, canSkip = false }) {
 
             {!file ? (
               <>
-                <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-primary border border-white/10">
+                <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-[#0E3386] border border-gray-200 shadow-sm">
                   <span className="material-symbols-outlined text-[28px]">upload</span>
                 </div>
                 <div className="text-center">
-                  <p className="font-bold text-sm">Click or drag file to this area to upload</p>
-                  <p className="text-xs text-on-surface-variant mt-1">Supports PDF or DOCX (Max 5MB)</p>
+                  <p className="font-bold text-sm text-gray-800">Click or drag file to this area to upload</p>
+                  <p className="text-xs text-gray-500 mt-1">Supports PDF or DOCX (Max 5MB)</p>
                 </div>
               </>
             ) : (
               <div className="w-full flex flex-col gap-3">
-                <div className="flex items-center justify-between bg-[#131b2e]/60 border border-white/5 p-3 rounded-xl">
+                <div className="flex items-center justify-between bg-white border border-gray-200 shadow-sm p-3 rounded-xl">
                   <div className="flex items-center gap-3 overflow-hidden">
-                    <span className="material-symbols-outlined text-primary text-[28px]">description</span>
+                    <span className="material-symbols-outlined text-[#0E3386] text-[28px]">description</span>
                     <div className="flex flex-col overflow-hidden text-left">
-                      <span className="text-sm font-bold truncate pr-4">
+                      <span className="text-sm font-bold text-gray-900 truncate pr-4">
                         {file.name}
                       </span>
-                      <span className="text-xs text-on-surface-variant">
+                      <span className="text-xs text-gray-500">
                         {(file.size / 1024 / 1024).toFixed(2)} MB
                       </span>
                     </div>
@@ -169,7 +169,7 @@ export default function CvUpload({ onUploadSuccess, onSkip, canSkip = false }) {
                   {!isUploading && (
                     <button 
                       onClick={(e) => { e.stopPropagation(); resetUpload(); }}
-                      className="p-1 text-on-surface-variant hover:text-error transition-colors cursor-pointer"
+                      className="p-1 text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
                     >
                       <span className="material-symbols-outlined text-[18px]">close</span>
                     </button>
@@ -177,9 +177,9 @@ export default function CvUpload({ onUploadSuccess, onSkip, canSkip = false }) {
                 </div>
 
                 {isUploading && (
-                  <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+                  <div className="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden mt-1">
                     <div 
-                      className="height-full bg-primary transition-all duration-200" 
+                      className="height-full bg-[#0E3386] transition-all duration-200" 
                       style={{ width: `${uploadProgress}%`, height: '100%' }}
                     />
                   </div>
@@ -199,7 +199,7 @@ export default function CvUpload({ onUploadSuccess, onSkip, canSkip = false }) {
             {canSkip && (
               <button 
                 onClick={onSkip}
-                className="flex-1 bg-white/5 hover:bg-white/10 border border-white/10 text-on-surface font-bold py-3 rounded-xl transition-all duration-200 cursor-pointer disabled:opacity-50"
+                className="flex-1 bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 font-bold py-3 rounded-xl shadow-sm transition-all duration-200 cursor-pointer disabled:opacity-50"
                 disabled={isUploading}
               >
                 Skip CV
@@ -208,11 +208,11 @@ export default function CvUpload({ onUploadSuccess, onSkip, canSkip = false }) {
             <button 
               onClick={handleUpload}
               disabled={!file || isUploading}
-              className="flex-[2] bg-gradient-to-r from-primary to-primary-container text-on-primary-fixed font-bold py-3 rounded-xl shadow-[0_4px_12px_rgba(20,184,166,0.15)] hover:shadow-[0_6px_20px_rgba(20,184,166,0.3)] transition-all duration-200 cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
+              className="flex-[2] bg-[#0E3386] hover:bg-[#0E3386]/90 text-white font-bold py-3 rounded-xl shadow-[0_4px_12px_rgba(14,51,134,0.15)] hover:shadow-[0_6px_20px_rgba(14,51,134,0.3)] transition-all duration-200 cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
             >
               {isUploading ? (
                 <>
-                  <svg className="animate-spin h-5 w-5 text-on-primary-fixed" viewBox="0 0 24 24" fill="none">
+                  <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24" fill="none">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                   </svg>
@@ -228,13 +228,13 @@ export default function CvUpload({ onUploadSuccess, onSkip, canSkip = false }) {
           </div>
         </div>
       ) : (
-        <div className="p-6 bg-primary/5 border border-primary/20 rounded-xl flex flex-col items-center gap-3 text-center animate-pulse">
-          <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+        <div className="p-6 bg-green-50 border border-green-200 rounded-xl flex flex-col items-center gap-3 text-center animate-pulse">
+          <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-600">
             <span className="material-symbols-outlined text-[28px]">check_circle</span>
           </div>
           <div>
-            <h4 className="font-bold text-[#10b981]">Resume Processed</h4>
-            <p className="text-xs text-on-surface-variant mt-1">
+            <h4 className="font-bold text-green-700">Resume Processed</h4>
+            <p className="text-xs text-green-600 mt-1">
               Customized context loaded. Initializing assessment...
             </p>
           </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useBilling } from '../context/BillingContext';
+import Loader from './Loader';
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -67,156 +68,153 @@ export default function Dashboard() {
   return (
     <div className="p-4 md:p-8 max-w-7xl mx-auto grid grid-cols-4 md:grid-cols-12 gap-6">
       {/* Hero Section */}
-      <section className="col-span-4 md:col-span-12 glass-card rounded-2xl p-8 relative overflow-hidden flex flex-col md:flex-row items-center justify-between border-t border-t-white/20">
-        <div className="absolute -right-20 -top-20 w-64 h-64 bg-primary/20 rounded-full blur-[80px] pointer-events-none"></div>
-        <div className="absolute -left-20 -bottom-20 w-64 h-64 bg-tertiary-container/10 rounded-full blur-[80px] pointer-events-none"></div>
-        <div className="relative z-10 space-y-4 max-w-2xl">
-          <h1 className="font-headline-lg text-3xl md:text-4xl font-bold text-on-surface">
-            Welcome back, <span className="text-primary drop-shadow-[0_0_10px_rgba(20,184,166,0.8)]">{user?.name || 'User'}</span>
-          </h1>
-          <p className="font-body-lg text-lg text-on-surface-variant">
-            Ready to tackle your next technical behavioral round? Start a mock interview to improve your skills.
-          </p>
+      <section className="col-span-4 md:col-span-12 bg-gradient-to-r from-[#d2f4e8] via-[#aed8e6] to-[#204968] rounded-2xl p-8 shadow-sm border border-gray-100 flex flex-col md:flex-row items-center justify-between">
+        <div className="flex items-center gap-4 relative z-10 max-w-3xl">
+          <div className="w-16 h-16 bg-[#1a3854] rounded-full flex items-center justify-center text-white text-2xl font-semibold shrink-0">
+            {user?.name ? user.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : 'U'}
+          </div>
+          <div>
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
+              Welcome back, {user?.name || 'User'}!
+            </h1>
+            <p className="text-lg text-gray-800 mt-2 font-medium">
+              Ready to tackle your next technical behavioral round? Let's start a mock interview and sharpen your skills.
+            </p>
+          </div>
         </div>
-        <div className="relative z-10 mt-6 md:mt-0">
+        <div className="relative z-10 mt-6 md:mt-0 shrink-0">
           <button 
             onClick={() => navigate('/live-interview')}
-            className="bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold px-8 py-4 rounded-xl shadow-[0px_10px_30px_rgba(20,184,166,0.4)] hover:shadow-[0px_15px_40px_rgba(20,184,166,0.6)] hover:-translate-y-1 transition-all duration-300 flex items-center gap-2 group"
+            className="bg-[#117065] hover:bg-[#0e5c53] text-white font-medium px-6 py-3 rounded-xl shadow-sm transition-all duration-300 flex items-center gap-2 group"
           >
-            <span className="material-symbols-outlined group-hover:rotate-12 transition-transform">play_circle</span>
-            Start Mock Interview
+            <i className="ph ph-microphone text-xl"></i>
+            Start a New Mock Interview
           </button>
         </div>
       </section>
 
       {/* Stats Section (4 Cards) */}
-      <div className="col-span-4 md:col-span-3 glass-card rounded-xl p-6 hover:bg-surface-container/60 transition-colors group">
+      <div className="col-span-4 md:col-span-3 bg-white shadow-sm border border-gray-100 rounded-xl p-6 hover:shadow-md transition-shadow group">
         <div className="flex justify-between items-start mb-4">
-          <div className="p-2 bg-primary/10 rounded-lg text-primary group-hover:scale-110 transition-transform">
-            <span className="material-symbols-outlined">forum</span>
+          <div className="p-3 bg-teal-50 rounded-lg text-teal-600 group-hover:scale-110 transition-transform">
+            <i className="ph ph-chats-circle text-2xl"></i>
           </div>
         </div>
-        <h3 className="font-bold text-3xl text-on-surface">{stats.total_interviews}</h3>
-        <p className="text-sm font-bold text-on-surface-variant uppercase tracking-wider mt-1">Total Interviews</p>
+        <h3 className="font-bold text-3xl text-gray-900">{stats.total_interviews}</h3>
+        <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mt-1">Total Interviews</p>
       </div>
 
-      <div className="col-span-4 md:col-span-3 glass-card rounded-xl p-6 hover:bg-surface-container/60 transition-colors group">
+      <div className="col-span-4 md:col-span-3 bg-white shadow-sm border border-gray-100 rounded-xl p-6 hover:shadow-md transition-shadow group">
         <div className="flex justify-between items-start mb-4">
-          <div className="p-2 bg-tertiary-container/10 rounded-lg text-tertiary-container group-hover:scale-110 transition-transform">
-            <span className="material-symbols-outlined">score</span>
+          <div className="p-3 bg-indigo-50 rounded-lg text-indigo-600 group-hover:scale-110 transition-transform">
+            <i className="ph ph-chart-line-up text-2xl"></i>
           </div>
         </div>
-        <h3 className="font-bold text-3xl text-on-surface">{stats.avg_score}/100</h3>
-        <p className="text-sm font-bold text-on-surface-variant uppercase tracking-wider mt-1">Avg Score</p>
+        <h3 className="font-bold text-3xl text-gray-900">{stats.avg_score}/100</h3>
+        <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mt-1">Avg Score</p>
       </div>
 
-      <div className="col-span-4 md:col-span-3 glass-card rounded-xl p-6 hover:bg-surface-container/60 transition-colors group relative overflow-hidden">
-        <div className="absolute bottom-0 left-0 w-full h-1 bg-surface-variant">
-          <div className="h-full bg-primary shadow-[0_0_10px_rgba(20,184,166,0.8)]" style={{ width: `${stats.communication}%` }}></div>
+      <div className="col-span-4 md:col-span-3 bg-white shadow-sm border border-gray-100 rounded-xl p-6 hover:shadow-md transition-shadow group relative overflow-hidden">
+        <div className="absolute bottom-0 left-0 w-full h-1 bg-gray-100">
+          <div className="h-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.6)]" style={{ width: `${stats.communication}%` }}></div>
         </div>
         <div className="flex justify-between items-start mb-4">
-          <div className="p-2 bg-secondary-container/20 rounded-lg text-secondary group-hover:scale-110 transition-transform">
-            <span className="material-symbols-outlined">record_voice_over</span>
+          <div className="p-3 bg-blue-50 rounded-lg text-blue-600 group-hover:scale-110 transition-transform">
+            <i className="ph ph-microphone-stage text-2xl"></i>
           </div>
         </div>
-        <h3 className="font-bold text-3xl text-on-surface">{stats.communication}%</h3>
-        <p className="text-sm font-bold text-on-surface-variant uppercase tracking-wider mt-1">Communication</p>
+        <h3 className="font-bold text-3xl text-gray-900">{stats.communication}%</h3>
+        <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mt-1">Communication</p>
       </div>
 
-      <div className="col-span-4 md:col-span-3 glass-card rounded-xl p-6 hover:bg-surface-container/60 transition-colors group relative overflow-hidden">
-        <div className="absolute bottom-0 left-0 w-full h-1 bg-surface-variant">
-          <div className="h-full bg-tertiary-container shadow-[0_0_10px_rgba(184,150,221,0.8)]" style={{ width: `${stats.confidence}%` }}></div>
+      <div className="col-span-4 md:col-span-3 bg-white shadow-sm border border-gray-100 rounded-xl p-6 hover:shadow-md transition-shadow group relative overflow-hidden">
+        <div className="absolute bottom-0 left-0 w-full h-1 bg-gray-100">
+          <div className="h-full bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.6)]" style={{ width: `${stats.confidence}%` }}></div>
         </div>
         <div className="flex justify-between items-start mb-4">
-          <div className="p-2 bg-surface-bright/50 rounded-lg text-on-surface group-hover:scale-110 transition-transform">
-            <span className="material-symbols-outlined">psychology</span>
+          <div className="p-3 bg-orange-50 rounded-lg text-orange-600 group-hover:scale-110 transition-transform">
+            <i className="ph ph-brain text-2xl"></i>
           </div>
         </div>
-        <h3 className="font-bold text-3xl text-on-surface">{stats.confidence}%</h3>
-        <p className="text-sm font-bold text-on-surface-variant uppercase tracking-wider mt-1">Confidence</p>
+        <h3 className="font-bold text-3xl text-gray-900">{stats.confidence}%</h3>
+        <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mt-1">Confidence</p>
       </div>
 
       {/* Credit Usage Section */}
-      <section className="col-span-4 md:col-span-12 glass-card rounded-2xl p-6 border-t border-t-white/10 mt-4 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden group">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] pointer-events-none transition-all group-hover:bg-primary/10"></div>
-        <div className="flex-1 w-full relative z-10">
-          <div className="flex justify-between items-end mb-2">
-            <h3 className="font-bold text-xl text-on-surface flex items-center gap-2">
-              <span className="material-symbols-outlined text-primary">account_balance_wallet</span>
-              Credits Remaining
-            </h3>
-            <span className="text-sm font-bold text-on-surface-variant">
-              <span className="text-primary text-xl mr-1">{credits}</span> / {maxCredits}
-            </span>
+      <section className="col-span-4 md:col-span-12 bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mt-4 group">
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="font-bold text-lg text-gray-900">
+            Your Interview Credits
+          </h3>
+          <div className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+            <span>{credits} / {maxCredits}</span>
+            <span className="text-gray-500 font-normal">Renews on: {new Date(renewalDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
           </div>
-          <div className="w-full h-3 bg-surface-container-highest rounded-full overflow-hidden shadow-inner mb-2">
-            <div 
-              className={`h-full rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(20,184,166,0.5)] ${
-                creditPercentage > 20 
-                  ? 'bg-gradient-to-r from-primary-container to-primary' 
-                  : 'bg-gradient-to-r from-error-container to-error shadow-[0_0_10px_rgba(255,180,171,0.5)]'
-              }`}
-              style={{ width: `${creditPercentage}%` }}
-            ></div>
-          </div>
-          <p className="text-xs text-on-surface-variant flex items-center gap-1">
-            <span className="material-symbols-outlined text-[14px]">event</span>
-            Renews on: <span className="font-bold text-on-surface ml-1">{new Date(renewalDate).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
-          </p>
         </div>
-        
-        <div className="relative z-10 shrink-0">
-          <button 
-            onClick={() => navigate('/billing')}
-            className="bg-surface-variant/50 hover:bg-surface-variant text-primary font-bold px-6 py-3 rounded-xl border border-primary/20 hover:border-primary/50 transition-all duration-300 flex items-center gap-2 shadow-[0_5px_15px_rgba(0,0,0,0.2)] hover:shadow-[0_8px_20px_rgba(20,184,166,0.2)]"
-          >
-            <span className="material-symbols-outlined">rocket_launch</span>
-            Upgrade Plan
-          </button>
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex-1 w-full">
+            <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden">
+              <div 
+                className={`h-full rounded-full transition-all duration-1000 ease-out ${
+                  creditPercentage > 20 
+                    ? 'bg-teal-500' 
+                    : 'bg-red-500'
+                }`}
+                style={{ width: `${creditPercentage}%` }}
+              ></div>
+            </div>
+          </div>
+          <div className="shrink-0">
+            <button 
+              onClick={() => navigate('/billing')}
+              className="bg-white hover:bg-gray-50 text-gray-800 font-medium px-5 py-2 rounded-full border border-gray-300 transition-all duration-300 flex items-center gap-2 shadow-sm text-sm"
+            >
+              <i className="ph ph-rocket-launch text-lg text-gray-600"></i>
+              Upgrade Plan
+            </button>
+          </div>
         </div>
       </section>
 
       {/* Recent Activity */}
-      <section className="col-span-4 md:col-span-12 glass-card rounded-2xl p-6 border-t border-t-white/10 mt-4">
+      <section className="col-span-4 md:col-span-12 bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mt-4">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="font-bold text-2xl text-on-surface">Recent Sessions</h2>
-          <button onClick={() => navigate('/interview-report')} className="text-primary hover:text-primary-fixed text-sm flex items-center gap-1 transition-colors">
-            View All <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+          <h2 className="font-bold text-xl text-gray-900">Your Recent Sessions</h2>
+          <button onClick={() => navigate('/interview-report')} className="text-[#117065] hover:text-[#0e5c53] font-semibold text-sm flex items-center gap-1 transition-colors">
+            View All <i className="ph ph-arrow-right text-lg"></i>
           </button>
         </div>
         
         {loading ? (
           <div className="flex justify-center py-8">
-             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+             <Loader fullScreen={false} text="Loading sessions..." />
           </div>
         ) : recentSessions.length > 0 ? (
           <div className="space-y-4">
             {recentSessions.map((session) => (
-              <div key={session.id} className="flex items-center justify-between p-4 bg-surface-container-high/30 rounded-xl hover:bg-surface-container-high/60 transition-colors border border-transparent hover:border-white/5 group">
+              <div key={session.id} className="flex items-center justify-between p-4 bg-white border border-gray-100 rounded-xl hover:shadow-sm transition-all group">
                 <div className="flex items-center gap-4">
-                  <div className="p-3 bg-surface-variant rounded-lg text-on-surface group-hover:text-primary transition-colors">
-                    <span className="material-symbols-outlined">
-                      {session.interview_status === 'completed' ? 'verified' : 'pending'}
-                    </span>
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${session.interview_status === 'completed' ? 'bg-[#3bb17b] text-white' : 'bg-orange-500 text-white'}`}>
+                    <i className={`ph ${session.interview_status === 'completed' ? 'ph-check' : 'ph-clock'} text-xl font-bold`}></i>
                   </div>
                   <div>
-                    <h4 className="font-bold text-base text-on-surface">
+                    <h4 className="font-bold text-base text-gray-900">
                       {session.template_id ? (templatesMap[session.template_id] || String(session.template_id).replace(/_/g, ' ').toUpperCase()) : 'Interview Session'}
                     </h4>
-                    <p className="text-xs text-on-surface-variant mt-1">
-                      {formatDate(session.created_at)} • Status: {session.interview_status}
+                    <p className="text-sm text-gray-500 mt-1">
+                      {formatDate(session.created_at)} • Status: <span className="capitalize">{session.interview_status}</span>
                     </p>
                   </div>
                 </div>
                 <div className="flex flex-col items-end gap-2">
                   {session.overall_score ? (
-                    <span className="text-primary font-bold text-lg">{session.overall_score}/100</span>
+                    <span className="text-gray-900 font-semibold text-sm">{typeof session.overall_score === 'number' ? session.overall_score.toFixed(2) : session.overall_score}/100</span>
                   ) : (
-                    <span className="text-on-surface-variant font-bold text-sm">N/A</span>
+                    <span className="text-gray-400 font-semibold text-sm">N/A</span>
                   )}
                   <button 
                     onClick={() => navigate(`/interview-report/${session.id}`)}
-                    className="text-xs border border-white/10 hover:border-primary/50 bg-white/5 px-3 py-1.5 rounded-lg text-on-surface transition-all"
+                    className="text-xs font-semibold border border-gray-300 bg-white hover:bg-gray-50 px-4 py-1.5 rounded-full text-gray-700 transition-all shadow-sm"
                   >
                     View Report
                   </button>
@@ -225,9 +223,9 @@ export default function Dashboard() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-10 text-on-surface-variant">
-            <span className="material-symbols-outlined text-4xl mb-2 opacity-50">inbox</span>
-            <p>No recent sessions found. Start a mock interview!</p>
+          <div className="text-center py-10 text-gray-400">
+            <i className="ph ph-tray text-4xl mb-2 opacity-50"></i>
+            <p className="font-medium">No recent sessions found. Start a mock interview!</p>
           </div>
         )}
       </section>
