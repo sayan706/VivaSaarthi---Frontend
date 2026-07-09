@@ -233,7 +233,7 @@ input:focus {
         overflow: hidden;
         width: 768px;
         max-width: 100%;
-        min-height: 480px;
+        min-height: 560px;
     }
 
     .form-container {
@@ -368,7 +368,7 @@ input:focus {
     .container {
         width: 100%;
         max-width: 400px;
-        height: 600px;
+        height: 650px;
         position: relative;
         /* Remove overflow hidden to allow 3D rotation */
         transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -443,4 +443,32 @@ input:focus {
         padding: 8px 30px;
         margin-top: 5px;
     }
+}
+
+.mascot-img {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 5px;
+    border: 3px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Waving Hand Animation */
+@keyframes wave {
+    0% { transform: rotate(0.0deg); }
+    10% { transform: rotate(14.0deg); }
+    20% { transform: rotate(-8.0deg); }
+    30% { transform: rotate(14.0deg); }
+    40% { transform: rotate(-4.0deg); }
+    50% { transform: rotate(10.0deg); }
+    60% { transform: rotate(0.0deg); }
+    100% { transform: rotate(0.0deg); }
+}
+
+.waving-hand {
+    display: inline-block;
+    animation: wave 2.5s infinite;
+    transform-origin: 70% 70%;
 }

@@ -20,7 +20,7 @@ function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
   
   if (loading) {
-    return <Loader text="Syncing workspace..." />;
+    return <Loader text="Loading..." />;
   }
   
   if (!user) {
@@ -34,7 +34,7 @@ function PublicRoute({ children }) {
   const { user, loading } = useAuth();
   
   if (loading) {
-    return <Loader text="Syncing workspace..." />;
+    return <Loader text="Loading..." />;
   }
   
   if (user) {

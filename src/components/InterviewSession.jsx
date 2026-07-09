@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
 import WebcamFeed from './WebcamFeed';
 import ProctorGuard from './ProctorGuard';
+import lottie from 'lottie-web';
 
 import { useNotification } from '../context/NotificationContext';
 
@@ -15,6 +16,9 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
   const [isProcessing, setIsProcessing] = useState(true);
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [reportData, setReportData] = useState(null);
+  const [monsterData, setMonsterData] = useState(null);
+  const lottieContainerRef = useRef(null);
+  const mobileLottieRef = useRef(null);
   
   const [metrics, setMetrics] = useState({
     tab_switch_count: 0,
@@ -53,6 +57,43 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
       }
     };
   }, []);
+
+  // Fetch Monster Animation
+  useEffect(() => {
+    fetch('/monster.json')
+      .then(res => res.json())
+      .then(data => setMonsterData(data))
+      .catch(err => console.error('Failed to load monster animation:', err));
+  }, []);
+
+  // Initialize Lottie Web Animation
+  useEffect(() => {
+    let animDesk, animMob;
+    if (monsterData) {
+      if (lottieContainerRef.current) {
+        animDesk = lottie.loadAnimation({
+          container: lottieContainerRef.current,
+          renderer: 'svg',
+          loop: true,
+          autoplay: true,
+          animationData: monsterData,
+        });
+      }
+      if (mobileLottieRef.current) {
+        animMob = lottie.loadAnimation({
+          container: mobileLottieRef.current,
+          renderer: 'svg',
+          loop: true,
+          autoplay: true,
+          animationData: monsterData,
+        });
+      }
+    }
+    return () => {
+      if (animDesk) animDesk.destroy();
+      if (animMob) animMob.destroy();
+    };
+  }, [monsterData]);
 
   // Auto-scroll chat window
   useEffect(() => {
@@ -434,64 +475,74 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
           </button>
         </div>
 
-        {/* Chat Feed */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6 flex flex-col z-10 relative scrollbar-hide">
-          {/* Empty State / Welcome Screen */}
-          {messages.length === 0 && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center animate-[fadeIn_0.8s_ease-out] z-0">
-              <div className="text-center mb-6">
-                <h2 className="text-3xl font-extrabold text-gray-800 tracking-tight">
-                  Meet your AI Coach <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8b5cf6] to-[#6366f1]">VivaSaarthi</span>
-                </h2>
-              </div>
-              
-              <div className="relative group">
-                {/* Thought bubble */}
-                <div className="absolute -top-12 -right-8 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-2xl rounded-bl-none shadow-xl border border-white/50 text-sm font-bold text-gray-700 animate-bounce z-10">
-                  Need Any Help?
-                  <div className="absolute -bottom-2 left-2 w-3 h-3 bg-white/90 transform rotate-45 border-b border-r border-transparent"></div>
+        {/* Chat Layout Container */}
+        <div className="flex-1 flex flex-row overflow-hidden p-6 gap-6 z-10 relative">
+          
+          {/* Monster Character (Left Side) */}
+          <div className="hidden md:flex flex-col justify-end items-center w-64 pb-8 flex-shrink-0 relative">
+             {monsterData ? (
+               <div className={`transition-all duration-300 ${isSpeaking ? 'scale-105 drop-shadow-[0_0_20px_rgba(139,92,246,0.3)]' : 'drop-shadow-lg'}`}>
+                 <div ref={lottieContainerRef} style={{ width: 280, height: 280 }} className={!isSpeaking ? "opacity-90" : "opacity-100"}></div>
+               </div>
+             ) : (
+               <img src="/robot.png" alt="AI Avatar" className="w-48 h-48 object-contain" />
+             )}
+          </div>
+
+          {/* Speech Bubble Chat Feed (Right Side) */}
+          <div className="flex-1 bg-white/80 backdrop-blur-xl border border-white/60 rounded-[40px] rounded-bl-sm shadow-xl relative flex flex-col overflow-hidden">
+            {/* Speech Bubble Tail */}
+            <div className="hidden md:block absolute bottom-16 -left-3 w-6 h-6 bg-white/80 backdrop-blur-xl border-l border-b border-white/60 transform rotate-45"></div>
+            
+            <div className="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-hide">
+              {/* Empty State / Welcome Screen */}
+              {messages.length === 0 && (
+                <div className="flex flex-col items-center justify-center h-full animate-[fadeIn_0.8s_ease-out] z-0">
+                  <div className="text-center mb-6">
+                    <h2 className="text-3xl font-extrabold text-gray-800 tracking-tight">
+                      Meet your AI Coach <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8b5cf6] to-[#6366f1]">VivaSaarthi</span>
+                    </h2>
+                    <p className="text-gray-500 mt-2">I will be conducting your interview today!</p>
+                  </div>
                 </div>
-                
-                {/* Robot Image */}
-                <img 
-                  src="/robot.png" 
-                  alt="AI Robot" 
-                  className="w-56 h-56 object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.15)] transition-transform duration-500 group-hover:scale-105 relative z-0"
-                />
-              </div>
-            </div>
-          )}
+              )}
 
-          {messages.map((msg, index) => (
-            <div 
-              key={index}
-              className={`max-w-[75%] p-4 rounded-3xl leading-relaxed text-left text-sm shadow-md border ${
-                msg.role === 'user' 
-                  ? 'self-end bg-gradient-to-r from-[#8b5cf6] to-[#6366f1] border-transparent text-white rounded-br-sm' 
-                  : 'self-start bg-white/80 backdrop-blur-md border-white/50 text-gray-800 rounded-bl-sm'
-              }`}
-            >
-              {msg.text}
-            </div>
-          ))}
+              {messages.map((msg, index) => (
+                <div 
+                  key={index}
+                  className={`max-w-[85%] p-4 rounded-3xl leading-relaxed text-left text-sm shadow-sm border ${
+                    msg.role === 'user' 
+                      ? 'self-end bg-gradient-to-r from-[#8b5cf6] to-[#6366f1] border-transparent text-white rounded-br-sm ml-auto' 
+                      : 'self-start bg-gray-50/80 border-gray-100 text-gray-800 rounded-bl-sm'
+                  }`}
+                >
+                  {msg.text}
+                </div>
+              ))}
 
-          {isProcessing && (
-            <div className="self-start flex items-center gap-3 bg-white/80 backdrop-blur-md border border-white/50 p-4 rounded-3xl rounded-bl-sm shadow-md">
-              <span className="text-xs text-gray-500 font-medium">VivaSaarthi is typing...</span>
-              <div className="flex gap-1">
-                <span className="w-1.5 h-1.5 bg-[#8b5cf6] rounded-full animate-bounce" style={{ animationDelay: '0s' }} />
-                <span className="w-1.5 h-1.5 bg-[#8b5cf6] rounded-full animate-bounce" style={{ animationDelay: '0.15s' }} />
-                <span className="w-1.5 h-1.5 bg-[#8b5cf6] rounded-full animate-bounce" style={{ animationDelay: '0.3s' }} />
-              </div>
+              {isProcessing && (
+                <div className="self-start flex items-center gap-3 bg-gray-50/80 border border-gray-100 p-4 rounded-3xl rounded-bl-sm shadow-sm w-fit">
+                  <span className="text-xs text-gray-500 font-medium">Hmm, let me think...</span>
+                  <div className="flex gap-1">
+                    <span className="w-1.5 h-1.5 bg-[#8b5cf6] rounded-full animate-bounce" style={{ animationDelay: '0s' }} />
+                    <span className="w-1.5 h-1.5 bg-[#8b5cf6] rounded-full animate-bounce" style={{ animationDelay: '0.15s' }} />
+                    <span className="w-1.5 h-1.5 bg-[#8b5cf6] rounded-full animate-bounce" style={{ animationDelay: '0.3s' }} />
+                  </div>
+                </div>
+              )}
+              <div ref={chatEndRef} className="h-4" />
             </div>
-          )}
-          <div ref={chatEndRef} className="h-4" />
+          </div>
         </div>
 
-        {/* Dynamic AI pulse ring (visual avatar in corner when chatting) */}
+        {/* Dynamic AI pulse ring (mobile only since desktop has the main monster) */}
         {(messages.length > 0 || isSpeaking) && (
-          <div className={`absolute right-6 top-24 w-16 h-16 rounded-full bg-white/40 backdrop-blur-xl border border-white/60 flex items-center justify-center z-20 shadow-xl transition-all duration-500 ${isSpeaking ? 'animate-pulse ring-4 ring-[#8b5cf6]/40' : ''}`}>
-             <img src="/robot.png" alt="AI Avatar" className="w-12 h-12 object-contain" />
+          <div className={`md:hidden absolute right-6 top-24 w-16 h-16 rounded-full bg-white/40 backdrop-blur-xl border border-white/60 flex items-center justify-center z-20 shadow-xl transition-all duration-500 ${isSpeaking ? 'animate-pulse ring-4 ring-[#8b5cf6]/40' : ''}`}>
+             {monsterData ? (
+               <div ref={mobileLottieRef} style={{ width: 64, height: 64 }}></div>
+             ) : (
+               <img src="/robot.png" alt="AI Avatar" className="w-12 h-12 object-contain" />
+             )}
           </div>
         )}
 

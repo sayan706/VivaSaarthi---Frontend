@@ -90,6 +90,7 @@ export default function AuthPage() {
         {/* Sign Up Form */}
         <div className="form-container sign-up-container">
           <form onSubmit={handleSignup}>
+            <img src="/waving-mascot.png" alt="Waving Mascot" className="mascot-img waving-hand" />
             <h1>Create Account</h1>
             <div className="social-container">
               <a href="#" className="social"><i className="ph-fill ph-facebook-logo"></i></a>
@@ -117,6 +118,7 @@ export default function AuthPage() {
         {/* Sign In Form */}
         <div className="form-container sign-in-container">
           <form onSubmit={handleLogin}>
+            <img src="/waving-mascot.png" alt="Waving Mascot" className="mascot-img waving-hand" />
             <h1>Sign in</h1>
             <div className="social-container">
               <a href="#" className="social"><i className="ph-fill ph-facebook-logo"></i></a>
@@ -147,6 +149,7 @@ export default function AuthPage() {
             {/* Left Overlay (visible when Sign Up is active) */}
             <div className="overlay-panel overlay-left">
               <img src="/logo.png" className="login-logo" alt="VivaSaarthi Logo" />
+              <img src="/waving-mascot.png" alt="Waving Mascot" className="mascot-img waving-hand" />
               <h1>Welcome Back!</h1>
               <p>To keep connected with us please login with your personal info</p>
               <button className="ghost" onClick={togglePanel}>Sign In</button>
@@ -154,6 +157,7 @@ export default function AuthPage() {
             {/* Right Overlay (visible when Sign In is active) */}
             <div className="overlay-panel overlay-right">
               <img src="/logo.png" className="login-logo" alt="VivaSaarthi Logo" />
+              <img src="/waving-mascot.png" alt="Waving Mascot" className="mascot-img waving-hand" />
               <h1>Hello, Student!</h1>
               <p>Enter your personal details and start journey with us</p>
               <button className="ghost" onClick={togglePanel}>Sign Up</button>
