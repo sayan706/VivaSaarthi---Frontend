@@ -16,8 +16,13 @@ export function AuthProvider({ children }) {
           headers: { 'Accept': 'application/json' }
         });
         if (response.ok) {
-          const data = await response.json();
-          setUser(data.user);
+          const contentType = response.headers.get("content-type");
+          if (contentType && contentType.includes("application/json")) {
+            const data = await response.json();
+            setUser(data.user);
+          } else {
+            setUser(null);
+          }
         } else {
           setUser(null);
         }
@@ -43,7 +48,13 @@ export function AuthProvider({ children }) {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
+      let data;
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        data = await response.json();
+      } else {
+        data = { message: `Server error (${response.status})` };
+      }
 
       if (response.ok) {
         setUser(data.user);
@@ -68,7 +79,13 @@ export function AuthProvider({ children }) {
         body: JSON.stringify({ name, email, password }),
       });
 
-      const data = await response.json();
+      let data;
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        data = await response.json();
+      } else {
+        data = { message: `Server error (${response.status})` };
+      }
 
       if (response.ok || response.status === 201) {
         // Log in automatically after successful signup

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useBilling } from '../context/BillingContext';
 import Loader from './Loader';
+import WelcomeSprite from './WelcomeSprite';
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -229,6 +230,7 @@ export default function Dashboard() {
           </div>
         )}
       </section>
+      <WelcomeSprite />
     </div>
   );
 }
