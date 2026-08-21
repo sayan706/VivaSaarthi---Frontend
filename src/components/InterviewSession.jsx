@@ -5,7 +5,33 @@ import ProctorGuard from './ProctorGuard';
 import { useRive, useStateMachineInput } from '@rive-app/react-canvas';
 import { useNotification } from '../context/NotificationContext';
 
-const InterviewMonster = ({ isSpeaking, isListening, reportData, failTrigger }) => {
+// Keywords that indicate the AI is warning the user (off-topic, irrelevant, etc.)
+const FAIL_KEYWORDS = [
+  'stay on topic', 'off topic', 'off-topic', 'not relevant', 'irrelevant',
+  'please focus', 'stick to the topic', 'let\'s get back', 'back on track',
+  'not related', 'unrelated', 'please answer the question', 'doesn\'t answer',
+  'didn\'t answer', 'avoid going off', 'stay focused'
+];
+
+// Keywords that indicate the AI is happy with the answer
+const SUCCESS_KEYWORDS = [
+  'great answer', 'excellent', 'well done', 'good job', 'impressive',
+  'that\'s correct', 'that is correct', 'perfectly', 'wonderful',
+  'fantastic', 'nicely explained', 'well explained', 'good answer',
+  'very good', 'absolutely right', 'spot on', 'exactly right',
+  'great response', 'nice explanation', 'that\'s right', 'good point',
+  'well said', 'brilliant', 'outstanding'
+];
+
+const detectSentiment = (text) => {
+  if (!text) return 'neutral';
+  const lower = text.toLowerCase();
+  if (FAIL_KEYWORDS.some(kw => lower.includes(kw))) return 'fail';
+  if (SUCCESS_KEYWORDS.some(kw => lower.includes(kw))) return 'success';
+  return 'neutral';
+};
+
+const InterviewMonster = ({ isSpeaking, isListening, reportData, failTrigger, successTrigger }) => {
   const { rive, RiveComponent } = useRive({
     src: '/riv%20files/5628-11215-wave-hear-and-talk.riv',
     stateMachines: 'State Machine 1',
@@ -41,8 +67,14 @@ const InterviewMonster = ({ isSpeaking, isListening, reportData, failTrigger }) 
     }
   }, [failTrigger, failInput]);
 
+  useEffect(() => {
+    if (successTrigger > 0 && successInput) {
+      successInput.fire();
+    }
+  }, [successTrigger, successInput]);
+
   return (
-    <div className="absolute w-[220%] h-[220%] flex items-center justify-center" style={{ mixBlendMode: 'multiply' }}>
+    <div className="absolute w-[120%] h-[120%] flex items-center justify-center" style={{ mixBlendMode: 'multiply' }}>
       <RiveComponent className="w-full h-full object-contain" />
     </div>
   );
@@ -59,6 +91,7 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [reportData, setReportData] = useState(null);
   const [failTrigger, setFailTrigger] = useState(0);
+  const [successTrigger, setSuccessTrigger] = useState(0);
   
   const [metrics, setMetrics] = useState({
     tab_switch_count: 0,
@@ -259,6 +292,15 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
       console.log('Received question data:', data);
       setIsProcessing(false);
       setMessages(prev => [...prev, { role: 'ai', text: data.clean_text, type: 'question' }]);
+      
+      // Detect sentiment and trigger appropriate bear animation
+      const sentiment = detectSentiment(data.clean_text);
+      if (sentiment === 'success') {
+        setSuccessTrigger(prev => prev + 1);
+      } else if (sentiment === 'fail') {
+        setFailTrigger(prev => prev + 1);
+      }
+      
       speakAudio(data.clean_text);
     });
 
@@ -490,17 +532,18 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
                 isSpeaking={isSpeaking} 
                 isListening={isListening} 
                 reportData={reportData} 
-                failTrigger={failTrigger} 
+                failTrigger={failTrigger}
+                successTrigger={successTrigger} 
               />
             </div>
           </div>
 
           {/* Dynamic Speech Bubble */}
           {(lastAIMessage || isProcessing || messages.length === 0) && (
-            <div className="relative z-30 w-full max-w-sm md:max-w-md animate-[bounce_3s_infinite] order-1 md:order-2">
-              <div className="relative bg-white/95 backdrop-blur-xl border border-white/80 p-6 md:p-8 rounded-[32px] shadow-[0_20px_40px_rgba(0,0,0,0.12)]">
+            <div className="relative z-30 w-full max-w-sm md:max-w-md order-1 md:order-2">
+              <div className="relative bg-white backdrop-blur-xl border border-white/80 p-5 md:p-6 rounded-[28px] shadow-[0_20px_40px_rgba(0,0,0,0.12)] max-h-[240px] overflow-y-auto">
                 {/* Tail pointing down (mobile) or left (desktop) */}
-                <div className="absolute -bottom-3 left-1/2 md:bottom-auto md:top-[50%] md:-left-3 md:left-auto w-6 h-6 bg-white/95 backdrop-blur-xl border-r border-b md:border-r-0 md:border-b md:border-l border-white/80 transform rotate-45 -translate-x-1/2 md:translate-x-0 md:-translate-y-1/2"></div>
+                <div className="absolute -bottom-3 left-1/2 md:bottom-auto md:top-[50%] md:-left-3 md:left-auto w-6 h-6 bg-white backdrop-blur-xl border-r border-b md:border-r-0 md:border-b md:border-l border-white/80 transform rotate-45 -translate-x-1/2 md:translate-x-0 md:-translate-y-1/2"></div>
                 
                 {messages.length === 0 && isProcessing ? (
                   <div className="flex flex-col items-center justify-center text-center gap-3">
@@ -524,7 +567,7 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
                     </div>
                   </div>
                 ) : (
-                  <p className="text-gray-800 text-lg md:text-xl leading-relaxed font-semibold text-center md:text-left">
+                  <p className="text-gray-900 text-base md:text-lg leading-relaxed font-medium text-center md:text-left break-words whitespace-pre-wrap">
                     {lastAIMessage?.text}
                   </p>
                 )}
