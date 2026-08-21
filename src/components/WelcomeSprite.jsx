@@ -1,16 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useRive } from '@rive-app/react-canvas';
 
 export default function WelcomeSprite() {
   const { user } = useAuth();
-  const [frame, setFrame] = useState(1);
-  const totalFrames = 30;
+  const [windowMouse, setWindowMouse] = useState({ x: 0, y: 0 });
+  
+  const { rive, RiveComponent } = useRive({
+    src: '/riv%20files/28334-53514-interactive-character-follow.riv',
+    stateMachines: 'State Machine 1',
+    autoplay: true,
+  });
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setFrame((prevFrame) => (prevFrame % totalFrames) + 1);
-    }, 50); // 20 frames per second for a faster smile
-    return () => clearInterval(interval);
+    if (rive) {
+      console.log("State Machines:", rive.stateMachineNames);
+      try {
+        const inputs = rive.stateMachineInputs('State Machine 1');
+        console.log("Inputs for State Machine 1:", inputs.map(i => i.name));
+      } catch (e) {
+        console.log("Could not get inputs", e);
+      }
+    }
+  }, [rive]);
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setWindowMouse({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
   return (
@@ -25,13 +44,13 @@ export default function WelcomeSprite() {
         </p>
       </div>
 
-      {/* Sprite Animation */}
-      <div className="w-32 h-40 md:w-48 md:h-60 flex-shrink-0 pointer-events-auto hover:scale-105 transition-transform cursor-pointer drop-shadow-xl">
-        <img
-          src={`/Male_Frendly_Smile/${frame}-01.png`}
-          alt="Friendly Mascot"
-          className="w-full h-full object-contain"
-        />
+      {/* Rive Animation Container - overflow hidden and scaled to crop out the background */}
+      <div 
+        className="w-32 h-32 md:w-40 md:h-40 flex-shrink-0 pointer-events-auto hover:scale-105 transition-transform cursor-pointer overflow-hidden rounded-full flex items-center justify-center relative"
+      >
+        <div className="absolute w-[220%] h-[220%] flex items-center justify-center" style={{ mixBlendMode: 'multiply' }}>
+          <RiveComponent className="w-full h-full object-contain" />
+        </div>
       </div>
     </div>
   );
