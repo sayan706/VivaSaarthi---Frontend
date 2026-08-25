@@ -92,6 +92,7 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
   const [reportData, setReportData] = useState(null);
   const [failTrigger, setFailTrigger] = useState(0);
   const [successTrigger, setSuccessTrigger] = useState(0);
+  const [hasStarted, setHasStarted] = useState(false);
   
   const [metrics, setMetrics] = useState({
     tab_switch_count: 0,
@@ -228,6 +229,9 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
       if (!audioContextRef.current) {
         audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
       }
+      if (audioContextRef.current.state === 'suspended') {
+        audioContextRef.current.resume();
+      }
 
       const audioBuffer = await audioContextRef.current.decodeAudioData(arrayBuffer);
       const source = audioContextRef.current.createBufferSource();
@@ -270,6 +274,8 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
 
   // Socket Connection and Events Handling
   useEffect(() => {
+    if (!hasStarted) return;
+
     // Determine backend URL - empty string uses current domain (and vite proxy locally)
     const backendUrl = import.meta.env.DEV ? '' : 'https://api.vivasaarthi.com';
     
@@ -325,7 +331,40 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
       if (recognitionRef.current) recognitionRef.current.stop();
       newSocket.disconnect();
     };
-  }, [session.id, cvText]);
+  }, [session.id, cvText, hasStarted]);
+
+  const handleStartSession = () => {
+    // Unlock Audio Context for iOS
+    if (!audioContextRef.current) {
+      audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioContextRef.current.state === 'suspended') {
+      audioContextRef.current.resume();
+    }
+    
+    // Play a silent buffer to properly unlock iOS audio
+    try {
+      const buffer = audioContextRef.current.createBuffer(1, 1, 22050);
+      const source = audioContextRef.current.createBufferSource();
+      source.buffer = buffer;
+      source.connect(audioContextRef.current.destination);
+      if (source.start) {
+        source.start(0);
+      } else {
+        source.noteOn(0);
+      }
+    } catch (e) {
+      console.warn("Failed to play silent buffer:", e);
+    }
+    
+    // Pre-initialize SpeechSynthesis for iOS
+    if (window.speechSynthesis) {
+      const utterance = new SpeechSynthesisUtterance('');
+      window.speechSynthesis.speak(utterance);
+    }
+
+    setHasStarted(true);
+  };
 
   const toggleListen = () => {
     if (isListening) {
@@ -420,9 +459,30 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
 
   return (
     <div className="w-full max-w-4xl mx-auto flex flex-col gap-4 md:gap-6 relative px-2 md:px-4">
+      {/* Start Session Overlay */}
+      {!hasStarted && (
+        <div className="fixed inset-0 z-[70] bg-gray-900/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl p-8 max-w-md w-full text-center shadow-2xl animate-[scaleUp_0.3s_ease-out]">
+            <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">
+              <span className="material-symbols-outlined text-[32px] text-blue-600">headphones</span>
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">Ready to Begin?</h2>
+            <p className="text-gray-500 mb-8 text-sm">
+              Please ensure you are in a quiet environment. Tap below to start your interview.
+            </p>
+            <button
+              onClick={handleStartSession}
+              className="w-full bg-[#0E3386] hover:bg-[#0E3386]/90 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 shadow-[0_4px_12px_rgba(14,51,134,0.2)] hover:-translate-y-1 text-lg"
+            >
+              Start Interview
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Active Proctoring Guard */}
       <ProctorGuard 
-        isActive={!reportData} 
+        isActive={hasStarted && !reportData} 
         onViolation={(type) => {
           if (type === 'tab_switch' || type === 'window_blur') {
             setMetrics(prev => ({ ...prev, tab_switch_count: prev.tab_switch_count + 1 }));
