@@ -360,15 +360,31 @@ input:focus {
    ========================================= */
 @media (max-width: 768px) {
     .auth-page-wrapper {
-        padding: 20px;
+        padding: 16px;
         perspective: 1500px;
         /* Essential for 3D flip */
+        overflow-y: auto;
+    }
+
+    .top-left-logo {
+        top: 16px;
+        left: 16px;
+        gap: 8px;
+    }
+
+    .top-left-logo img {
+        height: 32px;
+    }
+
+    .top-left-logo .logo-text-top {
+        font-size: 16px;
     }
 
     .container {
         width: 100%;
         max-width: 400px;
-        height: 650px;
+        min-height: 600px;
+        max-height: calc(100vh - 40px);
         position: relative;
         /* Remove overflow hidden to allow 3D rotation */
         transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -410,38 +426,91 @@ input:focus {
     }
 
     form {
-        padding: 30px;
+        padding: 20px 16px;
         flex-grow: 1;
     }
 
-    /* Create mobile overlays at the bottom of each form */
-    .overlay-container {
-        display: none;
-        /* Hide the desktop overlay container completely */
+    h1 {
+        font-size: 22px;
+        margin: 0 0 6px;
     }
 
-    /* We need mobile specific overlay sections injected via JS or CSS.
-       Instead of JS injection, we will just use pseudo elements or dedicated mobile classes. 
-       Actually, the cleanest way is to just let the user toggle via a text link on mobile, 
-       or we add a mobile-toggle section inside each form. */
+    p {
+        font-size: 13px;
+        margin: 10px 0 16px;
+    }
+
+    .mascot-img {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 4px;
+    }
+
+    .social-container {
+        margin: 12px 0;
+    }
+
+    .social-container a {
+        height: 36px;
+        width: 36px;
+        font-size: 16px;
+    }
+
+    input {
+        padding: 10px 12px;
+        margin: 6px 0;
+        font-size: 13px;
+    }
+
+    .action-btn,
+    button.ghost {
+        padding: 10px 36px;
+        font-size: 12px;
+        margin-top: 10px;
+    }
+
+    /* Hide the desktop overlay container completely */
+    .overlay-container {
+        display: none;
+    }
 
     .mobile-toggle {
         background: linear-gradient(to right, var(--primary), var(--primary-dark));
         color: white;
-        padding: 20px;
+        padding: 16px;
         text-align: center;
         border-radius: 0 0 var(--border-radius) var(--border-radius);
     }
 
     .mobile-toggle p {
-        margin: 0 0 10px 0;
-        font-size: 13px;
+        margin: 0 0 8px 0;
+        font-size: 12px;
     }
 
     .mobile-toggle button {
         border-color: white;
-        padding: 8px 30px;
-        margin-top: 5px;
+        padding: 8px 24px;
+        margin-top: 4px;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 380px) {
+    .container {
+        min-height: 540px;
+    }
+
+    form {
+        padding: 16px 12px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    .mascot-img {
+        width: 42px;
+        height: 42px;
     }
 }
 

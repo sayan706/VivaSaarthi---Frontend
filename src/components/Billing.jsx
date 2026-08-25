@@ -53,10 +53,10 @@ export default function Billing() {
   const currentPlanPrice = currentPlan ? currentPlan.price : 0;
 
   return (
-    <div className="p-4 md:p-8 max-w-7xl mx-auto w-full animate-in fade-in duration-500">
+    <div className="p-2 md:p-8 max-w-7xl mx-auto w-full animate-in fade-in duration-500">
       <div className="mb-8">
         <h2 className="text-3xl md:text-4xl font-bold text-on-surface flex items-center gap-3">
-          <i className="ph ph-receipt text-teal-600 text-[36px]"></i>
+          <i className="ph ph-receipt text-teal-600 text-[28px] md:text-[36px]"></i>
           Billing & Usage
         </h2>
         <p className="text-base text-on-surface-variant mt-2">
@@ -64,9 +64,9 @@ export default function Billing() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
         {/* Current Plan Card */}
-        <div className="lg:col-span-2 bg-white shadow-sm border border-gray-100 rounded-2xl p-8 border border-gray-200 relative overflow-hidden flex flex-col justify-between">
+        <div className="lg:col-span-2 bg-white shadow-sm border border-gray-100 rounded-2xl p-5 md:p-8 border border-gray-200 relative overflow-hidden flex flex-col justify-between">
           <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[80px] pointer-events-none"></div>
           
           <div className="relative z-10 flex flex-col md:flex-row justify-between items-start gap-6">
@@ -75,21 +75,21 @@ export default function Billing() {
                 <i className="ph ph-seal-check text-[16px]"></i>
                 Current Plan
               </p>
-              <h3 className="text-4xl font-bold text-on-surface mb-2 capitalize">{currentPlanName}</h3>
+              <h3 className="text-2xl md:text-4xl font-bold text-on-surface mb-2 capitalize">{currentPlanName}</h3>
               <p className="text-on-surface-variant">
                 Status: <span className="text-primary font-bold capitalize">{subscriptionStatus}</span>
               </p>
             </div>
             
             <div className="text-left md:text-right">
-              <h4 className="text-3xl font-bold text-on-surface mb-1">${currentPlanPrice}<span className="text-lg text-on-surface-variant font-normal">/mo</span></h4>
+              <h4 className="text-2xl md:text-3xl font-bold text-on-surface mb-1">${currentPlanPrice}<span className="text-base md:text-lg text-on-surface-variant font-normal">/mo</span></h4>
               <p className="text-sm text-on-surface-variant">
                 Renews on <span className="font-bold text-on-surface">{renewalDate ? new Date(renewalDate).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }) : 'N/A'}</span>
               </p>
             </div>
           </div>
 
-          <div className="relative z-10 mt-10">
+          <div className="relative z-10 mt-6 md:mt-10">
             <div className="flex justify-between items-end mb-3">
               <span className="font-bold text-on-surface flex items-center gap-2">
                 <i className="ph ph-chart-bar text-teal-600"></i>
@@ -120,7 +120,7 @@ export default function Billing() {
         </div>
 
         {/* Upgrade Card */}
-        <div className="bg-white shadow-sm border border-gray-100 rounded-2xl p-8 border border-gray-200 flex flex-col justify-center text-center relative overflow-hidden group hover:border-primary/30 transition-colors">
+        <div className="bg-white shadow-sm border border-gray-100 rounded-2xl p-5 md:p-8 border border-gray-200 flex flex-col justify-center text-center relative overflow-hidden group hover:border-primary/30 transition-colors">
           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent pointer-events-none"></div>
           
           <div className="w-16 h-16 bg-surface-variant rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:bg-primary/20 transition-all">
@@ -142,7 +142,7 @@ export default function Billing() {
       </div>
       
       {/* Transaction History */}
-      <div className="mt-8 bg-white shadow-sm border border-gray-100 rounded-2xl p-6 border border-gray-200">
+      <div className="mt-6 md:mt-8 bg-white shadow-sm border border-gray-100 rounded-2xl p-4 md:p-6 border border-gray-200">
         <h3 className="font-bold text-xl text-on-surface mb-6 flex items-center gap-2">
           <i className="ph ph-clock-counter-clockwise text-gray-500"></i>
           Recent Transactions
@@ -189,7 +189,7 @@ export default function Billing() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200">
           <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" onClick={() => setIsModalOpen(false)}></div>
           <div className="relative w-full max-w-4xl bg-surface-container border border-gray-200 rounded-2xl shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col max-h-[90vh]">
-            <div className="p-6 border-b border-white/5 flex justify-between items-center bg-surface-container-high relative overflow-hidden">
+            <div className="p-4 md:p-6 border-b border-white/5 flex justify-between items-center bg-surface-container-high relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent pointer-events-none"></div>
               <h3 className="text-2xl font-bold text-on-surface flex items-center gap-2 relative z-10">
                 <i className="ph ph-rocket-launch text-teal-600"></i>
@@ -203,8 +203,8 @@ export default function Billing() {
               </button>
             </div>
             
-            <div className="p-6 overflow-y-auto">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="p-4 md:p-6 overflow-y-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 {plans.length > 0 ? plans.map(plan => (
                   <div key={plan.id} className={`bg-white shadow-sm border border-gray-100 rounded-xl p-6 border ${String(plan.id) === String(currentPlanId) ? 'border-primary shadow-[0_0_20px_rgba(20,184,166,0.15)] bg-teal-50' : 'border-gray-200 hover:border-gray-300'} transition-all relative flex flex-col justify-between`}>
                     {String(plan.id) === String(currentPlanId) && (

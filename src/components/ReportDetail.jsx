@@ -130,7 +130,7 @@ export default function ReportDetail() {
   const sysScore = report.security_score ? parseFloat(report.security_score) : 0; // mapping security to system for mock
 
   return (
-    <div className="p-4 md:p-8 max-w-7xl mx-auto w-full" id="pdf-content">
+    <div className="p-2 md:p-8 max-w-7xl mx-auto w-full" id="pdf-content">
       <button 
         data-html2canvas-ignore="true"
         onClick={() => navigate('/interview-report')}
@@ -147,18 +147,18 @@ export default function ReportDetail() {
             <i className="ph ph-seal-check text-[16px]"></i>
             Session Completed
           </p>
-          <h2 className="text-3xl md:text-4xl font-bold text-on-surface">
+          <h2 className="text-2xl md:text-4xl font-bold text-on-surface">
             {report.template_id ? (templatesMap[report.template_id] || String(report.template_id).replace(/_/g, ' ').toUpperCase()) : 'Interview Session'}
           </h2>
-          <p className="text-base text-on-surface-variant mt-1">
+          <p className="text-sm md:text-base text-on-surface-variant mt-1">
             Mock Interview • {formatDate(report.created_at)} • {report.duration_minutes || 0} Mins
           </p>
         </div>
-        <div className="flex gap-3" data-html2canvas-ignore="true">
+        <div className="flex flex-wrap gap-3" data-html2canvas-ignore="true">
           <button 
             onClick={handleExportPDF}
             disabled={exporting}
-            className={`px-4 py-2 rounded-lg border border-outline-variant/30 text-on-surface font-bold text-sm hover:bg-white/5 transition-all flex items-center gap-2 ${exporting ? 'bg-gray-100 cursor-wait' : 'bg-surface-container'}`}
+            className={`px-3 md:px-4 py-2 rounded-lg border border-outline-variant/30 text-on-surface font-bold text-xs md:text-sm hover:bg-white/5 transition-all flex items-center gap-2 ${exporting ? 'bg-gray-100 cursor-wait' : 'bg-surface-container'}`}
           >
             {exporting ? (
               <i className="ph ph-spinner animate-spin text-[18px]"></i>
@@ -167,7 +167,7 @@ export default function ReportDetail() {
             )}
             {exporting ? 'Exporting...' : 'Export PDF'}
           </button>
-          <button className="px-4 py-2 rounded-lg bg-primary/10 border border-primary/30 text-primary font-bold text-sm hover:bg-primary/20 transition-all shadow-[0_0_15px_rgba(20,184,166,0.1)] flex items-center gap-2">
+          <button className="px-3 md:px-4 py-2 rounded-lg bg-primary/10 border border-primary/30 text-primary font-bold text-xs md:text-sm hover:bg-primary/20 transition-all shadow-[0_0_15px_rgba(20,184,166,0.1)] flex items-center gap-2">
             <i className="ph ph-share-network text-[18px]"></i>
             Share Result
           </button>
@@ -175,13 +175,13 @@ export default function ReportDetail() {
       </div>
 
       {/* Bento Grid Content */}
-      <div className="grid grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6">
         {/* Overall Score (Left Col) */}
-        <div className="col-span-12 lg:col-span-4 bg-surface-container/40 backdrop-blur-2xl border border-white/5 rounded-xl p-8 shadow-[0px_20px_50px_rgba(0,0,0,0.3)] relative overflow-hidden flex flex-col items-center justify-center text-center">
+        <div className="lg:col-span-4 bg-surface-container/40 backdrop-blur-2xl border border-white/5 rounded-xl p-5 md:p-8 shadow-[0px_20px_50px_rgba(0,0,0,0.3)] relative overflow-hidden flex flex-col items-center justify-center text-center">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-primary/10 rounded-full blur-[60px] pointer-events-none"></div>
-          <h3 className="font-bold text-2xl text-on-surface mb-8 w-full text-left">Overall Performance</h3>
+          <h3 className="font-bold text-xl md:text-2xl text-on-surface mb-6 md:mb-8 w-full text-left">Overall Performance</h3>
           
-          <div className="relative w-48 h-48 mb-6 flex items-center justify-center">
+          <div className="relative w-36 h-36 md:w-48 md:h-48 mb-4 md:mb-6 flex items-center justify-center">
             <svg className="w-full h-full -rotate-90 transform" viewBox="0 0 100 100">
               <circle className="text-surface-container-highest" cx="50" cy="50" fill="none" r="45" stroke="currentColor" strokeWidth="8"></circle>
               <circle 
@@ -191,7 +191,7 @@ export default function ReportDetail() {
               ></circle>
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="font-bold text-6xl text-on-surface leading-none">{overallScore}</span>
+              <span className="font-bold text-4xl md:text-6xl text-on-surface leading-none">{overallScore}</span>
               <span className="font-bold text-sm text-primary mt-1">
                 {overallScore >= 80 ? 'Excellent' : overallScore >= 60 ? 'Good' : 'Needs Work'}
               </span>
@@ -203,11 +203,11 @@ export default function ReportDetail() {
         </div>
 
         {/* Skill Breakdown Radar/Bars (Right Col) */}
-        <div className="col-span-12 lg:col-span-8 bg-surface-container/40 backdrop-blur-2xl border border-white/5 rounded-xl p-8 shadow-[0px_20px_50px_rgba(0,0,0,0.3)] relative overflow-hidden">
-          <h3 className="font-bold text-2xl text-on-surface mb-8">Skill Breakdown</h3>
+        <div className="lg:col-span-8 bg-surface-container/40 backdrop-blur-2xl border border-white/5 rounded-xl p-5 md:p-8 shadow-[0px_20px_50px_rgba(0,0,0,0.3)] relative overflow-hidden">
+          <h3 className="font-bold text-xl md:text-2xl text-on-surface mb-6 md:mb-8">Skill Breakdown</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             
-            <div className="relative w-full aspect-square max-w-[280px] mx-auto flex items-center justify-center opacity-80">
+            <div className="relative w-full aspect-square max-w-[200px] md:max-w-[280px] mx-auto flex items-center justify-center opacity-80">
               <svg className="w-full h-full" viewBox="0 0 200 200">
                 <polygon className="text-outline-variant/50" fill="none" points="100,10 180,55 180,145 100,190 20,145 20,55" stroke="currentColor" strokeWidth="1"></polygon>
                 <polygon className="text-outline-variant/30" fill="none" points="100,40 155,70 155,130 100,160 45,130 45,70" stroke="currentColor" strokeWidth="1"></polygon>
@@ -273,7 +273,7 @@ export default function ReportDetail() {
         </div>
 
         {/* Strengths & Weaknesses (Lower Left) */}
-        <div className="col-span-12 lg:col-span-6 bg-surface-container/40 backdrop-blur-2xl border border-white/5 rounded-xl p-8 shadow-[0px_20px_50px_rgba(0,0,0,0.3)]">
+        <div className="lg:col-span-6 bg-surface-container/40 backdrop-blur-2xl border border-white/5 rounded-xl p-5 md:p-8 shadow-[0px_20px_50px_rgba(0,0,0,0.3)]">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 h-full">
             <div>
               <h4 className="font-bold text-sm text-on-surface mb-4 flex items-center gap-2 border-b border-gray-200 pb-2">
@@ -307,9 +307,9 @@ export default function ReportDetail() {
         </div>
 
         {/* AI Roadmap (Lower Right) */}
-        <div className="col-span-12 lg:col-span-6 bg-surface-container/40 backdrop-blur-2xl border border-white/5 rounded-xl p-8 shadow-[0px_20px_50px_rgba(0,0,0,0.3)] relative overflow-hidden">
+        <div className="lg:col-span-6 bg-surface-container/40 backdrop-blur-2xl border border-white/5 rounded-xl p-5 md:p-8 shadow-[0px_20px_50px_rgba(0,0,0,0.3)] relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-tertiary/50 to-transparent"></div>
-          <h3 className="font-bold text-2xl text-on-surface mb-2 flex items-center gap-2">
+          <h3 className="font-bold text-xl md:text-2xl text-on-surface mb-2 flex items-center gap-2">
             <i className="ph ph-sparkle text-indigo-600"></i>
             Personalized AI Roadmap
           </h3>
@@ -335,30 +335,30 @@ export default function ReportDetail() {
         </div>
 
         {/* Proctoring Integrity (Full Width Bottom) */}
-        <div className="col-span-12 bg-surface-container/40 backdrop-blur-2xl border border-white/5 rounded-xl p-8 shadow-[0px_20px_50px_rgba(0,0,0,0.3)]">
-          <h3 className="font-bold text-2xl text-on-surface mb-6 flex items-center gap-2 border-b border-gray-200 pb-4">
+        <div className="lg:col-span-12 bg-surface-container/40 backdrop-blur-2xl border border-white/5 rounded-xl p-5 md:p-8 shadow-[0px_20px_50px_rgba(0,0,0,0.3)]">
+          <h3 className="font-bold text-xl md:text-2xl text-on-surface mb-4 md:mb-6 flex items-center gap-2 border-b border-gray-200 pb-4">
             <i className="ph ph-shield-check text-red-500"></i>
             Proctoring & Integrity Metrics
           </h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="bg-white/5 border border-gray-200 p-4 rounded-xl flex flex-col items-center justify-center">
-              <i className="ph ph-video-camera text-[32px] text-teal-600 mb-2"></i>
-              <span className="text-2xl font-bold text-on-surface">{report.frames_analyzed || 0}</span>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            <div className="bg-white/5 border border-gray-200 p-3 md:p-4 rounded-xl flex flex-col items-center justify-center">
+              <i className="ph ph-video-camera text-[24px] md:text-[32px] text-teal-600 mb-2"></i>
+              <span className="text-xl md:text-2xl font-bold text-on-surface">{report.frames_analyzed || 0}</span>
               <span className="text-[10px] uppercase tracking-wider text-on-surface-variant font-bold mt-1 text-center">Frames Analyzed</span>
             </div>
-            <div className={`border p-4 rounded-xl flex flex-col items-center justify-center ${report.tab_switch_count > 0 ? 'bg-error/10 border-error/30' : 'bg-white/5 border-gray-200'}`}>
-              <span className={`material-symbols-outlined text-[32px] mb-2 ${report.tab_switch_count > 0 ? 'text-error' : 'text-primary'}`}>desktop_windows</span>
-              <span className="text-2xl font-bold text-on-surface">{report.tab_switch_count || 0}</span>
+            <div className={`border p-3 md:p-4 rounded-xl flex flex-col items-center justify-center ${report.tab_switch_count > 0 ? 'bg-error/10 border-error/30' : 'bg-white/5 border-gray-200'}`}>
+              <span className={`material-symbols-outlined text-[24px] md:text-[32px] mb-2 ${report.tab_switch_count > 0 ? 'text-error' : 'text-primary'}`}>desktop_windows</span>
+              <span className="text-xl md:text-2xl font-bold text-on-surface">{report.tab_switch_count || 0}</span>
               <span className="text-[10px] uppercase tracking-wider text-on-surface-variant font-bold mt-1 text-center">Tab Switches</span>
             </div>
-            <div className={`border p-4 rounded-xl flex flex-col items-center justify-center ${report.fullscreen_exit_count > 0 ? 'bg-error/10 border-error/30' : 'bg-white/5 border-gray-200'}`}>
-              <span className={`material-symbols-outlined text-[32px] mb-2 ${report.fullscreen_exit_count > 0 ? 'text-error' : 'text-primary'}`}>fullscreen_exit</span>
-              <span className="text-2xl font-bold text-on-surface">{report.fullscreen_exit_count || 0}</span>
+            <div className={`border p-3 md:p-4 rounded-xl flex flex-col items-center justify-center ${report.fullscreen_exit_count > 0 ? 'bg-error/10 border-error/30' : 'bg-white/5 border-gray-200'}`}>
+              <span className={`material-symbols-outlined text-[24px] md:text-[32px] mb-2 ${report.fullscreen_exit_count > 0 ? 'text-error' : 'text-primary'}`}>fullscreen_exit</span>
+              <span className="text-xl md:text-2xl font-bold text-on-surface">{report.fullscreen_exit_count || 0}</span>
               <span className="text-[10px] uppercase tracking-wider text-on-surface-variant font-bold mt-1 text-center">Fullscreen Exits</span>
             </div>
-            <div className={`border p-4 rounded-xl flex flex-col items-center justify-center ${report.face_missing_count > 0 ? 'bg-error/10 border-error/30' : 'bg-white/5 border-gray-200'}`}>
-              <span className={`material-symbols-outlined text-[32px] mb-2 ${report.face_missing_count > 0 ? 'text-error' : 'text-primary'}`}>person_off</span>
-              <span className="text-2xl font-bold text-on-surface">{report.face_missing_count || 0}</span>
+            <div className={`border p-3 md:p-4 rounded-xl flex flex-col items-center justify-center ${report.face_missing_count > 0 ? 'bg-error/10 border-error/30' : 'bg-white/5 border-gray-200'}`}>
+              <span className={`material-symbols-outlined text-[24px] md:text-[32px] mb-2 ${report.face_missing_count > 0 ? 'text-error' : 'text-primary'}`}>person_off</span>
+              <span className="text-xl md:text-2xl font-bold text-on-surface">{report.face_missing_count || 0}</span>
               <span className="text-[10px] uppercase tracking-wider text-on-surface-variant font-bold mt-1 text-center">Face Missing</span>
             </div>
           </div>
@@ -374,7 +374,7 @@ export default function ReportDetail() {
           </h3>
           <div className="space-y-6">
             {messages.map((msg, idx) => (
-              <div key={idx} className={`flex flex-col max-w-[85%] ${msg.is_human ? 'self-end ml-auto items-end' : 'self-start mr-auto items-start'}`}>
+              <div key={idx} className={`flex flex-col max-w-[95%] md:max-w-[85%] ${msg.is_human ? 'self-end ml-auto items-end' : 'self-start mr-auto items-start'}`}>
                 <div className={`p-4 rounded-2xl leading-relaxed text-sm shadow-md ${
                   msg.is_human 
                     ? 'bg-primary/10 border border-primary/20 text-on-surface rounded-br-none' 

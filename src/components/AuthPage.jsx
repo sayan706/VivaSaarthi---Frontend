@@ -109,9 +109,9 @@ export default function AuthPage() {
             </button>
           </form>
           {/* Mobile Toggle */}
-          <div className="mobile-toggle d-mobile-only">
+          <div className="mobile-toggle d-mobile-only" onClick={togglePanel} style={{ cursor: 'pointer' }}>
             <p>Already have an account?</p>
-            <button className="ghost" onClick={togglePanel}>Sign In</button>
+            <button className="ghost" onClick={(e) => { e.stopPropagation(); togglePanel(); }}>Sign In</button>
           </div>
         </div>
 
@@ -137,9 +137,9 @@ export default function AuthPage() {
             </button>
           </form>
           {/* Mobile Toggle */}
-          <div className="mobile-toggle d-mobile-only">
+          <div className="mobile-toggle d-mobile-only" onClick={togglePanel} style={{ cursor: 'pointer' }}>
             <p>Don't have an account?</p>
-            <button className="ghost" onClick={togglePanel}>Sign Up</button>
+            <button className="ghost" onClick={(e) => { e.stopPropagation(); togglePanel(); }}>Sign Up</button>
           </div>
         </div>
 

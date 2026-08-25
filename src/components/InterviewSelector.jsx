@@ -119,7 +119,7 @@ export default function InterviewSelector({ onSelect }) {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 relative">
+    <div className="max-w-4xl mx-auto px-2 md:px-4 py-4 md:py-8 relative">
       <UpgradeModal 
         isOpen={showUpgradeModal} 
         onClose={() => setShowUpgradeModal(false)} 
@@ -135,7 +135,7 @@ export default function InterviewSelector({ onSelect }) {
       {step === 'category' && (
         <div className="space-y-6">
           <div className="text-center space-y-2">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-gray-900">
               Choose Interview Domain
             </h2>
             <p className="text-gray-500 max-w-md mx-auto text-sm">
@@ -143,18 +143,18 @@ export default function InterviewSelector({ onSelect }) {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 mt-6 md:mt-8">
             {categories.map((cat) => (
               <button
                 key={cat.id}
                 onClick={() => handleCategorySelect(cat.category_name)}
-                className="bg-white p-6 rounded-2xl border border-gray-100 hover:border-teal-200 flex items-start gap-4 shadow-sm hover:shadow-md transition-all duration-300 text-left cursor-pointer group"
+                className="bg-white p-4 md:p-6 rounded-2xl border border-gray-100 hover:border-teal-200 flex items-start gap-3 md:gap-4 shadow-sm hover:shadow-md transition-all duration-300 text-left cursor-pointer group"
               >
-                <div className="p-3.5 bg-teal-50 rounded-xl text-teal-600 group-hover:bg-teal-100 transition-all">
-                  <i className={`ph ${getCategoryIcon(cat.category_name)} text-[28px]`}></i>
+                <div className="p-2.5 md:p-3.5 bg-teal-50 rounded-xl text-teal-600 group-hover:bg-teal-100 transition-all">
+                  <i className={`ph ${getCategoryIcon(cat.category_name)} text-[22px] md:text-[28px]`}></i>
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg text-gray-900 group-hover:text-teal-600 transition-colors">
+                  <h3 className="font-bold text-base md:text-lg text-gray-900 group-hover:text-teal-600 transition-colors">
                     {cat.category_name}
                   </h3>
                   <p className="text-xs text-gray-500 font-medium leading-relaxed mt-1">
@@ -184,7 +184,7 @@ export default function InterviewSelector({ onSelect }) {
           </div>
 
           <div className="text-center space-y-2">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-gray-900">
               Select Target Role
             </h2>
             <p className="text-gray-500 max-w-md mx-auto text-sm">
@@ -202,7 +202,7 @@ export default function InterviewSelector({ onSelect }) {
               filteredTemplates.map((temp) => (
                 <div
                   key={temp.id}
-                  className="bg-white p-6 rounded-2xl border border-gray-100 hover:border-teal-200 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm hover:shadow-md transition-all duration-300"
+                  className="bg-white p-4 md:p-6 rounded-2xl border border-gray-100 hover:border-teal-200 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm hover:shadow-md transition-all duration-300"
                 >
                   <div className="space-y-2 max-w-xl text-left">
                     <div className="flex flex-wrap items-center gap-2">
@@ -256,7 +256,7 @@ export default function InterviewSelector({ onSelect }) {
             </span>
           </div>
 
-          <div className="w-full max-w-md mx-auto bg-white border border-gray-100 p-8 rounded-3xl shadow-lg relative overflow-hidden">
+          <div className="w-full max-w-md mx-auto bg-white border border-gray-100 p-5 md:p-8 rounded-2xl md:rounded-3xl shadow-lg relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-primary via-primary-container to-primary"></div>
             <CvUpload
               onUploadSuccess={(cvText) => handleStartInterview(selectedTemplate, cvText)}

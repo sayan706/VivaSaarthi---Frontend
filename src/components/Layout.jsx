@@ -110,29 +110,29 @@ export default function Layout({ children }) {
 
         {/* Main Content Area */}
         <main 
-          className={`main-content ${
+          className={`main-content overflow-x-hidden ${
             !sidebarVisible 
-              ? '!ml-0 !max-w-full !h-screen !p-4 bg-gray-50/50 flex flex-col items-center justify-center overflow-hidden' 
+              ? '!ml-0 !max-w-full !h-screen !p-2 md:!p-4 bg-gray-50/50 flex flex-col items-center justify-center overflow-hidden' 
               : ''
           }`}
         >
           {/* Top Header */}
           {sidebarVisible && (
-            <header className="top-header" style={{ marginBottom: '30px', justifyContent: 'flex-end' }}>
+            <header className="top-header" style={{ marginBottom: '16px', justifyContent: 'flex-end' }}>
               <div className="header-right">
                 {user && (
                 <div className="profile">
                   <div className="profile-text">
-                    <span className="name">{user.name}</span>
-                    <span className="role">{credits} Credits</span>
+                    <span className="name text-sm md:text-base">{user.name}</span>
+                    <span className="role text-xs">{credits} Credits</span>
                   </div>
                   {/* Mobile Logout */}
                   <button 
                     onClick={(e) => { e.preventDefault(); logout(); }}
-                    className="md:hidden ml-4 flex items-center justify-center w-10 h-10 bg-red-50 hover:bg-red-100 text-red-600 rounded-full border border-red-100 transition-colors shadow-sm"
+                    className="md:hidden ml-2 flex items-center justify-center w-9 h-9 bg-red-50 hover:bg-red-100 text-red-600 rounded-full border border-red-100 transition-colors shadow-sm"
                     title="Logout"
                   >
-                    <i className="ph ph-sign-out text-xl"></i>
+                    <i className="ph ph-sign-out text-lg"></i>
                   </button>
                 </div>
                 )}

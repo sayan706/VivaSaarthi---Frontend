@@ -113,23 +113,23 @@ export default function Settings() {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 md:px-12 pb-12">
+    <div className="w-full max-w-7xl mx-auto px-2 md:px-12 pb-12">
       {/* Page Header */}
       <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 mt-8 md:mt-0">
         <div>
-          <h2 className="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-semibold tracking-tight">Configuration Center</h2>
-          <p className="font-body-lg text-body-lg text-on-surface-variant mt-2">Manage your profile, AI mentor preferences, and system settings.</p>
+          <h2 className="text-2xl md:text-[32px] md:leading-[40px] text-on-surface font-semibold tracking-tight">Configuration Center</h2>
+          <p className="text-sm md:text-base text-on-surface-variant mt-2">Manage your profile, AI mentor preferences, and system settings.</p>
         </div>
 
       </div>
 
       {/* Bento Grid Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
         
         {/* Column 1: Profile & Subscription */}
         <div className="lg:col-span-1 space-y-6">
           {/* Profile Card */}
-          <section className="bg-white shadow-sm border border-gray-100 rounded-xl p-6 relative overflow-hidden">
+          <section className="bg-white shadow-sm border border-gray-100 rounded-xl p-4 md:p-6 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
             <h3 className="font-headline-md text-headline-md text-on-surface mb-6 flex items-center gap-2">
               <i className="ph ph-user text-teal-600"></i>
@@ -195,9 +195,9 @@ export default function Settings() {
         </div>
 
         {/* Column 2 & 3: Subscription & Billing */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-4 md:space-y-6">
           {/* Subscription Card Moved Here For Cooler Layout */}
-          <section className={`rounded-xl p-8 relative overflow-hidden group transition-all duration-300 flex flex-col md:flex-row items-center justify-between gap-6 ${isPro ? 'bg-gray-50 border border-tertiary/30 shadow-[0_0_20px_rgba(20,184,166,0.1)]' : 'bg-white shadow-sm border border-gray-100'}`}>
+          <section className={`rounded-xl p-5 md:p-8 relative overflow-hidden group transition-all duration-300 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-6 ${isPro ? 'bg-gray-50 border border-tertiary/30 shadow-[0_0_20px_rgba(20,184,166,0.1)]' : 'bg-white shadow-sm border border-gray-100'}`}>
             {isPro ? (
               <div className="absolute -right-20 -top-20 w-64 h-64 bg-tertiary-container/20 rounded-full blur-[60px] group-hover:bg-tertiary-container/30 transition-all duration-500"></div>
             ) : (

@@ -127,14 +127,14 @@ export default function WebcamFeed({ onFrameCapture, isActive, onCameraReady }) 
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
-        className={`fixed bottom-6 right-6 z-50 rounded-2xl overflow-hidden bg-black w-[200px] height-[150px] select-none border-2 ${
+        className={`fixed bottom-20 md:bottom-6 right-4 md:right-6 z-50 rounded-2xl overflow-hidden bg-black select-none border-2 ${
           isDragging 
             ? 'shadow-[0_16px_40px_rgba(0,0,0,0.6)] border-primary' 
             : 'shadow-[0_8px_32px_rgba(0,0,0,0.5)] border-white/10'
         } transition-shadow duration-300`}
         style={{
-          width: '200px',
-          height: '150px',
+          width: '160px',
+          height: '120px',
           transform: `translate(${position.x}px, ${position.y}px)`,
           cursor: isDragging ? 'grabbing' : 'grab',
           touchAction: 'none',
