@@ -271,7 +271,7 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
   // Socket Connection and Events Handling
   useEffect(() => {
     // Determine backend URL - empty string uses current domain (and vite proxy locally)
-    const backendUrl = import.meta.env.DEV ? '' : 'https://vivasaarthi-backend.onrender.com';
+    const backendUrl = import.meta.env.DEV ? '' : 'https://api.vivasaarthi.com';
     
     // Connect directly to backend server
     const newSocket = io(backendUrl, {

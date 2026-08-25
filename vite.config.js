@@ -8,13 +8,13 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:5000',
+        target: 'https://api.vivasaarthi.com',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
         secure: false,
       },
       '/socket.io': {
-        target: 'http://localhost:5000',
+        target: 'https://api.vivasaarthi.com',
         ws: true,
         changeOrigin: true,
         secure: false,
