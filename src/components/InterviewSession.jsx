@@ -93,6 +93,7 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
   const [failTrigger, setFailTrigger] = useState(0);
   const [successTrigger, setSuccessTrigger] = useState(0);
   const [hasStarted, setHasStarted] = useState(false);
+  const [isGeneratingReport, setIsGeneratingReport] = useState(false);
   
   const [metrics, setMetrics] = useState({
     tab_switch_count: 0,
@@ -308,11 +309,18 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
       }
       
       speakAudio(data.clean_text);
+
+      const lowerText = data.clean_text.toLowerCase();
+      if (data.is_completed || data.is_finished || lowerText.includes('interview is finished') || lowerText.includes('interview has concluded') || lowerText.includes('concludes our interview')) {
+        setIsGeneratingReport(true);
+        finishSession(true);
+      }
     });
 
     newSocket.on('report', (data) => {
       console.log('Received report data:', data);
       setIsProcessing(false);
+      setIsGeneratingReport(false);
       setReportData(data);
       speakAudio(data.spoken_remarks || "The interview has concluded. Here is your summary.");
     });
@@ -385,9 +393,9 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
     }
   };
 
-  const handleEndInterviewClick = async () => {
+  const finishSession = async (autoFinish = false) => {
     try {
-      setIsProcessing(true);
+      if (!autoFinish) setIsProcessing(true);
       const token = localStorage.getItem('token');
       const res = await fetch('/api/interview/end', {
         method: 'POST',
@@ -403,14 +411,28 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
         })
       });
       if (res.ok) {
-        addNotification('Credits updated after session', 'success');
+        try {
+          const data = await res.json();
+          if (data && data.report) {
+            setReportData(data.report);
+            setIsGeneratingReport(false);
+          }
+        } catch (e) {
+          // ignore json parse error
+        }
       }
     } catch (err) {
       console.error('Failed to end interview:', err);
     } finally {
-      setIsProcessing(false);
-      onEnd();
+      if (!autoFinish) {
+        setIsProcessing(false);
+        onEnd();
+      }
     }
+  };
+
+  const handleEndInterviewClick = () => {
+    finishSession(false);
   };
 
   const handleSendAnswer = () => {
@@ -480,6 +502,17 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
         </div>
       )}
 
+      {/* Generating Report Overlay */}
+      {isGeneratingReport && !reportData && (
+        <div className="fixed inset-0 z-[65] bg-gray-900/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl flex flex-col items-center">
+            <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-[#0E3386] mb-6"></div>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">Analyzing Responses...</h2>
+            <p className="text-gray-500 text-sm">Please wait while we evaluate your performance. This may take up to a minute.</p>
+          </div>
+        </div>
+      )}
+
       {/* Active Proctoring Guard */}
       <ProctorGuard 
         isActive={hasStarted && !reportData} 
@@ -527,26 +560,26 @@ export default function InterviewSession({ interview, session, cvText, onEnd }) 
             {/* Report Data Body */}
             <div className="p-4 md:p-6 overflow-y-auto space-y-4 md:space-y-6">
               {/* Score breakdown metrics */}
-              {reportData.scores && (
+              {(reportData.scores || reportData.overall_score !== undefined) && (
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 border-b border-gray-100 pb-4 md:pb-6">
                   <div className="bg-gray-50 p-3 md:p-4 rounded-xl text-center border border-gray-100 shadow-sm">
                     <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block">Overall Score</span>
-                    <span className="text-2xl font-bold text-[#0E3386] block mt-1">{reportData.scores.overall || 0}/100</span>
+                    <span className="text-2xl font-bold text-[#0E3386] block mt-1">{(reportData.scores?.overall ?? reportData.overall_score) || 0}/100</span>
                   </div>
                   <div className="bg-gray-50 p-3 md:p-4 rounded-xl text-center border border-gray-100 shadow-sm">
                     <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block">Technical</span>
-                    <span className="text-2xl font-bold text-[#0E3386] block mt-1">{reportData.scores.technical || 0}/100</span>
+                    <span className="text-2xl font-bold text-[#0E3386] block mt-1">{(reportData.scores?.technical ?? reportData.technical_score) || 0}/100</span>
                   </div>
                   <div className="bg-gray-50 p-3 md:p-4 rounded-xl text-center border border-gray-100 shadow-sm">
                     <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block">Communication</span>
-                    <span className="text-2xl font-bold text-[#0E3386] block mt-1">{reportData.scores.communication || 0}/100</span>
+                    <span className="text-2xl font-bold text-[#0E3386] block mt-1">{(reportData.scores?.communication ?? reportData.communication_score) || 0}/100</span>
                   </div>
                 </div>
               )}
 
               {/* Text feedback */}
               <div className="space-y-4">
-                {renderReportMarkdown(reportData.text)}
+                {renderReportMarkdown(reportData.text || reportData.performance_summary || "No detailed summary available.")}
               </div>
             </div>
 
