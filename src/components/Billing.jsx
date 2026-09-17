@@ -53,7 +53,7 @@ export default function Billing() {
   const currentPlanPrice = currentPlan ? currentPlan.price : 0;
 
   return (
-    <div className="p-2 md:p-8 max-w-7xl mx-auto w-full animate-in fade-in duration-500">
+    <div className="p-2 md:p-8 max-w-[1600px] mx-auto w-full animate-in fade-in duration-500">
       <div className="mb-8">
         <h2 className="text-3xl md:text-4xl font-bold text-on-surface flex items-center gap-3">
           <i className="ph ph-receipt text-[#0E3386] text-[28px] md:text-[36px]"></i>

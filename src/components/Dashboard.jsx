@@ -67,7 +67,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="p-2 md:p-8 max-w-7xl mx-auto grid grid-cols-4 md:grid-cols-12 gap-4 md:gap-6">
+    <div className="p-2 md:p-8 w-full max-w-[1600px] mx-auto grid grid-cols-4 md:grid-cols-12 gap-4 md:gap-6">
       {/* Hero Section */}
       <section className="gs-reveal col-span-4 md:col-span-12 bg-gradient-to-r from-[#dce6f8] via-[#b8cef0] to-[#0E3386] rounded-2xl p-5 md:p-8 shadow-sm border border-gray-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-center gap-3 md:gap-4 relative z-10 max-w-3xl">

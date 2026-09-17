@@ -113,7 +113,7 @@ export default function Settings() {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-2 md:px-12 pb-12">
+    <div className="w-full max-w-[1600px] mx-auto px-2 md:px-12 pb-12">
       {/* Page Header */}
       <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 mt-8 md:mt-0">
         <div>

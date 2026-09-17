@@ -47,7 +47,7 @@ export default function InterviewReports() {
   };
 
   return (
-    <div className="p-2 md:p-8 max-w-7xl mx-auto w-full">
+    <div className="p-2 md:p-8 max-w-[1600px] mx-auto w-full">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
         <div>
           <p className="font-bold text-sm text-[#0E3386] mb-2 flex items-center gap-2 uppercase tracking-widest">

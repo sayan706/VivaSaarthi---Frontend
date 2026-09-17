@@ -130,7 +130,7 @@ export default function ReportDetail() {
   const sysScore = report.security_score ? parseFloat(report.security_score) : 0; // mapping security to system for mock
 
   return (
-    <div className="p-2 md:p-8 max-w-7xl mx-auto w-full" id="pdf-content">
+    <div className="p-2 md:p-8 max-w-[1600px] mx-auto w-full" id="pdf-content">
       <button 
         data-html2canvas-ignore="true"
         onClick={() => navigate('/interview-report')}
