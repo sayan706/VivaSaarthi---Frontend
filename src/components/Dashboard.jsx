@@ -69,9 +69,9 @@ export default function Dashboard() {
   return (
     <div className="p-2 md:p-8 max-w-7xl mx-auto grid grid-cols-4 md:grid-cols-12 gap-4 md:gap-6">
       {/* Hero Section */}
-      <section className="col-span-4 md:col-span-12 bg-gradient-to-r from-[#d2f4e8] via-[#aed8e6] to-[#204968] rounded-2xl p-5 md:p-8 shadow-sm border border-gray-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <section className="gs-reveal col-span-4 md:col-span-12 bg-gradient-to-r from-[#dce6f8] via-[#b8cef0] to-[#0E3386] rounded-2xl p-5 md:p-8 shadow-sm border border-gray-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-center gap-3 md:gap-4 relative z-10 max-w-3xl">
-          <div className="w-12 h-12 md:w-16 md:h-16 bg-[#1a3854] rounded-full flex items-center justify-center text-white text-lg md:text-2xl font-semibold shrink-0">
+          <div className="w-12 h-12 md:w-16 md:h-16 bg-[#0E3386] rounded-full flex items-center justify-center text-white text-lg md:text-2xl font-semibold shrink-0">
             {user?.name ? user.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : 'U'}
           </div>
           <div>
@@ -86,7 +86,7 @@ export default function Dashboard() {
         <div className="relative z-10 shrink-0 w-full md:w-auto">
           <button 
             onClick={() => navigate('/live-interview')}
-            className="w-full md:w-auto bg-[#117065] hover:bg-[#0e5c53] text-white font-medium px-5 md:px-6 py-2.5 md:py-3 rounded-xl shadow-sm transition-all duration-300 flex items-center justify-center gap-2 group text-sm md:text-base"
+            className="w-full md:w-auto bg-[#0E3386] hover:bg-[#0a2566] text-white font-medium px-5 md:px-6 py-2.5 md:py-3 rounded-xl shadow-sm transition-all duration-300 flex items-center justify-center gap-2 group text-sm md:text-base"
           >
             <i className="ph ph-microphone text-lg md:text-xl"></i>
             Start a New Mock Interview
@@ -95,9 +95,9 @@ export default function Dashboard() {
       </section>
 
       {/* Stats Section (4 Cards) */}
-      <div className="col-span-2 md:col-span-3 bg-white shadow-sm border border-gray-100 rounded-xl p-4 md:p-6 hover:shadow-md transition-shadow group">
+      <div className="gs-reveal col-span-2 md:col-span-3 bg-white shadow-sm border border-gray-100 rounded-xl p-4 md:p-6 hover:shadow-md transition-shadow group">
         <div className="flex justify-between items-start mb-3 md:mb-4">
-          <div className="p-2.5 md:p-3 bg-teal-50 rounded-lg text-teal-600 group-hover:scale-110 transition-transform">
+          <div className="p-2.5 md:p-3 bg-blue-50 rounded-lg text-blue-600 group-hover:scale-110 transition-transform">
             <i className="ph ph-chats-circle text-xl md:text-2xl"></i>
           </div>
         </div>
@@ -105,7 +105,7 @@ export default function Dashboard() {
         <p className="text-xs md:text-sm font-semibold text-gray-500 uppercase tracking-wider mt-1">Total Interviews</p>
       </div>
 
-      <div className="col-span-2 md:col-span-3 bg-white shadow-sm border border-gray-100 rounded-xl p-4 md:p-6 hover:shadow-md transition-shadow group">
+      <div className="gs-reveal col-span-2 md:col-span-3 bg-white shadow-sm border border-gray-100 rounded-xl p-4 md:p-6 hover:shadow-md transition-shadow group">
         <div className="flex justify-between items-start mb-3 md:mb-4">
           <div className="p-2.5 md:p-3 bg-indigo-50 rounded-lg text-indigo-600 group-hover:scale-110 transition-transform">
             <i className="ph ph-chart-line-up text-xl md:text-2xl"></i>
@@ -115,12 +115,12 @@ export default function Dashboard() {
         <p className="text-xs md:text-sm font-semibold text-gray-500 uppercase tracking-wider mt-1">Avg Score</p>
       </div>
 
-      <div className="col-span-2 md:col-span-3 bg-white shadow-sm border border-gray-100 rounded-xl p-4 md:p-6 hover:shadow-md transition-shadow group relative overflow-hidden">
+      <div className="gs-reveal col-span-2 md:col-span-3 bg-white shadow-sm border border-gray-100 rounded-xl p-4 md:p-6 hover:shadow-md transition-shadow group relative overflow-hidden">
         <div className="absolute bottom-0 left-0 w-full h-1 bg-gray-100">
-          <div className="h-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.6)]" style={{ width: `${stats.communication}%` }}></div>
+          <div className="h-full bg-[#0E3386] shadow-[0_0_10px_rgba(14,51,134,0.6)]" style={{ width: `${stats.communication}%` }}></div>
         </div>
         <div className="flex justify-between items-start mb-3 md:mb-4">
-          <div className="p-2.5 md:p-3 bg-blue-50 rounded-lg text-blue-600 group-hover:scale-110 transition-transform">
+          <div className="p-2.5 md:p-3 bg-blue-50 rounded-lg text-[#0E3386] group-hover:scale-110 transition-transform">
             <i className="ph ph-microphone-stage text-xl md:text-2xl"></i>
           </div>
         </div>
@@ -128,7 +128,7 @@ export default function Dashboard() {
         <p className="text-xs md:text-sm font-semibold text-gray-500 uppercase tracking-wider mt-1">Communication</p>
       </div>
 
-      <div className="col-span-2 md:col-span-3 bg-white shadow-sm border border-gray-100 rounded-xl p-4 md:p-6 hover:shadow-md transition-shadow group relative overflow-hidden">
+      <div className="gs-reveal col-span-2 md:col-span-3 bg-white shadow-sm border border-gray-100 rounded-xl p-4 md:p-6 hover:shadow-md transition-shadow group relative overflow-hidden">
         <div className="absolute bottom-0 left-0 w-full h-1 bg-gray-100">
           <div className="h-full bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.6)]" style={{ width: `${stats.confidence}%` }}></div>
         </div>
@@ -142,7 +142,7 @@ export default function Dashboard() {
       </div>
 
       {/* Credit Usage Section */}
-      <section className="col-span-4 md:col-span-12 bg-white rounded-2xl shadow-sm border border-gray-100 p-4 md:p-6 mt-2 md:mt-4 group">
+      <section className="gs-reveal col-span-4 md:col-span-12 bg-white rounded-2xl shadow-sm border border-gray-100 p-4 md:p-6 mt-2 md:mt-4 group">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
           <h3 className="font-bold text-base md:text-lg text-gray-900">
             Your Interview Credits
@@ -158,7 +158,7 @@ export default function Dashboard() {
               <div 
                 className={`h-full rounded-full transition-all duration-1000 ease-out ${
                   creditPercentage > 20 
-                    ? 'bg-teal-500' 
+                    ? 'bg-[#0E3386]' 
                     : 'bg-red-500'
                 }`}
                 style={{ width: `${creditPercentage}%` }}
@@ -178,10 +178,10 @@ export default function Dashboard() {
       </section>
 
       {/* Recent Activity */}
-      <section className="col-span-4 md:col-span-12 bg-white rounded-2xl shadow-sm border border-gray-100 p-4 md:p-6 mt-2 md:mt-4">
+      <section className="gs-reveal col-span-4 md:col-span-12 bg-white rounded-2xl shadow-sm border border-gray-100 p-4 md:p-6 mt-2 md:mt-4">
         <div className="flex justify-between items-center mb-4 md:mb-6">
           <h2 className="font-bold text-lg md:text-xl text-gray-900">Your Recent Sessions</h2>
-          <button onClick={() => navigate('/interview-report')} className="text-[#117065] hover:text-[#0e5c53] font-semibold text-xs md:text-sm flex items-center gap-1 transition-colors">
+          <button onClick={() => navigate('/interview-report')} className="text-[#0E3386] hover:text-[#0a2566] font-semibold text-xs md:text-sm flex items-center gap-1 transition-colors">
             View All <i className="ph ph-arrow-right text-base md:text-lg"></i>
           </button>
         </div>
@@ -195,7 +195,7 @@ export default function Dashboard() {
             {recentSessions.map((session) => (
               <div key={session.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 md:p-4 bg-white border border-gray-100 rounded-xl hover:shadow-sm transition-all group gap-3">
                 <div className="flex items-center gap-3 md:gap-4">
-                  <div className={`w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center shrink-0 ${session.interview_status === 'completed' ? 'bg-[#3bb17b] text-white' : 'bg-orange-500 text-white'}`}>
+                  <div className={`w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center shrink-0 ${session.interview_status === 'completed' ? 'bg-[#3B6BCC] text-white' : 'bg-orange-500 text-white'}`}>
                     <i className={`ph ${session.interview_status === 'completed' ? 'ph-check' : 'ph-clock'} text-lg md:text-xl font-bold`}></i>
                   </div>
                   <div className="min-w-0">

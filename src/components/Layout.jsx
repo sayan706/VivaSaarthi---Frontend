@@ -2,11 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useBilling } from '../context/BillingContext';
+import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import '../assets/styles/dashboard.css'; // New Dashboard UI styles
 
 export default function Layout({ children }) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const { user, logout } = useAuth();
   const { credits } = useBilling();
@@ -15,14 +16,20 @@ export default function Layout({ children }) {
 
   // Refs for GSAP animation
   const indicatorDesktopRef = useRef(null);
-  const indicatorMobileRef = useRef(null);
   const navItemsRef = useRef([]);
+  const navContainerRef = useRef(null);
+  const wrapperRef = useRef(null);
 
   useEffect(() => {
     const handleToggle = (e) => setSidebarVisible(e.detail);
     window.addEventListener('toggle-sidebar', handleToggle);
     return () => window.removeEventListener('toggle-sidebar', handleToggle);
   }, []);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location.pathname]);
 
   const navLinks = [
     { name: 'Dashboard', icon: 'ph-house', path: '/' },
@@ -32,6 +39,45 @@ export default function Layout({ children }) {
     { name: 'Settings', icon: 'ph-gear', path: '/settings' },
   ];
 
+  // GSAP Entrance Animation
+  useGSAP(() => {
+    const tl = gsap.timeline();
+
+    tl.from(".dashboard-wrapper", {
+      y: 40,
+      opacity: 0,
+      duration: 1,
+      ease: "power3.out"
+    });
+
+    tl.from(".sidebar", {
+      x: -20,
+      opacity: 0,
+      duration: 0.6,
+      ease: "power2.out"
+    }, "-=0.5")
+    .from(".logo", {
+      scale: 0.5,
+      opacity: 0,
+      duration: 0.4,
+      ease: "back.out(1.5)"
+    }, "-=0.3")
+    .from(".nav-link", {
+      x: -10,
+      opacity: 0,
+      duration: 0.4,
+      stagger: 0.05,
+      ease: "power1.out"
+    }, "-=0.2");
+
+    tl.from(".top-header", {
+      y: -15,
+      opacity: 0,
+      duration: 0.5,
+      ease: "power2.out"
+    }, "-=0.4");
+  }, { scope: wrapperRef });
+
   // GSAP Animation for Sidebar Indicator
   useEffect(() => {
     const activeIndex = navLinks.findIndex(
@@ -40,51 +86,54 @@ export default function Layout({ children }) {
 
     if (activeIndex !== -1 && navItemsRef.current[activeIndex]) {
       const activeLink = navItemsRef.current[activeIndex];
-      const linkRect = activeLink.getBoundingClientRect();
-      const parentRect = activeLink.parentElement.getBoundingClientRect();
-      
-      const offsetTop = linkRect.top - parentRect.top;
-      const offsetLeft = linkRect.left - parentRect.left;
+      const offsetTop = activeLink.offsetTop;
 
-      if (window.innerWidth > 768) {
+      if (indicatorDesktopRef.current) {
         gsap.to(indicatorDesktopRef.current, {
-          y: offsetTop,
-          duration: 0.5,
-          ease: "power3.out"
-        });
-      } else {
-        gsap.to(indicatorMobileRef.current, {
-          x: offsetLeft + (linkRect.width / 2) - 23, // 46/2 = 23 (half of circle width)
+          top: offsetTop,
           duration: 0.4,
           ease: "power2.out"
         });
       }
+
+      // Content reveal animation on route change
+      gsap.fromTo(".gs-reveal",
+        { y: 15, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.4, stagger: 0.05, ease: "power1.out", overwrite: true }
+      );
     }
   }, [location.pathname]);
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
-    <div className="dashboard-wrapper">
+    <div className="dashboard-wrapper" ref={wrapperRef}>
       <div className="dashboard">
+        {/* Sidebar Overlay (mobile only) */}
+        <div
+          className={`sidebar-overlay ${isMobileMenuOpen ? 'active' : ''}`}
+          onClick={() => setIsMobileMenuOpen(false)}
+        ></div>
+
         {/* Sidebar */}
         {sidebarVisible && (
-          <nav className="sidebar">
+          <nav className={`sidebar ${isMobileMenuOpen ? 'open' : ''}`}>
             <div className="logo">
-              <img src="/logo.png" alt="VivaSaarthi Logo" />
+              <img src="/VivaSaarthi-logo.png" alt="VivaSaarthi Logo" />
               <div className="logo-text">
                 <div className="logo-title">VivaSaarthi</div>
                 <div className="logo-subtitle">An Ultimate AI<br/>Interview Coach</div>
               </div>
             </div>
             
-            <div className="nav-items relative">
+            <div className="nav-items" ref={navContainerRef}>
               {/* Desktop Curve Indicator */}
               <div className="nav-indicator-desktop" ref={indicatorDesktopRef}>
                 <div className="curve-top"></div>
                 <div className="curve-bottom"></div>
               </div>
-              
-              {/* Mobile Circle Indicator */}
-              <div className="nav-indicator-mobile" ref={indicatorMobileRef}></div>
 
               {navLinks.map((link, index) => {
                 const isActive = location.pathname === link.path || (link.path !== '/' && location.pathname.startsWith(link.path));
@@ -97,6 +146,7 @@ export default function Layout({ children }) {
                     title={link.name}
                   >
                     <i className={`ph ${isActive ? 'ph-fill' : ''} ${link.icon}`}></i>
+                    <span className="nav-label">{link.name}</span>
                   </Link>
                 );
               })}
@@ -104,6 +154,7 @@ export default function Layout({ children }) {
 
             <a href="#" onClick={(e) => { e.preventDefault(); logout(); }} className="nav-link logout" title="Logout">
               <i className="ph ph-sign-out"></i>
+              <span className="nav-label">Logout</span>
             </a>
           </nav>
         )}
@@ -116,9 +167,29 @@ export default function Layout({ children }) {
               : ''
           }`}
         >
+          {/* Mobile Top Navbar */}
+          {sidebarVisible && (
+            <div className="mobile-top-navbar">
+              <div className="mobile-logo">
+                <img src="/VivaSaarthi-logo.png" alt="VivaSaarthi Logo" />
+                <div className="logo-text">
+                  <div className="logo-title">VivaSaarthi</div>
+                  <div className="logo-subtitle">AI Interview Coach</div>
+                </div>
+              </div>
+              <button
+                className="p-1 rounded-md active:bg-gray-100 transition-colors"
+                onClick={toggleMobileMenu}
+                aria-label="Toggle Menu"
+              >
+                <i className={`ph ${isMobileMenuOpen ? 'ph-x' : 'ph-list'} text-[32px] text-[#0E3386]`}></i>
+              </button>
+            </div>
+          )}
+
           {/* Top Header */}
           {sidebarVisible && (
-            <header className="top-header" style={{ marginBottom: '16px', justifyContent: 'flex-end' }}>
+            <header className="top-header hidden md:flex" style={{ marginBottom: '16px', justifyContent: 'flex-end' }}>
               <div className="header-right">
                 {user && (
                 <div className="profile">
@@ -141,7 +212,9 @@ export default function Layout({ children }) {
           )}
 
           {/* Render Page Content */}
-          {children}
+          <div className="gs-reveal">
+            {children}
+          </div>
 
         </main>
       </div>

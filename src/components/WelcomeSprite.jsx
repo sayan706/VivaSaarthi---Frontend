@@ -39,7 +39,7 @@ export default function WelcomeSprite() {
         {/* Cloud tail pointing right */}
         <div className="absolute -bottom-3 right-6 w-8 h-8 bg-white transform rotate-45 border-b border-r border-gray-100 shadow-[4px_4px_10px_rgba(0,0,0,0.05)]"></div>
 
-        <p className="text-lg m-0 relative z-10 whitespace-nowrap text-[#0e5c53]">
+        <p className="text-lg m-0 relative z-10 whitespace-nowrap text-[#0E3386]">
           Welcome back, {user?.name ? user.name.split(' ')[0] : 'User'}! 🚀
         </p>
       </div>

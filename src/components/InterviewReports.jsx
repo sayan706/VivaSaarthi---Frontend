@@ -50,7 +50,7 @@ export default function InterviewReports() {
     <div className="p-2 md:p-8 max-w-7xl mx-auto w-full">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
         <div>
-          <p className="font-bold text-sm text-teal-600 mb-2 flex items-center gap-2 uppercase tracking-widest">
+          <p className="font-bold text-sm text-[#0E3386] mb-2 flex items-center gap-2 uppercase tracking-widest">
             <i className="ph ph-chart-bar text-[18px]"></i>
             Session Analytics
           </p>
@@ -62,7 +62,7 @@ export default function InterviewReports() {
       <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
         {loading ? (
           <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-teal-500"></div>
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#0E3386]"></div>
           </div>
         ) : sessions.length > 0 ? (
           <>
@@ -83,7 +83,7 @@ export default function InterviewReports() {
                     <tr key={session.id} className="hover:bg-gray-50 transition-colors group">
                       <td className="p-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-gray-500 group-hover:text-teal-600 transition-colors">
+                          <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-gray-500 group-hover:text-[#0E3386] transition-colors">
                             <i className={`ph ${String(session.template_id)?.includes('frontend') ? 'ph-code' : 'ph-briefcase'} text-xl`}></i>
                           </div>
                           <span className="font-bold text-gray-900">
@@ -97,7 +97,7 @@ export default function InterviewReports() {
                       <td className="p-4">
                         <span className={`px-3 py-1 rounded-full text-xs font-bold ${
                           session.interview_status === 'completed' 
-                            ? 'bg-teal-50 text-teal-700 border border-teal-200' 
+                            ? 'bg-[#EEEC79]/20 text-[#0E3386] border border-[#EEEC79]' 
                             : 'bg-gray-100 text-gray-600'
                         }`}>
                           {session.interview_status?.toUpperCase() || 'UNKNOWN'}
@@ -108,7 +108,7 @@ export default function InterviewReports() {
                           <div className="flex items-center gap-2">
                             <div className="w-16 h-2 bg-gray-100 rounded-full overflow-hidden">
                               <div 
-                                className="h-full bg-teal-500" 
+                                className="h-full bg-[#0E3386]" 
                                 style={{ width: `${session.overall_score}%` }}
                               ></div>
                             </div>
@@ -121,7 +121,7 @@ export default function InterviewReports() {
                       <td className="p-4 text-right">
                         <button 
                           onClick={() => navigate(`/interview-report/${session.id}`)}
-                          className="bg-white hover:bg-teal-50 text-teal-600 border border-gray-200 hover:border-teal-200 px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 ml-auto shadow-sm"
+                          className="bg-white hover:bg-[#EEEC79]/10 text-[#0E3386] border border-gray-200 hover:border-[#EEEC79] px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 ml-auto shadow-sm"
                         >
                           <i className="ph ph-eye text-[18px]"></i>
                           View
@@ -152,7 +152,7 @@ export default function InterviewReports() {
                     <div className="flex items-center gap-3">
                       <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
                         session.interview_status === 'completed' 
-                          ? 'bg-teal-50 text-teal-700 border border-teal-200' 
+                          ? 'bg-[#EEEC79]/20 text-[#0E3386] border border-[#EEEC79]' 
                           : 'bg-gray-100 text-gray-600'
                       }`}>
                         {session.interview_status?.toUpperCase() || 'UNKNOWN'}
@@ -165,7 +165,7 @@ export default function InterviewReports() {
                     </div>
                     <button 
                       onClick={() => navigate(`/interview-report/${session.id}`)}
-                      className="bg-white hover:bg-teal-50 text-teal-600 border border-gray-200 hover:border-teal-200 px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm"
+                      className="bg-white hover:bg-[#EEEC79]/10 text-[#0E3386] border border-gray-200 hover:border-[#EEEC79] px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm"
                     >
                       <i className="ph ph-eye text-[14px]"></i>
                       View
@@ -184,7 +184,7 @@ export default function InterviewReports() {
             <p className="text-gray-500 max-w-md text-sm">You haven't completed any mock interviews yet. Start an interview to see your detailed analytics.</p>
             <button 
               onClick={() => navigate('/live-interview')}
-              className="mt-6 bg-teal-600 text-white font-bold px-5 md:px-6 py-2.5 md:py-3 rounded-lg flex items-center gap-2 hover:bg-teal-700 transition-all text-sm"
+              className="mt-6 bg-[#0E3386] text-white font-bold px-5 md:px-6 py-2.5 md:py-3 rounded-lg flex items-center gap-2 hover:bg-[#0a2566] transition-all text-sm"
             >
               Start Interview
             </button>

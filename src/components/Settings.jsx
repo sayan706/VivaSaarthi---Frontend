@@ -132,7 +132,7 @@ export default function Settings() {
           <section className="bg-white shadow-sm border border-gray-100 rounded-xl p-4 md:p-6 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
             <h3 className="font-headline-md text-headline-md text-on-surface mb-6 flex items-center gap-2">
-              <i className="ph ph-user text-teal-600"></i>
+              <i className="ph ph-user text-[#0E3386]"></i>
               Personal Details
             </h3>
             
@@ -246,7 +246,7 @@ export default function Settings() {
               <button 
                 onClick={handleRenew}
                 disabled={isRenewing}
-                className={`w-full md:w-auto px-8 py-4 font-label-md text-label-md rounded-lg transition-all flex justify-center items-center gap-2 shadow-sm hover:shadow-md ${isPro ? 'bg-tertiary text-white hover:bg-tertiary/90' : 'bg-primary text-on-primary-fixed hover:bg-primary/90'}`}
+                className={`w-full md:w-auto px-8 py-4 font-label-md text-label-md rounded-lg transition-all flex justify-center items-center gap-2 shadow-sm hover:shadow-md ${isPro ? 'bg-tertiary text-white hover:bg-tertiary/90' : 'bg-[#0E3386] text-white hover:bg-[#0E3386]/90'}`}
               >
                 {isRenewing ? (
                   <><i className="ph ph-spinner animate-spin"></i> Processing...</>

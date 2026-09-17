@@ -148,13 +148,13 @@ export default function InterviewSelector({ onSelect }) {
               <button
                 key={cat.id}
                 onClick={() => handleCategorySelect(cat.category_name)}
-                className="bg-white p-4 md:p-6 rounded-2xl border border-gray-100 hover:border-teal-200 flex items-start gap-3 md:gap-4 shadow-sm hover:shadow-md transition-all duration-300 text-left cursor-pointer group"
+                className="bg-white p-4 md:p-6 rounded-2xl border border-gray-100 hover:border-[#EEEC79] flex items-start gap-3 md:gap-4 shadow-sm hover:shadow-md transition-all duration-300 text-left cursor-pointer group"
               >
-                <div className="p-2.5 md:p-3.5 bg-teal-50 rounded-xl text-teal-600 group-hover:bg-teal-100 transition-all">
+                <div className="p-2.5 md:p-3.5 bg-[#EEEC79]/20 rounded-xl text-[#0E3386] group-hover:bg-[#EEEC79]/30 transition-all">
                   <i className={`ph ${getCategoryIcon(cat.category_name)} text-[22px] md:text-[28px]`}></i>
                 </div>
                 <div>
-                  <h3 className="font-bold text-base md:text-lg text-gray-900 group-hover:text-teal-600 transition-colors">
+                  <h3 className="font-bold text-base md:text-lg text-gray-900 group-hover:text-[#0E3386] transition-colors">
                     {cat.category_name}
                   </h3>
                   <p className="text-xs text-gray-500 font-medium leading-relaxed mt-1">
@@ -173,7 +173,7 @@ export default function InterviewSelector({ onSelect }) {
           <div className="flex items-center justify-between mb-4">
             <button
               onClick={() => setStep('category')}
-              className="flex items-center gap-1.5 text-sm font-semibold text-gray-500 hover:text-teal-600 transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 text-sm font-semibold text-gray-500 hover:text-[#0E3386] transition-colors cursor-pointer"
             >
               <i className="ph ph-arrow-left text-[18px]"></i>
               Back to Domains
@@ -202,13 +202,13 @@ export default function InterviewSelector({ onSelect }) {
               filteredTemplates.map((temp) => (
                 <div
                   key={temp.id}
-                  className="bg-white p-4 md:p-6 rounded-2xl border border-gray-100 hover:border-teal-200 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm hover:shadow-md transition-all duration-300"
+                  className="bg-white p-4 md:p-6 rounded-2xl border border-gray-100 hover:border-[#EEEC79] flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm hover:shadow-md transition-all duration-300"
                 >
                   <div className="space-y-2 max-w-xl text-left">
                     <div className="flex flex-wrap items-center gap-2">
                       <h3 className="font-bold text-lg text-gray-900">{temp.name}</h3>
                       {temp.company_name && (
-                        <span className="text-[10px] font-bold bg-teal-50 text-teal-700 border border-teal-200 px-2 py-0.5 rounded">
+                        <span className="text-[10px] font-bold bg-[#EEEC79]/20 text-[#0E3386] border border-[#EEEC79] px-2 py-0.5 rounded">
                           {temp.company_name}
                         </span>
                       )}
@@ -217,7 +217,7 @@ export default function InterviewSelector({ onSelect }) {
                           ? 'bg-red-50 text-red-600 border-red-200' 
                           : temp.difficulty_level === 'medium'
                           ? 'bg-orange-50 text-orange-600 border-orange-200'
-                          : 'bg-green-50 text-green-600 border-green-200'
+                          : 'bg-blue-50 text-blue-600 border-blue-200'
                       }`}>
                         {temp.difficulty_level}
                       </span>
@@ -246,7 +246,7 @@ export default function InterviewSelector({ onSelect }) {
           <div className="flex items-center justify-between mb-4">
             <button
               onClick={() => setStep('template')}
-              className="flex items-center gap-1.5 text-sm font-semibold text-gray-500 hover:text-teal-600 transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 text-sm font-semibold text-gray-500 hover:text-[#0E3386] transition-colors cursor-pointer"
             >
               <i className="ph ph-arrow-left text-[18px]"></i>
               Back to Roles

@@ -78,7 +78,7 @@ export default function AuthPage() {
     <div className="auth-page-wrapper">
       {/* Top Left Logo */}
       <div className="top-left-logo">
-        <img src="/logo.png" alt="Logo" />
+        <img src="/VivaSaarthi-logo.png" alt="Logo" />
         <span className="logo-text-top">VivaSaarthi</span>
       </div>
 
@@ -148,7 +148,7 @@ export default function AuthPage() {
           <div className="overlay">
             {/* Left Overlay (visible when Sign Up is active) */}
             <div className="overlay-panel overlay-left">
-              <img src="/logo.png" className="login-logo" alt="VivaSaarthi Logo" />
+              <img src="/VivaSaarthi-logo.png" className="login-logo" alt="VivaSaarthi Logo" />
               <img src="/waving-mascot.png" alt="Waving Mascot" className="mascot-img waving-hand" />
               <h1>Welcome Back!</h1>
               <p>To keep connected with us please login with your personal info</p>
@@ -156,7 +156,7 @@ export default function AuthPage() {
             </div>
             {/* Right Overlay (visible when Sign In is active) */}
             <div className="overlay-panel overlay-right">
-              <img src="/logo.png" className="login-logo" alt="VivaSaarthi Logo" />
+              <img src="/VivaSaarthi-logo.png" className="login-logo" alt="VivaSaarthi Logo" />
               <img src="/waving-mascot.png" alt="Waving Mascot" className="mascot-img waving-hand" />
               <h1>Hello, Student!</h1>
               <p>Enter your personal details and start journey with us</p>

@@ -233,7 +233,7 @@ export default function ProctorGuard({ isActive, onAutoTerminate, onViolation })
             onClick={() => {
               document.documentElement.requestFullscreen().catch(e => console.error(e));
             }}
-            className="px-6 py-3 bg-primary text-on-primary-fixed font-bold rounded-xl hover:scale-105 transition-all shadow-[0_4px_20px_rgba(20,184,166,0.3)] flex items-center gap-2"
+            className="px-6 py-3 bg-[#0E3386] text-white font-bold rounded-xl hover:scale-105 transition-all shadow-[0_4px_20px_rgba(14,51,134,0.3)] flex items-center gap-2"
           >
             <span className="material-symbols-outlined text-[20px]">fullscreen</span>
             Return to Fullscreen

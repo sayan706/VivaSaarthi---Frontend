@@ -56,7 +56,7 @@ export default function Billing() {
     <div className="p-2 md:p-8 max-w-7xl mx-auto w-full animate-in fade-in duration-500">
       <div className="mb-8">
         <h2 className="text-3xl md:text-4xl font-bold text-on-surface flex items-center gap-3">
-          <i className="ph ph-receipt text-teal-600 text-[28px] md:text-[36px]"></i>
+          <i className="ph ph-receipt text-[#0E3386] text-[28px] md:text-[36px]"></i>
           Billing & Usage
         </h2>
         <p className="text-base text-on-surface-variant mt-2">
@@ -92,7 +92,7 @@ export default function Billing() {
           <div className="relative z-10 mt-6 md:mt-10">
             <div className="flex justify-between items-end mb-3">
               <span className="font-bold text-on-surface flex items-center gap-2">
-                <i className="ph ph-chart-bar text-teal-600"></i>
+                <i className="ph ph-chart-bar text-[#0E3386]"></i>
                 Credit Usage
               </span>
               <span className="text-sm font-bold text-on-surface-variant">
@@ -102,7 +102,7 @@ export default function Billing() {
             
             <div className="w-full h-4 bg-surface-container-highest rounded-full overflow-hidden shadow-inner">
               <div 
-                className={`h-full rounded-full transition-all duration-1000 ease-out shadow-[0_0_15px_rgba(20,184,166,0.5)] ${
+                className={`h-full rounded-full transition-all duration-1000 ease-out shadow-[0_0_15px_rgba(14,51,134,0.5)] ${
                   creditPercentage > 20 
                     ? 'bg-gradient-to-r from-primary-container to-primary' 
                     : 'bg-gradient-to-r from-error-container to-error shadow-[0_0_15px_rgba(255,180,171,0.5)]'
@@ -124,7 +124,7 @@ export default function Billing() {
           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent pointer-events-none"></div>
           
           <div className="w-16 h-16 bg-surface-variant rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:bg-primary/20 transition-all">
-            <i className="ph ph-rocket-launch text-gray-900 group-hover:text-teal-600 text-3xl transition-colors"></i>
+            <i className="ph ph-rocket-launch text-gray-900 group-hover:text-[#0E3386] text-3xl transition-colors"></i>
           </div>
           
           <h3 className="text-xl font-bold text-on-surface mb-2">Need more power?</h3>
@@ -134,7 +134,7 @@ export default function Billing() {
           
           <button 
             onClick={() => setIsModalOpen(true)}
-            className="w-full bg-on-surface text-surface font-bold py-3 px-6 rounded-xl hover:bg-primary hover:text-on-primary hover:shadow-[0_0_20px_rgba(20,184,166,0.3)] hover:-translate-y-1 transition-all duration-300"
+            className="w-full bg-on-surface text-surface font-bold py-3 px-6 rounded-xl hover:bg-primary hover:text-on-primary hover:shadow-[0_0_20px_rgba(14,51,134,0.3)] hover:-translate-y-1 transition-all duration-300"
           >
             View Pricing Plans
           </button>
@@ -192,7 +192,7 @@ export default function Billing() {
             <div className="p-4 md:p-6 border-b border-white/5 flex justify-between items-center bg-surface-container-high relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent pointer-events-none"></div>
               <h3 className="text-2xl font-bold text-on-surface flex items-center gap-2 relative z-10">
-                <i className="ph ph-rocket-launch text-teal-600"></i>
+                <i className="ph ph-rocket-launch text-[#0E3386]"></i>
                 Upgrade Your Experience
               </h3>
               <button 
@@ -206,7 +206,7 @@ export default function Billing() {
             <div className="p-4 md:p-6 overflow-y-auto">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 {plans.length > 0 ? plans.map(plan => (
-                  <div key={plan.id} className={`bg-white shadow-sm border border-gray-100 rounded-xl p-6 border ${String(plan.id) === String(currentPlanId) ? 'border-primary shadow-[0_0_20px_rgba(20,184,166,0.15)] bg-teal-50' : 'border-gray-200 hover:border-gray-300'} transition-all relative flex flex-col justify-between`}>
+                  <div key={plan.id} className={`bg-white shadow-sm border border-gray-100 rounded-xl p-6 border ${String(plan.id) === String(currentPlanId) ? 'border-primary shadow-[0_0_20px_rgba(14,51,134,0.15)] bg-[#EEEC79]/15' : 'border-gray-200 hover:border-gray-300'} transition-all relative flex flex-col justify-between`}>
                     {String(plan.id) === String(currentPlanId) && (
                       <div className="absolute -top-3 -right-3 bg-primary text-on-primary text-xs font-bold px-3 py-1 rounded-full shadow-lg border border-primary-container">Current Plan</div>
                     )}
@@ -221,16 +221,16 @@ export default function Billing() {
                       
                       <ul className="space-y-3 mb-8">
                         <li className="flex items-center gap-2 text-sm text-on-surface-variant">
-                          <i className="ph ph-check-circle text-teal-600 text-[18px]"></i>
+                          <i className="ph ph-check-circle text-[#0E3386] text-[18px]"></i>
                           <span className="font-bold text-on-surface">{plan.credits}</span> Interview Credits
                         </li>
                         <li className="flex items-center gap-2 text-sm text-on-surface-variant">
-                          <i className="ph ph-check-circle text-teal-600 text-[18px]"></i>
+                          <i className="ph ph-check-circle text-[#0E3386] text-[18px]"></i>
                           {plan.duration_days} Days Validity
                         </li>
                         {plan.price > 0 && (
                           <li className="flex items-center gap-2 text-sm text-on-surface-variant">
-                            <i className="ph ph-check-circle text-teal-600 text-[18px]"></i>
+                            <i className="ph ph-check-circle text-[#0E3386] text-[18px]"></i>
                             Priority Support & Analytics
                           </li>
                         )}
@@ -238,7 +238,7 @@ export default function Billing() {
                     </div>
                     
                     <button 
-                      className={`w-full py-3 rounded-lg font-bold transition-all flex justify-center items-center gap-2 ${String(plan.id) === String(currentPlanId) ? 'bg-surface-variant text-on-surface cursor-default opacity-70' : 'bg-primary text-on-primary-fixed hover:shadow-[0_0_20px_rgba(20,184,166,0.3)] hover:-translate-y-0.5'}`}
+                      className={`w-full py-3 rounded-lg font-bold transition-all flex justify-center items-center gap-2 ${String(plan.id) === String(currentPlanId) ? 'bg-surface-variant text-on-surface cursor-default opacity-70' : 'bg-[#0E3386] text-white hover:shadow-[0_0_20px_rgba(14,51,134,0.3)] hover:-translate-y-0.5'}`}
                       disabled={String(plan.id) === String(currentPlanId)}
                     >
                       {String(plan.id) === String(currentPlanId) ? 'Current Plan' : 'Select Plan'}
